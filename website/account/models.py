@@ -1,6 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from PIL import Image
+from phonenumber_field.modelfields import PhoneNumberField
 
 
 class UserManager(BaseUserManager):
@@ -42,11 +45,6 @@ class User(AbstractUser):
     first_name = models.CharField(max_length = 50)
     last_name = models.CharField(max_length = 50)
     email = models.EmailField(max_length=100, unique=True)
-    # date_joined = models.DateTimeField(auto_now_add=True)
-    # is_admin = models.BooleanField(default=False)
-    # is_active = models.BooleanField(default=True)
-    # is_staff = models.BooleanField(default=False)
-    # is_superuser = models.BooleanField(default=False)
     
     objects = UserManager()
     
@@ -60,8 +58,8 @@ class User(AbstractUser):
 class Profile(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, help_text = "User name", related_name='user_profiles', verbose_name="User Name")
-    #work_phone = PhoneField("Work Phone", null=True, blank=True)
-    #mobile_phone = PhoneField("Mobile Phone", null=True, blank=True)
+    work_phone = PhoneNumberField(blank = True)
+    mobile_phone = PhoneNumberField(blank = True)
     city = models.CharField("City", null = True, blank = True, max_length=50)
     state = models.CharField("State", null = True, blank = True, max_length=50)
     bio = models.TextField(null = True, blank=True, verbose_name="Biography")   
@@ -80,4 +78,4 @@ class Profile(models.Model):
             img.save(self.avatar.path)
 
     def __str__(self):
-        return self.user.first_name + ' ' + self.user.last_name
+        return f'{self.user.first_name} {self.user.last_name} Profile'

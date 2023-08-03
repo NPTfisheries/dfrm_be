@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.password_validation import validate_password
-from .models import User
+from .models import User, Profile
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
@@ -30,6 +30,9 @@ class RegistrationSerializer(serializers.ModelSerializer):
         password = validated_data['password']
         user.set_password(password)
         user.save()
+
+        profile = Profile.objects.create(user=user)
+
         return user
    
     # def create(self, validated_data):
