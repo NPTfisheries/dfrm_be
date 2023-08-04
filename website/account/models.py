@@ -62,19 +62,19 @@ class Profile(models.Model):
     city = models.CharField("City", null = True, blank = True, max_length=50)
     state = models.CharField("State", null = True, blank = True, max_length=50)
     bio = models.TextField(null = True, blank=True, verbose_name="Biography")   
-    avatar = models.ImageField("Profile Picture", upload_to='images/profile/', default='images/profile/P7160105_fix.JPG') 
+    photo = models.ImageField("Profile Picture", upload_to='images/profile/', default='images/profile/P7160105_fix.JPG') 
 
     class Meta:
         ordering = ['user__first_name', 'user__last_name']
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        img = Image.open(self.avatar.path)
+        img = Image.open(self.photo.path)
 
         if img.height > 300 or img.width > 300:
             output_size = (300, 300)
             img.thumbnail(output_size)
-            img.save(self.avatar.path)
+            img.save(self.photo.path)
 
     def __str__(self):
         return f'{self.user.first_name} {self.user.last_name} Profile'
