@@ -4,7 +4,7 @@ from rest_framework.mixins import UpdateModelMixin
 from rest_framework.views import APIView
 from .serializers import RegistrationSerializer, ChangePasswordSerializer, UpdateUserSerializer, UpdateProfileSerializer
 from rest_framework.response import Response
-from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from .models import User, Profile
 
 
