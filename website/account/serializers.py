@@ -89,7 +89,7 @@ class UpdateUserSerializer(serializers.ModelSerializer):
         instance.save()
 
         return instance
-    
+
 class UpdateProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -97,19 +97,16 @@ class UpdateProfileSerializer(serializers.ModelSerializer):
         fields = ('work_phone', 'mobile_phone', 'city', 'state', 'bio', 'photo',)
 
     def update(self, instance, validated_data):
-
+        # get authenticated user
         user = self.context['request'].user
-
+        # check if authenticated user is equal to the user instance being modified
         if user.pk != instance.pk:
             raise serializers.ValidationError({"authorize": "You dont have permission for this user."})
 
-        # Update the Profile model instance based on the validated data
-        instance.work_phone = validated_data['work_phone']
-        instance.mobile_phone = validated_data['mobile_phone']
-        instance.city = validated_data['city']
-        instance.state = validated_data['state']
-        instance.bio = validated_data['bio']
-        instance.photo = validated_data['photo']
+        # Update the Profile model instance with the values supplied in the request.
+        for field, value in validated_data.items():
+            setattr(instance, field, value)
+
         instance.save()
 
         return instance

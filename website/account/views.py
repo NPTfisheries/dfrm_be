@@ -1,4 +1,6 @@
 from rest_framework import status, generics
+from rest_framework.generics import GenericAPIView
+from rest_framework.mixins import UpdateModelMixin
 from rest_framework.views import APIView
 from .serializers import RegistrationSerializer, ChangePasswordSerializer, UpdateUserSerializer, UpdateProfileSerializer
 from rest_framework.response import Response
