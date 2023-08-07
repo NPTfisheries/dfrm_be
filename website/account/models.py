@@ -51,7 +51,7 @@ class User(AbstractUser):
     REQUIRED_FIELDS = ['first_name', 'last_name']
 
     def __str__(self):
-        return self.first_name + " " + self.last_name
+        return f"{self.first_name} {self.last_name}"
 
 
 class Profile(models.Model):
@@ -62,7 +62,7 @@ class Profile(models.Model):
     city = models.CharField("City", null = True, blank = True, max_length=50)
     state = models.CharField("State", null = True, blank = True, max_length=50)
     bio = models.TextField(null = True, blank=True, verbose_name="Biography")   
-    photo = models.ImageField("Profile Picture", upload_to='images/profile/', default='images/profile/P7160105_fix.JPG') 
+    photo = models.ImageField("Profile Picture", upload_to='images/profile/', default='images/profile_default.JPG') 
 
     class Meta:
         ordering = ['user__first_name', 'user__last_name']
@@ -77,4 +77,4 @@ class Profile(models.Model):
             img.save(self.photo.path)
 
     def __str__(self):
-        return f'{self.user.first_name} {self.user.last_name} Profile'
+        return f'{self.user}'

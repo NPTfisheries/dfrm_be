@@ -1,4 +1,6 @@
 from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth.password_validation import validate_password
 from .models import User, Profile
 
@@ -31,11 +33,22 @@ class RegistrationSerializer(serializers.ModelSerializer):
         user.set_password(password)
         user.save()
 
-        profile = Profile.objects.create(user=user)
-
         return user
+    
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    
+    def validate(self, attrs):
+        data = super().validate(attrs)
+        refresh = self.get_token(self.user)
 
- 
+        # Add extra responses here
+        data['first_name'] = self.user.first_name
+        data['last_name'] = self.user.last_name
+        data['email'] = self.user.email
+        data['permissions'] = self.user.user_permissions.values_list('name', flat=True)
+        data['groups'] = self.user.groups.values_list('name', flat=True)
+        return data
+
 class ChangePasswordSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
     password2 = serializers.CharField(write_only=True, required=True)

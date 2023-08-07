@@ -16,3 +16,12 @@ app_name = 'administration'
 urlpatterns = [
     path('', include(router.urls)),
 ]
+
+
+#'department/' get list
+#'department/' post new
+#'department/slug/' get
+#'department/slug/' update
+#'department/slug/' delete
+
+
