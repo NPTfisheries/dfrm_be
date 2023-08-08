@@ -16,8 +16,8 @@ class ProjectAdmin(admin.ModelAdmin):
 
 @admin.register(Subproject)
 class SubprojectAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'slug', 'created_at', 'updated_at')
+    list_display = ('id', 'name', 'slug', 'lead', 'project', 'created_at', 'updated_at')
 
 @admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'slug', 'created_at', 'updated_at')
+    list_display = ('id', 'name', 'slug', 'subproject', 'supervisor', 'created_at', 'updated_at')

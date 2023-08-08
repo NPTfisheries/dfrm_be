@@ -21,15 +21,8 @@ class DivisionViewSet(viewsets.ModelViewSet):
 class ProjectViewSet(viewsets.ModelViewSet):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
-    # lookup_field = 'slug'
-    # permission_classes = [DjangoModelPermissionsOrAnonReadOnly]
-
-    # def perform_update(self, serializer):
-    #     project = serializer.save()  # Save the project instance
-    #     print("Before set():", project.project_leader.all())
-    #     project.project_leader.set(self.request.data.get('project_leader', []))  # Set the project leaders
-    #     print("After set():", project.project_leader.all())
-
+    lookup_field = 'slug'
+    permission_classes = [DjangoModelPermissionsOrAnonReadOnly]
 
 class SubprojectViewSet(viewsets.ModelViewSet):
     queryset = Subproject.objects.all()

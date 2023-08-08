@@ -41,50 +41,45 @@ class AdminModelSerializer(serializers.ModelSerializer):
 class DepartmentSerializer(AdminModelSerializer):
     class Meta:
         model = Department
-        fields = ['id', 'slug', 'name', 'description', 'manager', 'deputy', 'assistant', 'img_banner', 'img_card']
-        #fields = '__all__'   
+        fields = ['id', 'slug', 'name', 'description', 'manager', 'deputy', 'assistant', 'staff']
+        
+    def create(self, validated_data):
+        ids = validated_data.pop('staff')
+        instance = super().create(validated_data)
+        instance.staff.set(ids)
+        return instance   
 
 class DivisionSerializer(AdminModelSerializer):
     #department = DepartmentSerializer() # creates a nested JSON object where department is an object with all department fields.
     # leaving the above line commented out will only allow POST body to only have pk, and get requests will only have department pk
     class Meta:
         model = Division
-        fields = ['id', 'department', 'name', 'description', 'manager', 'deputy', 'assistant', 'img_banner', 'img_card']
-
-class ProjectSerializer(serializers.ModelSerializer):
-    #project_leader = UserSerializer(read_only=True, many=True)
-    #project_leader = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), many=True)
-    class Meta:
-        model = Project
-        fields = ['id', 'name', 'description', 'project_leader', 'img_banner', 'img_card']
-        extra_kwargs = {
-            'created_by': {'read_only': True},
-            'updated_by': {'read_only': True},
-            'slug': {'read_only': True},
-            'url': {'lookup_field': 'slug'}
-        }
+        fields = ['id', 'department', 'slug', 'name', 'description', 'manager', 'deputy', 'assistant', 'staff']
 
     def create(self, validated_data):
-        # get authenticated user
-        user = self.context['request'].user
-        pl_ids = validated_data.pop('project_leader')
-        # create a new instance
-        instance = Project.objects.create(
-            created_by=user,
-            updated_by=user,
-            is_active=True,
-            **validated_data
-            )
-        instance.project_leader.set(pl_ids)
+        ids = validated_data.pop('staff')
+        instance = super().create(validated_data)
+        instance.staff.set(ids)
+        return instance  
 
+class ProjectSerializer(AdminModelSerializer):
+    project_leader = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), many=True)
+    class Meta:
+        model = Project
+        fields = ['id', 'slug', 'name', 'description', 'project_leader']
+
+    def create(self, validated_data):
+        ids = validated_data.pop('project_leader')
+        instance = super().create(validated_data)
+        instance.project_leader.set(ids)
         return instance
     
 class SubprojectSerializer(AdminModelSerializer):
     class Meta:
         model = Subproject
-        fields = '__all__'    
+        fields = ['id', 'project', 'slug', 'name', 'description', 'lead']  
 
 class TaskSerializer(AdminModelSerializer):
     class Meta:
         model = Task
-        fields = '__all__'
+        fields = ['id', 'subproject', 'slug', 'name', 'description', 'supervisor'] 
