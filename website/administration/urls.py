@@ -6,6 +6,8 @@ router = routers.DefaultRouter()
 router.register(r'department', views.DepartmentViewSet)
 router.register(r'division', views.DivisionViewSet)
 router.register(r'project', views.ProjectViewSet)
+router.register(r'subproject', views.SubprojectViewSet)
+router.register(r'task', views.TaskViewSet)
 # add more viewsets here
 
 # Wire up our API using automatic URL routing.
