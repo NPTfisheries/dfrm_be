@@ -15,6 +15,13 @@ class AdminModelSerializer(serializers.ModelSerializer):
             'url': {'lookup_field': 'slug'}
         }
 
+    def validate_name(self, value):
+        # Check if a model object with the same name already exists
+        if self.instance is None or self.instance.name != value:
+            if self.Meta.model.objects.filter(name=value).exists():
+                raise serializers.ValidationError("A model object with this name already exists.")
+        return value
+
     def create(self, validated_data):
         # get authenticated user
         user = self.context['request'].user
