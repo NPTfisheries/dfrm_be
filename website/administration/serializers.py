@@ -1,6 +1,7 @@
 #admin/serializers.py
 from rest_framework import serializers
 from account.serializers import UserSerializer
+from account.models import User
 from administration.models import Department, Division, Project, Subproject, Task
 
 
@@ -50,12 +51,34 @@ class DivisionSerializer(AdminModelSerializer):
         model = Division
         fields = ['id', 'department', 'name', 'description', 'manager', 'deputy', 'assistant', 'img_banner', 'img_card']
 
-class ProjectSerializer(AdminModelSerializer):
-    project_leader = UserSerializer(read_only=True, many=True)
+class ProjectSerializer(serializers.ModelSerializer):
+    #project_leader = UserSerializer(read_only=True, many=True)
+    #project_leader = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), many=True)
     class Meta:
         model = Project
-        fields = ['id', 'name', 'description', 'project_leader', 'img_banner', 'img_card']    
+        fields = ['id', 'name', 'description', 'project_leader', 'img_banner', 'img_card']
+        extra_kwargs = {
+            'created_by': {'read_only': True},
+            'updated_by': {'read_only': True},
+            'slug': {'read_only': True},
+            'url': {'lookup_field': 'slug'}
+        }
 
+    def create(self, validated_data):
+        # get authenticated user
+        user = self.context['request'].user
+        pl_ids = validated_data.pop('project_leader')
+        # create a new instance
+        instance = Project.objects.create(
+            created_by=user,
+            updated_by=user,
+            is_active=True,
+            **validated_data
+            )
+        instance.project_leader.set(pl_ids)
+
+        return instance
+    
 class SubprojectSerializer(AdminModelSerializer):
     class Meta:
         model = Subproject

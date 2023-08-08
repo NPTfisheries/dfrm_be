@@ -8,16 +8,16 @@ class DepartmentClassAdmin(admin.ModelAdmin):
 
 @admin.register(Division)
 class DivisionAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'manager', 'deputy', 'assistant', 'slug')
+    list_display = ('id', 'name', 'manager', 'deputy', 'assistant', 'slug', 'created_at', 'updated_at')
 
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'slug')
+    list_display = ('id', 'name', 'slug', 'created_at', 'updated_at')
 
 @admin.register(Subproject)
 class SubprojectAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'slug')
+    list_display = ('id', 'name', 'slug', 'created_at', 'updated_at')
 
 @admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'slug')
+    list_display = ('id', 'name', 'slug', 'created_at', 'updated_at')
