@@ -57,6 +57,7 @@ class User(AbstractUser):
 class Profile(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, help_text = "User name", related_name='user_profiles', verbose_name="User Name")
+    title = models.CharField(null = True, blank = True, max_length=100)
     work_phone = PhoneNumberField(blank = True)
     mobile_phone = PhoneNumberField(blank = True)
     city = models.CharField("City", null = True, blank = True, max_length=50)

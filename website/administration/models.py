@@ -5,7 +5,7 @@ from PIL import Image
    
 class BaseModel(models.Model):
 
-    name = models.CharField(max_length=300)
+    name = models.CharField(max_length=300, unique=True)
     description = models.TextField()
     slug = models.SlugField(null=True, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
