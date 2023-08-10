@@ -40,10 +40,19 @@ class UserManager(BaseUserManager):
     
 class User(AbstractUser):
 
+    # ROLE_CHOICES = (
+    #     (1, 'Admin'),
+    #     (2, 'Data-Editor'),
+    #     (3, 'Data-Access'),
+    #     (4, 'Read-Only')
+    # )
+
     username = None
     first_name = models.CharField(max_length = 50)
     last_name = models.CharField(max_length = 50)
     email = models.EmailField(max_length=100, unique=True)
+    # class_description = models.()
+    #role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, blank=True, null=True)
     
     objects = UserManager()
     

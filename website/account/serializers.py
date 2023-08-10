@@ -77,37 +77,11 @@ class ChangePasswordSerializer(serializers.ModelSerializer):
 
         return instance
     
-class UpdateUserSerializer(serializers.ModelSerializer):
-    email = serializers.EmailField(required=True)
-
-    class Meta:
-        model = User
-        fields = ('email', 'first_name', 'last_name')
-        extra_kwargs = {
-            'first_name': {'required': True},
-            'last_name': {'required': True},
-        }
-
-    def validate_email(self, value):
-        user = self.context['request'].user
-        if User.objects.exclude(pk=user.pk).filter(email=value).exists():
-            raise serializers.ValidationError({"email": "This email is already in use."})
-        return value
-
-    def update(self, instance, validated_data):
-        instance.email = validated_data['email']
-        instance.first_name = validated_data['first_name']
-        instance.last_name = validated_data['last_name']
-
-        instance.save()
-
-        return instance
-
-class UpdateProfileSerializer(serializers.ModelSerializer):
+class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
-        fields = ('work_phone', 'mobile_phone', 'city', 'state', 'bio', 'photo',)
+        fields = ('title', 'work_phone', 'mobile_phone', 'city', 'state', 'bio', 'photo')
 
     def update(self, instance, validated_data):
         # get authenticated user
@@ -123,8 +97,40 @@ class UpdateProfileSerializer(serializers.ModelSerializer):
         instance.save()
 
         return instance
-    
-class UserSerializer(serializers.ModelSerializer):
+
+class UpdateUserSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField(required=True)
+
+    profile = ProfileSerializer(write_only=True)
+
     class Meta:
         model = User
-        fields = '__all__'
+        fields = ('email', 'first_name', 'last_name', 'profile')
+        extra_kwargs = {
+            'first_name': {'required': True},
+            'last_name': {'required': True},
+        }
+
+    def validate_email(self, value):
+        user = self.context['request'].user
+        if User.objects.exclude(pk=user.pk).filter(email=value).exists():
+            raise serializers.ValidationError({"email": "This email is already in use."})
+        return value
+
+    def update(self, instance, validated_data):
+        profile_data = validated_data.pop('profile',{})
+
+        instance.email = validated_data['email']
+        instance.first_name = validated_data['first_name']
+        instance.last_name = validated_data['last_name']
+
+        instance.save()
+
+        for (key, value) in profile_data.items():
+            setattr(instance.profile, key, value)
+
+        instance.profile.save()
+
+        return instance
+
+
