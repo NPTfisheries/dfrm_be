@@ -8,9 +8,6 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from .models import User, Profile
 
-
-
-
 # view for registering users
 class RegistrationView(APIView):
     #permission_classes = (AllowAny,)
