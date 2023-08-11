@@ -82,22 +82,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = Profile
         fields = ('title', 'work_phone', 'mobile_phone', 'city', 'state', 'bio', 'photo')
 
-    # def update(self, instance, validated_data):
-    #     # get authenticated user
-    #     # user = self.context['request'].user
-    #     # # check if authenticated user is equal to the user instance being modified
-    #     # if user.pk != instance.pk:
-    #     #     raise serializers.ValidationError({"authorize": "You dont have permission for this user."})
-
-    #     # Update the Profile model instance with the values supplied in the request.
-    #     for field, value in validated_data.items():
-    #         setattr(instance, field, value)
-
-    #     instance.save()
-
-    #     return instance
-
-class UpdateUserSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     #email = serializers.EmailField(required=True)
     profile = ProfileSerializer(required=False)
 
