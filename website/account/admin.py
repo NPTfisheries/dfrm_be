@@ -9,11 +9,11 @@ class UserAdmin(UserAdmin):
     #add_form = CustomUserCreationForm
     #form = CustomUserChangeForm
     model = User
-    list_display = ("id", "last_name", "first_name", "email",)
+    list_display = ("id", "last_name", "first_name", "email", "role")
     ordering = ("last_name", "first_name",)
     fieldsets = (
         ('Personal info', {
-            'fields': ('first_name', 'last_name', 'email',)
+            'fields': ('first_name', 'last_name', 'email', 'role')
         }),
         ('Password', {
             'fields': ('password',)

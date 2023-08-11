@@ -11,7 +11,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ["email", "first_name", "last_name", "password", "password2"]
+        fields = ["email", "first_name", "last_name", "role", "password", "password2"]
 
     def validate(self, data):
         # Validate password confirmation
@@ -27,11 +27,15 @@ class RegistrationSerializer(serializers.ModelSerializer):
         user = User(
             email=validated_data['email'],
             first_name=validated_data['first_name'],
-            last_name=validated_data['last_name']
+            last_name=validated_data['last_name'],
+            role = validated_data['role']
         )
         password = validated_data['password']
         user.set_password(password)
         user.save()
+
+        # Signal to assign group based on role
+        #assign_group(User, user, created=True)
 
         return user
     
@@ -45,6 +49,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         data['first_name'] = self.user.first_name
         data['last_name'] = self.user.last_name
         data['email'] = self.user.email
+        data['role'] = self.user.role
         data['permissions'] = self.user.user_permissions.values_list('name', flat=True)
         data['groups'] = self.user.groups.values_list('name', flat=True)
         return data
@@ -88,7 +93,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('email', 'first_name', 'last_name', 'profile')
+        fields = ('email', 'first_name', 'last_name', 'role', 'profile')
         extra_kwargs = {
             'email': {'required': False},
             'first_name': {'required': False},

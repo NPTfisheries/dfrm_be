@@ -40,24 +40,35 @@ class UserManager(BaseUserManager):
     
 class User(AbstractUser):
 
-    # ROLE_CHOICES = (
-    #     (1, 'Admin'),
-    #     (2, 'Data-Editor'),
-    #     (3, 'Data-Access'),
-    #     (4, 'Read-Only')
-    # )
+    ROLE_CHOICES = (
+        (1, 'Admin'),
+        (2, 'Manager'),
+        (3, 'Professional'),
+        (4, 'Technician'),
+        (5, 'Guest')
+     )
+    
+    # CLASS_CHOICES = (
+    #     (9, 'Technician I'),
+    #     (11, 'Technicain II'),
+    #     (17, 'Professional I'),
+    #     (19, 'Professional II'),
+    #     (20, 'Professional III'),
+    #     (22, 'Professional V'),
+    #     (23, 'Manager I'),
+    #  )
 
     username = None
     first_name = models.CharField(max_length = 50)
     last_name = models.CharField(max_length = 50)
     email = models.EmailField(max_length=100, unique=True)
-    # class_description = models.()
-    #role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, blank=True, null=True)
+    role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, default = 2)
+    #class_description = models.PositiveSmallIntegerField(choices=CLASS_CHOICES)
     
     objects = UserManager()
     
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name']
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'role']
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
