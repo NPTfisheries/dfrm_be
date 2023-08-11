@@ -14,6 +14,8 @@ def assign_group(sender, instance, created, **kwargs):
     if created:
         if instance.role == 1:
             group = Group.objects.get(name='Admin')
+            instance.is_staff = True
+            instance.save()
         elif instance.role == 2:
             group = Group.objects.get(name='Manager')
         elif instance.role == 3:

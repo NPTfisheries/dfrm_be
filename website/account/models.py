@@ -22,6 +22,10 @@ class UserManager(BaseUserManager):
         validate_password(password)
 
         user = self.model(email=self.normalize_email(email), **extra_fields)
+
+        if user.role == 1:
+            user.is_staff = True
+
         user.set_password(password)
         user.save(using=self._db)
         return user
