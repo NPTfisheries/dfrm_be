@@ -29,22 +29,14 @@ class ChangePasswordView(generics.UpdateAPIView):
     serializer_class = ChangePasswordSerializer
 
 
-class UpdateUserView(generics.RetrieveUpdateAPIView):
+class UserView(generics.RetrieveUpdateAPIView):
 
-    queryset = User.objects.all()
-    permission_classes = (IsAdminUser,)
+    #queryset = User.objects.all()
+    permission_classes = (IsAuthenticated,)
     serializer_class = UpdateUserSerializer
 
-
-# class UpdateProfileView(generics.UpdateAPIView):
-#     queryset = Profile.objects.all()
-#     permission_classes = (IsAuthenticated,)
-#     serializer_class = ProfileSerializer
-
-# class UserRetrieveUpdateAPIView(RetrieveUpdateAPIView):
-#     queryset = User.objects.all()
-#     permission_classes = (IsAuthenticated,)
-#     serializer_class = UserSerializer
+    def get_object(self):
+        return self.request.user  
 
 # class UserList(generics.ListAPIView):
 #     queryset = User.objects.all()

@@ -111,6 +111,13 @@ class UpdateUserSerializer(serializers.ModelSerializer):
             'profile': {'required': False},
         }
 
+    def validate(self, attrs):
+        user = self.context['request'].user
+        instance = self.instance
+        if instance != user:
+            raise serializers.ValidationError("You can only update your own user information.")
+        return attrs
+    
     # def validate_email(self, value):
     #     user = self.context['request'].user
     #     if User.objects.exclude(pk=user.pk).filter(email=value).exists():
