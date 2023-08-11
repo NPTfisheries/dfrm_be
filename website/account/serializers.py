@@ -78,59 +78,58 @@ class ChangePasswordSerializer(serializers.ModelSerializer):
         return instance
     
 class ProfileSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Profile
         fields = ('title', 'work_phone', 'mobile_phone', 'city', 'state', 'bio', 'photo')
 
-    def update(self, instance, validated_data):
-        # get authenticated user
-        user = self.context['request'].user
-        # check if authenticated user is equal to the user instance being modified
-        if user.pk != instance.pk:
-            raise serializers.ValidationError({"authorize": "You dont have permission for this user."})
+    # def update(self, instance, validated_data):
+    #     # get authenticated user
+    #     # user = self.context['request'].user
+    #     # # check if authenticated user is equal to the user instance being modified
+    #     # if user.pk != instance.pk:
+    #     #     raise serializers.ValidationError({"authorize": "You dont have permission for this user."})
 
-        # Update the Profile model instance with the values supplied in the request.
-        for field, value in validated_data.items():
-            setattr(instance, field, value)
+    #     # Update the Profile model instance with the values supplied in the request.
+    #     for field, value in validated_data.items():
+    #         setattr(instance, field, value)
 
-        instance.save()
+    #     instance.save()
 
-        return instance
+    #     return instance
 
 class UpdateUserSerializer(serializers.ModelSerializer):
-    email = serializers.EmailField(required=True)
-
-    profile = ProfileSerializer(write_only=True)
+    #email = serializers.EmailField(required=True)
+    profile = ProfileSerializer(required=False)
 
     class Meta:
         model = User
         fields = ('email', 'first_name', 'last_name', 'profile')
         extra_kwargs = {
-            'first_name': {'required': True},
-            'last_name': {'required': True},
+            'email': {'required': False},
+            'first_name': {'required': False},
+            'last_name': {'required': False},
+            'profile': {'required': False},
         }
 
-    def validate_email(self, value):
-        user = self.context['request'].user
-        if User.objects.exclude(pk=user.pk).filter(email=value).exists():
-            raise serializers.ValidationError({"email": "This email is already in use."})
-        return value
+    # def validate_email(self, value):
+    #     user = self.context['request'].user
+    #     if User.objects.exclude(pk=user.pk).filter(email=value).exists():
+    #         raise serializers.ValidationError({"email": "This email is already in use."})
+    #     return value
 
     def update(self, instance, validated_data):
-        profile_data = validated_data.pop('profile',{})
 
-        instance.email = validated_data['email']
-        instance.first_name = validated_data['first_name']
-        instance.last_name = validated_data['last_name']
+        profile_data = validated_data.pop('profile',None)
 
+        for key, value in validated_data.items():
+            setattr(instance, key, value)
         instance.save()
 
-        for (key, value) in profile_data.items():
-            setattr(instance.profile, key, value)
-
-        instance.profile.save()
+        if profile_data is not None:
+            profile_instance = instance.profile
+            for key, value in profile_data.items():
+                print(key, value)
+                setattr(profile_instance, key, value)
+            profile_instance.save()
 
         return instance
-
-

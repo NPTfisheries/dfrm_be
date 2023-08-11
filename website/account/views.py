@@ -36,10 +36,10 @@ class UpdateUserView(generics.RetrieveUpdateAPIView):
     serializer_class = UpdateUserSerializer
 
 
-class UpdateProfileView(generics.UpdateAPIView):
-    queryset = Profile.objects.all()
-    permission_classes = (IsAuthenticated,)
-    serializer_class = ProfileSerializer
+# class UpdateProfileView(generics.UpdateAPIView):
+#     queryset = Profile.objects.all()
+#     permission_classes = (IsAuthenticated,)
+#     serializer_class = ProfileSerializer
 
 # class UserRetrieveUpdateAPIView(RetrieveUpdateAPIView):
 #     queryset = User.objects.all()

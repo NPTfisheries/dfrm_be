@@ -1,6 +1,5 @@
 #admin/serializers.py
 from rest_framework import serializers
-from account.serializers import UserSerializer
 from account.models import User
 from administration.models import Department, Division, Project, Subproject, Task
 
