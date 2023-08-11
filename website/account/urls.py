@@ -8,12 +8,18 @@ urlpatterns = [
     path('login/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('register/', RegistrationView.as_view(), name="sign_up"),
-    path('change_password/<int:pk>/', ChangePasswordView.as_view(), name="change_password"),
+    path('change_password/', ChangePasswordView.as_view(), name="change_password"),
     path('user/', UserView.as_view(), name="user"),
     path('users/', UserViewSet.as_view({'get':'list'}), name="user_list"),
     path('users/<int:pk>/', UserViewSet.as_view({'get':'retrieve'}), name="user_detail"),
     #path('update_profile/<int:pk>/', UpdateProfileView.as_view(), name="update_profile"),
 ]
+
+# 'register/' is AdminUser Only
+# login url are AllowAny
+
+# 'change_password/' requires authentication: allows PUT only for the authenticated user to change
+# their passwords
 
 # 'user/' requires authentication: allows: GET, PUT and accepts JSON with email, first_name, last_name, and profile; where
 # profile is nested object with profile model fields, pk is not needed because view and serializer

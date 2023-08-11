@@ -21,9 +21,12 @@ class MyTokenObtainPairView(TokenObtainPairView):
 
 class ChangePasswordView(generics.UpdateAPIView):
 
-    queryset = User.objects.all()
+    #queryset = User.objects.all()
     permission_classes = (IsAuthenticated,)
     serializer_class = ChangePasswordSerializer
+
+    def get_object(self):
+        return self.request.user  
 
 class UserView(generics.RetrieveUpdateAPIView):
     permission_classes = (IsAuthenticated,)
