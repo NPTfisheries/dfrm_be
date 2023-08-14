@@ -7,7 +7,7 @@ from PIL import Image
 class Image(BaseModel):
     photographer = models.CharField(max_length=50)
     source = models.CharField(max_length=100)
-    image = models.ImageField(upload_to="images/uploaded/", default='images/banner_default.JPG') #default='images/card_default.JPG'
+    image = models.ImageField(upload_to="images/uploaded/", default='images/default.JPG') #default='images/card_default.JPG'
 
     # def save(self, *args, **kwargs):
     #     super().save(*args, **kwargs)
