@@ -7,6 +7,7 @@ from ..initial_data import populate_groups
 class Migration(migrations.Migration):
 
     dependencies = [
+        ('sessions', '0001_initial')
     ]
 
     operations = [

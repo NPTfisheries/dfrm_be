@@ -101,11 +101,11 @@ def populate_groups(apps, schema_editor):
             print(f"App label: {app_label}")
             for model_name, permissions in model.items():
                 print(f"Model name: {model_name}")
-                content_type = ContentType.objects.get(app_label = app_label, model=model_name) #takes app_label and model
+                #content_type = ContentType.objects.get(app_label = app_label, model=model_name) #takes app_label and model
                 print(f"Permissions: {permissions}")
                 for permission in permissions:
                     print(f"Permission: {permission}")
                     codename = f"{permission}_{model_name}"
                     print(f"Codename is: {codename}")
-                    permission = Permission.objects.get(codename=codename, content_type=content_type) #codename = 'view_user' works
+                    permission = Permission.objects.get(codename=codename)#, content_type=content_type) #codename = 'view_user' works
                     group.permissions.add(permission)
