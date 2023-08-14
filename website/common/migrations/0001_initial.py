@@ -7,7 +7,6 @@ from ..initial_data import populate_groups
 class Migration(migrations.Migration):
 
     dependencies = [
-       migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
