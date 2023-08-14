@@ -9,8 +9,8 @@ class BaseAdminModel(models.Model):
         abstract = True
     manager = models.ForeignKey(User, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_manager")
     deputy = models.ForeignKey(User, null = True, blank = True, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_deputy")
-    assistant = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_assist")
-    staff = models.ManyToManyField(User, related_name="%(app_label)s_%(class)s_staff")
+    assistant = models.ForeignKey(User, blank=True, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_assist")
+    staff = models.ManyToManyField(User, blank=True,  related_name="%(app_label)s_%(class)s_staff")
 
 class ImageFieldsModel(models.Model):
     class Meta:
