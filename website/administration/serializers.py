@@ -2,8 +2,17 @@
 from rest_framework import serializers
 from common.serializers import BaseModelSerializer
 from account.serializers import UserSerializer
+from files.serializers import ImageSerializer
 from account.models import User
 from administration.models import Department, Division, Project, Subproject, Task
+
+
+class BaseImageSerializer(serializers.ModelSerializer):
+    def to_representation(self, instance):
+        return super().to_representation(instance)
+
+
+
 
 class BaseAdminSerializer(BaseModelSerializer):
 
@@ -15,7 +24,9 @@ class BaseAdminSerializer(BaseModelSerializer):
                 'manager': UserSerializer(instance.manager).data,
                 'deputy': UserSerializer(instance.deputy).data,
                 'assistant': UserSerializer(instance.assistant).data,
-                'staff': UserSerializer(instance.staff.all(), many=True).data
+                'staff': UserSerializer(instance.staff.all(), many=True).data,
+                'img_banner': ImageSerializer(instance.img_banner).data,
+                'img_card': ImageSerializer(instance.img_card).data
             }
         return super().to_representation(instance)
 
@@ -43,14 +54,16 @@ class ProjectSerializer(BaseModelSerializer):
     project_leader = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), many=True)
     class Meta:
         model = Project
-        fields = ['id', 'slug', 'name', 'description', 'project_leader', 'img_banner', 'img_card']
+        fields = ['id', 'department', 'slug', 'name', 'description', 'project_leader', 'img_banner', 'img_card']
 
     def to_representation(self, instance):
         # Override the 'user' field representation for GET requests
         if self.context['request'].method == 'GET':
             return {
                 **super().to_representation(instance),
-                'project_leader': UserSerializer(instance.project_leader.all(), many=True).data
+                'project_leader': UserSerializer(instance.project_leader.all(), many=True).data,
+                'img_banner': ImageSerializer(instance.img_banner).data,
+                'img_card': ImageSerializer(instance.img_card).data
             }
         return super().to_representation(instance)
 
@@ -70,7 +83,9 @@ class SubprojectSerializer(BaseModelSerializer):
         if self.context['request'].method == 'GET':
             return {
                 **super().to_representation(instance),
-                'lead': UserSerializer(instance.lead).data
+                'lead': UserSerializer(instance.lead).data,
+                'img_banner': ImageSerializer(instance.img_banner).data,
+                'img_card': ImageSerializer(instance.img_card).data
             }
         return super().to_representation(instance)  
 
@@ -84,6 +99,8 @@ class TaskSerializer(BaseModelSerializer):
         if self.context['request'].method == 'GET':
             return {
                 **super().to_representation(instance),
-                'supervisor': UserSerializer(instance.supervisor).data
+                'supervisor': UserSerializer(instance.supervisor).data,
+                'img_banner': ImageSerializer(instance.img_banner).data,
+                'img_card': ImageSerializer(instance.img_card).data
             }
         return super().to_representation(instance)   

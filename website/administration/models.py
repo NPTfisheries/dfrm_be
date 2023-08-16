@@ -26,6 +26,7 @@ class Division(BaseModel, BaseAdminModel, ImageFieldsModel):
     department = models.ForeignKey(Department, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_department")
 
 class Project(BaseModel, ImageFieldsModel):
+    department = models.ForeignKey(Department, default = 1, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_department")
     project_leader = models.ManyToManyField(User, related_name="%(app_label)s_%(class)s_projct_leads")
 
 class Subproject(BaseModel, ImageFieldsModel):

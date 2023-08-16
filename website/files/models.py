@@ -6,6 +6,7 @@ from PIL import Image
 
 class Image(BaseModel):
     photographer = models.CharField(max_length=50)
+    date = models.DateField()
     source = models.CharField(max_length=100)
     image = models.ImageField(upload_to="images/uploaded/", default='images/default.JPG') #default='images/card_default.JPG'
 
