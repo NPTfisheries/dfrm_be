@@ -8,4 +8,4 @@ from common.serializers import BaseModelSerializer
 class ImageSerializer(BaseModelSerializer):
     class Meta:
         model = Image
-        fields = ['id', 'slug', 'name', 'description', 'photographer', 'date', 'source', 'image']
+        fields = ['id', 'slug', 'name', 'description', 'photographer', 'photo_date', 'source', 'image']
