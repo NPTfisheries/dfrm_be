@@ -50,8 +50,6 @@ class DepartmentSerializer(BaseAdminSerializer):
         fields = ['id', 'slug', 'name', 'description', 'manager', 'deputy', 'assistant', 'staff', 'img_banner', 'img_card']
 
 
-
-
 class DivisionSerializer(BaseAdminSerializer):
     class Meta:
         model = Division
