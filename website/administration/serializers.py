@@ -35,14 +35,20 @@ class BaseAdminSerializer(BaseModelSerializer):
         instance = super().create(validated_data)
         instance.staff.set(ids)
         instance.save()
-        return instance  
+        return instance
 
+    def update(self, instance, validated_data):
+        ids = validated_data.pop('staff')
+        instance = super().update(instance, validated_data)
+        instance.staff.set(ids)
+        instance.save()
+        return instance
 
 class DepartmentSerializer(BaseAdminSerializer):
     class Meta:
         model = Department
         fields = ['id', 'slug', 'name', 'description', 'manager', 'deputy', 'assistant', 'staff', 'img_banner', 'img_card']
-        
+
 
 class DivisionSerializer(BaseAdminSerializer):
     class Meta:
@@ -72,6 +78,14 @@ class ProjectSerializer(BaseModelSerializer):
         instance = super().create(validated_data)
         instance.project_leader.set(ids)
         return instance
+
+    def update(self, instance, validated_data):
+        ids = validated_data.pop('project_leader')
+        instance = super().update(instance, validated_data)
+        instance.project_leader.set(ids)
+        instance.save()
+        return instance
+
     
 class SubprojectSerializer(BaseModelSerializer):
     class Meta:
