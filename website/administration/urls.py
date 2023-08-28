@@ -26,4 +26,5 @@ urlpatterns = [
 #'department/slug/' update
 #'department/slug/' delete
 
+# /subproject/?project_id=<project_id> for subprojects for provided <project_id>
 
