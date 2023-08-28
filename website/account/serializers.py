@@ -87,6 +87,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = Profile
         fields = ('title', 'work_phone', 'mobile_phone', 'city', 'state', 'bio', 'photo')
 
+
 class UserSerializer(serializers.ModelSerializer):
     #email = serializers.EmailField(required=True)
     profile = ProfileSerializer(required=False)

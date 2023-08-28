@@ -1,10 +1,10 @@
 from rest_framework import status, generics, mixins, viewsets
 from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView
-from .serializers import RegistrationSerializer, MyTokenObtainPairSerializer, ChangePasswordSerializer, UserSerializer
+from .serializers import RegistrationSerializer, MyTokenObtainPairSerializer, ChangePasswordSerializer, UserSerializer, ProfileSerializer
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
-from .models import User
+from .models import User, Profile
 
 # view for registering users
 class RegistrationView(APIView):
@@ -44,3 +44,16 @@ class UserViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.Gen
         if self.action in ['list', 'retrieve']:
             return [AllowAny()]
         return super().get_permissions()
+
+class UpdateProfileView(generics.UpdateAPIView):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user.profile
+
+    def perform_update(self, serializer):
+        if self.request.user != self.get_object().user:
+            raise serializers.ValidationError("You can only update your own profile.")
+        serializer.save()

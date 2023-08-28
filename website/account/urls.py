@@ -1,6 +1,6 @@
 from django.urls import path
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from .views import RegistrationView, MyTokenObtainPairView, ChangePasswordView, UserView, UserViewSet
+from .views import RegistrationView, MyTokenObtainPairView, ChangePasswordView, UserView, UserViewSet, UpdateProfileView
 
 app_name = 'account'
 
@@ -12,7 +12,7 @@ urlpatterns = [
     path('user/', UserView.as_view(), name="user"),
     path('users/', UserViewSet.as_view({'get':'list'}), name="user_list"),
     path('users/<int:pk>/', UserViewSet.as_view({'get':'retrieve'}), name="user_detail"),
-    #path('update_profile/<int:pk>/', UpdateProfileView.as_view(), name="update_profile"),
+    path('profile/', UpdateProfileView.as_view(), name="update_profile"),
 ]
 
 # 'register/' is AdminUser Only
