@@ -1,10 +1,11 @@
 #administration/serializers.py
 from rest_framework import serializers
+from rest_framework_gis.serializers import GeoFeatureModelSerializer
 from common.serializers import BaseModelSerializer
 from account.serializers import UserSerializer
 from files.serializers import ImageSerializer
 from account.models import User
-from administration.models import Department, Division, Project, Subproject, Task
+from administration.models import Department, Division, Project, Subproject, Task, Facility
 
 
 class BaseImageSerializer(serializers.ModelSerializer):
@@ -118,3 +119,40 @@ class TaskSerializer(BaseModelSerializer):
                 'img_card': ImageSerializer(instance.img_card).data
             }
         return super().to_representation(instance)   
+
+class FacilitySerializer(BaseModelSerializer, GeoFeatureModelSerializer):
+    #manager = UserSerializer()
+    #deputy = UserSerializer()
+    #assistant = UserSerializer()
+    #staff = UserSerializer(many=True)
+    
+    class Meta:
+        model = Facility
+        fields = ['id', 'slug', 'name', 'description', 'manager', 'deputy', 'assistant', 'staff', 'img_banner', 'img_card', 'phone_number', 'street_address', 'mailing_address', 'city', 'state', 'zipcode']
+        geo_field = 'coordinates'
+
+    def to_representation(self, instance):
+        if self.context['request'].method == 'GET':   
+            representation = super().to_representation(instance)
+            representation['properties']['manager']= UserSerializer(instance.manager).data
+            representation['properties']['deputy']= UserSerializer(instance.deputy).data
+            representation['properties']['assistant']= UserSerializer(instance.assistant).data
+            representation['properties']['staff']= UserSerializer(instance.staff, many=True).data
+            return representation
+
+    def create(self, validated_data):
+        staff_ids = validated_data.pop('staff', [])
+        instance = super().create(validated_data)
+        print(f'DEBUG update staff_ids: {staff_ids}')
+        if staff_ids:
+            instance.staff.set(staff_ids)
+        instance.save()
+        return instance
+
+    def update(self, instance, validated_data):
+        staff_ids = validated_data.pop('staff', [])
+        instance = super().update(instance, validated_data)
+        if staff_ids:
+            instance.staff.set(staff_ids)
+        instance.save()
+        return instance

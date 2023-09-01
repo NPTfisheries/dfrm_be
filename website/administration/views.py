@@ -3,8 +3,8 @@ from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly, DjangoModelPermissionsOrAnonReadOnly
-from administration.models import Department, Division, Project, Subproject, Task
-from administration.serializers import DepartmentSerializer, DivisionSerializer, ProjectSerializer, SubprojectSerializer, TaskSerializer
+from administration.models import Department, Division, Project, Subproject, Task, Facility
+from administration.serializers import DepartmentSerializer, DivisionSerializer, ProjectSerializer, SubprojectSerializer, TaskSerializer, FacilitySerializer
 
 from django.shortcuts import get_object_or_404
 
@@ -55,3 +55,9 @@ class TaskViewSet(viewsets.ModelViewSet):
             return Task.objects.filter(subproject=subproject)
         else:
             return Task.objects.all();
+
+class FacilityViewSet(viewsets.ModelViewSet):
+    queryset = Facility.objects.all()
+    serializer_class = FacilitySerializer
+    lookup_field = 'slug'
+    permission_classes = [DjangoModelPermissionsOrAnonReadOnly]

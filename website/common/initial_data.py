@@ -107,6 +107,6 @@ def populate_groups(apps, schema_editor):
                     print(f"Permission: {permission}")
                     codename = f"{permission}_{model_name}"
                     print(f"Codename is: {codename}")
-                    permission = Permission.objects.get(codename=codename)#, content_type=content_type) #codename = 'view_user' works
-                    # permission, created = Permission.objects.get_or_create(codename=codename, content_type = content_type)
+                    #permission = Permission.objects.get(codename=codename)#, content_type=content_type) #codename = 'view_user' works
+                    permission, created = Permission.objects.get_or_create(codename=codename)#, content_type = content_type)
                     group.permissions.add(permission)

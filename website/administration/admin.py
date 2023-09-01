@@ -1,5 +1,5 @@
-from django.contrib import admin
-from administration.models import Department, Division, Project, Subproject, Task
+from django.contrib.gis import admin
+from administration.models import Department, Division, Project, Subproject, Task, Facility
 # Register your models here.
 
 @admin.register(Department)
@@ -21,3 +21,7 @@ class SubprojectAdmin(admin.ModelAdmin):
 @admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'slug', 'subproject', 'supervisor', 'created_at', 'updated_at')
+
+@admin.register(Facility)
+class FacilityAdmin(admin.OSMGeoAdmin):
+    list_display = ('id', 'name', 'coordinates')

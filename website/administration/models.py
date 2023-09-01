@@ -1,7 +1,8 @@
-from django.db import models
+from django.contrib.gis.db import models
 from common.models import BaseModel
 from account.models import User
 from files.models import Image
+from phonenumber_field.modelfields import PhoneNumberField
 
 # abstract classes
 class BaseAdminModel(models.Model):
@@ -9,7 +10,7 @@ class BaseAdminModel(models.Model):
         abstract = True
     manager = models.ForeignKey(User, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_manager")
     deputy = models.ForeignKey(User, null = True, blank = True, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_deputy")
-    assistant = models.ForeignKey(User, blank=True, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_assist")
+    assistant = models.ForeignKey(User, null = True, blank=True, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_assist")
     staff = models.ManyToManyField(User, blank=True,  related_name="%(app_label)s_%(class)s_staff")
 
 class ImageFieldsModel(models.Model):
@@ -36,3 +37,16 @@ class Subproject(BaseModel, ImageFieldsModel):
 class Task(BaseModel, ImageFieldsModel):
     subproject = models.ForeignKey(Subproject, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_subprojects")
     supervisor = models.ForeignKey(User, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_supervisor")
+
+# model classes
+class Facility(BaseModel, BaseAdminModel, ImageFieldsModel):
+    phone_number = PhoneNumberField(blank = True)
+    street_address = models.CharField("Street Address", max_length=100)
+    mailing_address = models.CharField("Mailing Address", null = True, blank = True, max_length=100)
+    city = models.CharField("City", max_length=50)
+    state = models.CharField("State", max_length=50)
+    zipcode = models.CharField("Zip Code", max_length=5)
+    coordinates = models.PointField()
+    class Meta:
+        verbose_name = 'Facility'
+        verbose_name_plural = 'Facilities'
