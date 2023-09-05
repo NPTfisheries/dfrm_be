@@ -47,9 +47,10 @@ class User(AbstractUser):
     ROLE_CHOICES = (
         (1, 'Admin'),
         (2, 'Manager'),
-        (3, 'Professional'),
-        (4, 'Technician'),
-        (5, 'Guest')
+        (3, 'Project_leader'),
+        (4, 'Professional'),
+        (5, 'Technician'),
+        (6, 'Guest')
      )
     
     # CLASS_CHOICES = (

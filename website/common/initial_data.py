@@ -4,7 +4,7 @@ from django.contrib.contenttypes.models import ContentType
 
 def populate_groups(apps, schema_editor):
 
-    user_roles = ["Admin", "Manager", "Professional", "Technician", "Guest"]
+    user_roles = ["Admin", "Manager", "Project_leader", "Professional", "Technician", "Guest"]
     for role_name in user_roles:
         group, created = Group.objects.get_or_create(name=role_name)
 
@@ -43,7 +43,7 @@ def populate_groups(apps, schema_editor):
                 'image':["view","add","change"]
             }
         },
-        "Professional":{
+        "Project_leader":{
             'account':{
                 'user':["view","change"],
                 'profile':["view", "change"]
@@ -54,6 +54,22 @@ def populate_groups(apps, schema_editor):
                 'project':["view","add","change"],
                 'subproject':["view","add","change"],
                 'task':["view","add","change"],
+            },
+            'files':{
+                'image':["view", "add", "change"]
+            }
+        },
+        "Professional":{
+            'account':{
+                'user':["view","change"],
+                'profile':["view", "change"]
+            },
+            'administration':{
+                'department':["view"],
+                'division':["view"],
+                'project':["view", "change"],
+                'subproject':["view", "change"],
+                'task':["view", "change"],
             },
             'files':{
                 'image':["view"]
