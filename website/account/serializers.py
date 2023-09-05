@@ -1,9 +1,10 @@
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
+from guardian.shortcuts import get_objects_for_user
 from django.contrib.auth.password_validation import validate_password
 from .models import User, Profile
-
+from administration.models import Project
 
 class RegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
@@ -50,8 +51,19 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         data['last_name'] = self.user.last_name
         data['email'] = self.user.email
         data['role'] = self.user.role
-        data['permissions'] = self.user.user_permissions.values_list('name', flat=True)
+        #data['permissions'] = list(self.user.get_all_permissions())#self.user.user_permissions.values_list('name', flat=True)
         data['groups'] = self.user.groups.values_list('name', flat=True)
+
+        # Get objects for which the user has specific permissions
+        user_proj = get_objects_for_user(self.user, 'administration.change_project', accept_global_perms = False)  # Change 'change_permission' to the specific permission you want to check
+        data['project_objects'] = [str(obj.id) for obj in user_proj]
+
+        user_subproj = get_objects_for_user(self.user, 'administration.change_subproject', accept_global_perms = False)  # Change 'change_permission' to the specific permission you want to check
+        data['subproject_objects'] = [str(obj.id) for obj in user_subproj]
+
+        user_task = get_objects_for_user(self.user, 'administration.change_task', accept_global_perms = False)  # Change 'change_permission' to the specific permission you want to check
+        data['task_objects'] = [str(obj.id) for obj in user_task]
+
         return data
 
 class ChangePasswordSerializer(serializers.ModelSerializer):

@@ -45,11 +45,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.gis',
-
     'rest_framework',
     'rest_framework_gis',
     'rest_framework_simplejwt',
+
+    # 3rd party dependencies
     'phonenumber_field',
+    'guardian',
 
     'common',
     'account',
@@ -154,6 +156,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = "account.User"
+
+AUTHENTICATION_BACKENDS = [
+  'django.contrib.auth.backends.ModelBackend',
+  'guardian.backends.ObjectPermissionBackend',
+]
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (

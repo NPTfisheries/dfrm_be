@@ -1,10 +1,12 @@
 #administration/serializers.py
-from rest_framework import serializers
+from rest_framework import serializers, permissions
 from rest_framework_gis.serializers import GeoFeatureModelSerializer
+from guardian.shortcuts import assign_perm
 from common.serializers import BaseModelSerializer
 from account.serializers import UserSerializer
 from files.serializers import ImageSerializer
 from account.models import User
+from django.contrib.auth.models import Permission
 from administration.models import Department, Division, Project, Subproject, Task, Facility
 
 
@@ -75,8 +77,15 @@ class ProjectSerializer(BaseModelSerializer):
         return super().to_representation(instance)
 
     def create(self, validated_data):
+        user = self.context['request'].user
         ids = validated_data.pop('project_leader')
         instance = super().create(validated_data)
+        perm = Permission.objects.get(codename='change_project')
+        assign_perm(perm, user, instance)
+        print(f'Permission: {perm}')
+        for id in ids:
+            print(f'DEBUG: Id: {id}')
+            assign_perm(perm, id, instance)
         instance.project_leader.set(ids)
         return instance
 
@@ -102,7 +111,15 @@ class SubprojectSerializer(BaseModelSerializer):
                 'img_banner': ImageSerializer(instance.img_banner).data,
                 'img_card': ImageSerializer(instance.img_card).data
             }
-        return super().to_representation(instance)  
+        return super().to_representation(instance)
+
+    def create(self, validated_data):
+        user = self.context['request'].user
+        instance = super().create(validated_data)
+        perm = Permission.objects.get(codename='change_subproject')
+        assign_perm(perm, user, instance)
+        assign_perm(perm, instance.lead, instance)
+        return instance  
 
 class TaskSerializer(BaseModelSerializer):
     class Meta:
@@ -118,7 +135,15 @@ class TaskSerializer(BaseModelSerializer):
                 'img_banner': ImageSerializer(instance.img_banner).data,
                 'img_card': ImageSerializer(instance.img_card).data
             }
-        return super().to_representation(instance)   
+        return super().to_representation(instance)
+
+    def create(self, validated_data):
+        user = self.context['request'].user
+        instance = super().create(validated_data)
+        perm = Permission.objects.get(codename='change_task')
+        assign_perm(perm, user, instance)
+        assign_perm(perm, instance.supervisor, instance)
+        return instance   
 
 class FacilitySerializer(BaseModelSerializer, GeoFeatureModelSerializer):
     #manager = UserSerializer()
