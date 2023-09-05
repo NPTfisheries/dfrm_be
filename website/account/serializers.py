@@ -51,7 +51,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         data['last_name'] = self.user.last_name
         data['email'] = self.user.email
         data['role'] = self.user.role
-        #data['permissions'] = list(self.user.get_all_permissions())#self.user.user_permissions.values_list('name', flat=True)
+        data['permissions'] = list(self.user.get_all_permissions())#self.user.user_permissions.values_list('name', flat=True)
         data['groups'] = self.user.groups.values_list('name', flat=True)
 
         # Get objects for which the user has specific permissions

@@ -19,8 +19,10 @@ def assign_group(sender, instance, created, **kwargs):
         elif instance.role == 2:
             group = Group.objects.get(name='Manager')
         elif instance.role == 3:
-            group = Group.objects.get(name='Professional')
+            group = Group.objects.get(name='Project_leader')
         elif instance.role == 4:
+            group = Group.objects.get(name="Professional")
+        elif instance.role == 5:
             group = Group.objects.get(name='Technician')
         else:
             group = Group.objects.get(name='Guest')

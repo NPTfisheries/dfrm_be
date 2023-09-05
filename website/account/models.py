@@ -67,7 +67,7 @@ class User(AbstractUser):
     first_name = models.CharField(max_length = 50)
     last_name = models.CharField(max_length = 50)
     email = models.EmailField(max_length=100, unique=True)
-    role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, default = 2)
+    role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, default = 5)
     #class_description = models.PositiveSmallIntegerField(choices=CLASS_CHOICES)
     
     objects = UserManager()

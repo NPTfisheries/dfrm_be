@@ -33,8 +33,8 @@ def populate_groups(apps, schema_editor):
                 'profile':["view", "change"]
             },
             'administration':{
-                'department':["view","add","change"],
-                'division':["view","add","change"],
+                'department':["view", "change"],
+                'division':["view", "change"],
                 'project':["view","add","change"],
                 'subproject':["view","add","change"],
                 'task':["view","add","change"],
