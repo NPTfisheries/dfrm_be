@@ -1,7 +1,7 @@
 # dfrm_be
 Set-up instructions for DFRM backend django ORM services.
 
-1. Install Postgresql 14 (or diff version)
+1. Install Postgresql 15.4 (or diff version)
 	a. use postgresql stack to install PostGIS
 2. Install QGIS 3.28 (or diff version)
 3. Install git
