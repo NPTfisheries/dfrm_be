@@ -66,6 +66,26 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
         return data
 
+class ObjectPermissionsSerializer(serializers.Serializer):
+    project_objects = serializers.ListField()
+    subproject_objects = serializers.ListField()
+    task_objects = serializers.ListField()
+
+    def get_permissions(self, user):
+        permissions = {}
+        
+        # Get objects for which the user has specific permissions
+        user_proj = get_objects_for_user(user, 'administration.change_project', accept_global_perms=False)
+        permissions['project_objects'] = [str(obj.id) for obj in user_proj]
+
+        user_subproj = get_objects_for_user(user, 'administration.change_subproject', accept_global_perms=False)
+        permissions['subproject_objects'] = [str(obj.id) for obj in user_subproj]
+
+        user_task = get_objects_for_user(user, 'administration.change_task', accept_global_perms=False)
+        permissions['task_objects'] = [str(obj.id) for obj in user_task]
+
+        return permissions
+
 class ChangePasswordSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
     password2 = serializers.CharField(write_only=True, required=True)
