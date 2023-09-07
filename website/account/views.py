@@ -1,7 +1,7 @@
 from rest_framework import status, generics, mixins, viewsets
 from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView
-from .serializers import RegistrationSerializer, MyTokenObtainPairSerializer, ChangePasswordSerializer, UserSerializer, ProfileSerializer
+from .serializers import RegistrationSerializer, MyTokenObtainPairSerializer, ChangePasswordSerializer, UserSerializer, ProfileSerializer, ObjectPermissionsSerializer
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from .models import User, Profile
@@ -57,3 +57,17 @@ class UpdateProfileView(generics.UpdateAPIView):
         if self.request.user != self.get_object().user:
             raise serializers.ValidationError("You can only update your own profile.")
         serializer.save()
+
+class ObjectPermissionsView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+
+        serializer = ObjectPermissionsSerializer()
+        permissions = serializer.get_permissions(user)
+        
+        if permissions:
+            return Response(permissions, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
