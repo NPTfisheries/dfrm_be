@@ -9,5 +9,5 @@ from files.serializers import ImageSerializer
 class ImageViewSet(viewsets.ModelViewSet):
     queryset = Image.objects.all()
     serializer_class = ImageSerializer
-    lookup_field = 'slug'
+    # lookup_field = 'slug'
     permission_classes = [DjangoModelPermissionsOrAnonReadOnly]
