@@ -48,6 +48,15 @@ class UserViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.Gen
             return [AllowAny()]
         return super().get_permissions()
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        
+        # Filter out the specific user by their username
+        # AnonymousUser.id:1 // we don't want this in user lists
+        queryset = queryset.exclude(id=1)
+        
+        return queryset
+
 class UpdateProfileView(generics.UpdateAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
