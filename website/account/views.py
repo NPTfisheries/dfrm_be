@@ -6,6 +6,9 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from .models import User, Profile
 
+from django.core.files.storage import default_storage
+
+
 # view for registering users
 class RegistrationView(APIView):
     permission_classes = (IsAdminUser,)
@@ -69,6 +72,12 @@ class UpdateProfilePhotoView(generics.UpdateAPIView):
     def perform_update(self, serializer):
         if self.request.user != self.get_object().user:
             raise serializers.ValidationError("You can only update your own profile photo.")
+
+        existing_photo = self.get_object().photo
+        if existing_photo.name != 'profile_default.JPG':
+            # Delete the existing photo if not the default. Prevent clutter.
+            default_storage.delete(existing_photo.name)
+
         serializer.save()
 
 class ObjectPermissionsView(APIView):
