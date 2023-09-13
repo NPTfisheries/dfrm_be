@@ -40,6 +40,14 @@ class Task(BaseModel, ImageFieldsModel):
 
 # model classes
 class Facility(BaseModel, BaseAdminModel, ImageFieldsModel):
+
+    FACILITY_TYPE = (
+        ('Office', 'Office'),
+        ('Hatchery', 'Hatchery'),
+        ('Other', 'Other'),
+     )
+
+    facility_type = models.CharField(choices= FACILITY_TYPE)
     phone_number = PhoneNumberField(blank = True)
     street_address = models.CharField("Street Address", max_length=100)
     mailing_address = models.CharField("Mailing Address", null = True, blank = True, max_length=100)

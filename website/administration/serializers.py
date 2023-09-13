@@ -149,7 +149,7 @@ class FacilitySerializer(BaseModelSerializer, GeoFeatureModelSerializer):
    
     class Meta:
         model = Facility
-        fields = ['id', 'slug', 'name', 'description', 'manager', 'deputy', 'assistant', 'staff', 'img_banner', 'img_card', 'phone_number', 'street_address', 'mailing_address', 'city', 'state', 'zipcode']
+        fields = ['id', 'slug', 'name', 'description', 'manager', 'deputy', 'assistant', 'staff', 'img_banner', 'img_card', 'facility_type', 'phone_number', 'street_address', 'mailing_address', 'city', 'state', 'zipcode']
         geo_field = 'coordinates'
 
     def to_representation(self, instance):
@@ -158,7 +158,9 @@ class FacilitySerializer(BaseModelSerializer, GeoFeatureModelSerializer):
             representation['properties']['manager']= UserSerializer(instance.manager).data
             representation['properties']['deputy']= UserSerializer(instance.deputy).data
             representation['properties']['assistant']= UserSerializer(instance.assistant).data
-            representation['properties']['staff']= UserSerializer(instance.staff.all(), many=True).data
+            representation['properties']['staff']= UserSerializer(instance.staff.all(), many=True).data,
+            representation['properties']['img_banner']= ImageSerializer(instance.img_banner).data,
+            representation['properties']['img_card']= ImageSerializer(instance.img_card).data
             return representation
         return super().to_representation(instance)
 
