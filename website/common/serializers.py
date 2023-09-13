@@ -1,7 +1,5 @@
 #common/serializers.py
 from rest_framework import serializers
-from .models import ObjectLookUp
-
 
 class MetaModelSerializer(serializers.ModelSerializer):
     class Meta:
@@ -47,9 +45,3 @@ class BaseModelSerializer(serializers.ModelSerializer):
             if self.Meta.model.objects.filter(name=value).exists():
                 raise serializers.ValidationError("A model object with this name already exists.")
         return value
-
-
-class ObjectLookUp(MetaModelSerializer):
-    class Meta:
-        model = ObjectLookUp
-        fields = ['id', 'object_type', 'name']

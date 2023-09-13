@@ -7,7 +7,7 @@ from account.serializers import UserSerializer
 from files.serializers import ImageSerializer
 from account.models import User
 from django.contrib.auth.models import Permission
-from administration.models import Department, Division, Project, Subproject, Task, Facility
+from administration.models import Department, Division, Project, Subproject, ObjectLookUp, Task, Facility
 
 
 class BaseImageSerializer(serializers.ModelSerializer):
@@ -116,6 +116,11 @@ class SubprojectSerializer(BaseModelSerializer):
         assign_perm(perm, user, instance)
         assign_perm(perm, instance.lead, instance)
         return instance  
+
+class ObjectLookUp(MetaModelSerializer):
+    class Meta:
+        model = ObjectLookUp
+        fields = ['id', 'object_type', 'name']
 
 class TaskSerializer(MetaModelSerializer):
     class Meta:

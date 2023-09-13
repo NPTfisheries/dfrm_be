@@ -24,9 +24,9 @@ def populate_groups(apps, schema_editor):
                 'task':["view","add","change","delete"],
                 'facility':["view", "add", "change","delete"],
             },
-            'common':{
-                'object_look_up':["view","add","change","delete"],
-            },
+            # 'common':{
+            #     'objectlookup':["view","add","change","delete"],
+            # },
             'files':{
                 'image':["view","add","change","delete"]
             }
@@ -127,6 +127,7 @@ def populate_groups(apps, schema_editor):
             for model_name, permissions in model.items():
                 print(f"Model name: {model_name}")
                 #content_type = ContentType.objects.get(app_label = app_label, model=model_name) #takes app_label and model
+                #print(f"Content type: {content_type}")
                 print(f"Permissions: {permissions}")
                 for permission in permissions:
                     print(f"Permission: {permission}")

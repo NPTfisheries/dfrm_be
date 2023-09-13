@@ -26,5 +26,4 @@ def assign_group(sender, instance, created, **kwargs):
             group = Group.objects.get(name='Technician')
         else:
             group = Group.objects.get(name='Guest')
-        
         instance.groups.add(group)

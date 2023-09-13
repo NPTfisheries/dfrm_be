@@ -30,13 +30,3 @@ class BaseModel(MetaModel):
 
     def __str__(self):
         return self.name
-    
-class ObjectLookUp(MetaModel):
-
-    OBJECT_TYPE = (
-        ('Task', 'Task'),
-        ('Facility', 'Facility'),
-    )
-
-    object_type = models.CharField(choices = OBJECT_TYPE)
-    name = models.CharField(max_length=300, unique=True)

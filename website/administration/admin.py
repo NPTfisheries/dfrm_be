@@ -19,6 +19,10 @@ class ProjectAdmin(GuardedModelAdmin):
 class SubprojectAdmin(GuardedModelAdmin):
     list_display = ('id', 'name', 'slug', 'lead', 'project', 'created_at', 'updated_at', 'is_active')
 
+@admin.register(ObjectLookUp)
+class ObjectLookUpAdmin(admin.ModelAdmin):
+    list_display = ('id', 'object_type', 'name', 'created_at', 'updated_at', 'is_active')
+
 @admin.register(Task)
 class TaskAdmin(GuardedModelAdmin):
     list_display = ('id', 'task_type', 'subproject', 'supervisor', 'created_at', 'updated_at', 'is_active')
