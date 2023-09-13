@@ -146,11 +146,7 @@ class TaskSerializer(BaseModelSerializer):
         return instance   
 
 class FacilitySerializer(BaseModelSerializer, GeoFeatureModelSerializer):
-    #manager = UserSerializer()
-    #deputy = UserSerializer()
-    #assistant = UserSerializer()
-    #staff = UserSerializer(many=True)
-    
+   
     class Meta:
         model = Facility
         fields = ['id', 'slug', 'name', 'description', 'manager', 'deputy', 'assistant', 'staff', 'img_banner', 'img_card', 'phone_number', 'street_address', 'mailing_address', 'city', 'state', 'zipcode']
@@ -162,22 +158,27 @@ class FacilitySerializer(BaseModelSerializer, GeoFeatureModelSerializer):
             representation['properties']['manager']= UserSerializer(instance.manager).data
             representation['properties']['deputy']= UserSerializer(instance.deputy).data
             representation['properties']['assistant']= UserSerializer(instance.assistant).data
-            representation['properties']['staff']= UserSerializer(instance.staff, many=True).data
+            representation['properties']['staff']= UserSerializer(instance.staff.all(), many=True).data
             return representation
+        return super().to_representation(instance)
 
     def create(self, validated_data):
-        staff_ids = validated_data.pop('staff', [])
+        staff_ids = validated_data.pop('staff')
         instance = super().create(validated_data)
+        print(f'DEBUG: Facility name: {instance.name}')
         print(f'DEBUG update staff_ids: {staff_ids}')
-        if staff_ids:
-            instance.staff.set(staff_ids)
+        print(f'DEBUG: {instance}')
+        instance.staff.set(staff_ids)
+        #if staff_ids:
+        #    instance.staff.set(staff_ids)
         instance.save()
         return instance
 
     def update(self, instance, validated_data):
         staff_ids = validated_data.pop('staff', [])
         instance = super().update(instance, validated_data)
-        if staff_ids:
-            instance.staff.set(staff_ids)
+        instance.staff.set(staff_ids)
+        # if staff_ids:
+        #     instance.staff.set(staff_ids)
         instance.save()
         return instance

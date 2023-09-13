@@ -99,3 +99,10 @@ class FacilityViewSet(viewsets.ModelViewSet):
     serializer_class = FacilitySerializer
     lookup_field = 'slug'
     permission_classes = [permissions.DjangoModelPermissionsOrAnonReadOnly]
+
+    def create(self, request, *args, **kwargs):
+        # Print the request data
+        print(request.data)
+
+        # Continue with the regular create method
+        return super().create(request, *args, **kwargs)

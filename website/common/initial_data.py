@@ -22,6 +22,7 @@ def populate_groups(apps, schema_editor):
                 'project':["view","add","change","delete"],
                 'subproject':["view","add","change","delete"],
                 'task':["view","add","change","delete"],
+                'facility':["view", "add", "change","delete"],
             },
             'files':{
                 'image':["view","add","change","delete"]
@@ -38,6 +39,7 @@ def populate_groups(apps, schema_editor):
                 'project':["view","add","change"],
                 'subproject':["view","add","change"],
                 'task':["view","add","change"],
+                'facility':["view", "add", "change"],
             },
             'files':{
                 'image':["view","add","change"]
@@ -54,6 +56,7 @@ def populate_groups(apps, schema_editor):
                 'project':["view","add","change"],
                 'subproject':["view","add","change"],
                 'task':["view","add","change"],
+                'facility':["view"],
             },
             'files':{
                 'image':["view", "add", "change"]
@@ -70,6 +73,7 @@ def populate_groups(apps, schema_editor):
                 'project':["view", "change"],
                 'subproject':["view", "change"],
                 'task':["view", "change"],
+                'facility':["view"],
             },
             'files':{
                 'image':["view"]
@@ -86,6 +90,7 @@ def populate_groups(apps, schema_editor):
                 'project':["view"],
                 'subproject':["view"],
                 'task':["view"],
+                'facility':["view"],
             },
             'files':{
                 'image':["view"]
@@ -102,6 +107,7 @@ def populate_groups(apps, schema_editor):
                 'project':["view"],
                 'subproject':["view"],
                 'task':["view"],
+                'facility':["view"],
             },
             'files':{
                 'image':["view"]
