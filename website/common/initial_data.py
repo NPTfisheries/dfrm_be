@@ -24,6 +24,9 @@ def populate_groups(apps, schema_editor):
                 'task':["view","add","change","delete"],
                 'facility':["view", "add", "change","delete"],
             },
+            'common':{
+                'object_look_up':["view","add","change","delete"],
+            },
             'files':{
                 'image':["view","add","change","delete"]
             }

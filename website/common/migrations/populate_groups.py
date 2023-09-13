@@ -10,7 +10,8 @@ class Migration(migrations.Migration):
         ('account', '0001_initial'),
         ('administration', '0001_initial'),
         ('files', '0001_initial'),
-        ('sessions', '0001_initial')
+        ('sessions', '0001_initial'),
+        ('common', '0001_initial'),
     ]
 
     operations = [
