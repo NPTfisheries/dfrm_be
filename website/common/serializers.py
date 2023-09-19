@@ -32,7 +32,7 @@ class MetaModelSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
-class BaseModelSerializer(serializers.ModelSerializer):
+class BaseModelSerializer(MetaModelSerializer):
     class Meta:
         abstract = True
         extra_kwargs = {
