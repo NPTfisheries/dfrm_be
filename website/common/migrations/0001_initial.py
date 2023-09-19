@@ -15,24 +15,18 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Image',
+            name='ObjectLookUp',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
                 ('is_active', models.BooleanField(default=True)),
+                ('object_type', models.CharField(choices=[('Task', 'Task'), ('Facility', 'Facility')])),
                 ('name', models.CharField(max_length=300, unique=True)),
-                ('description', models.TextField()),
-                ('slug', models.SlugField(null=True, unique=True)),
-                ('photographer', models.CharField(max_length=50)),
-                ('photo_date', models.DateField()),
-                ('source', models.CharField(max_length=100)),
-                ('image', models.ImageField(default='images/default.JPG', upload_to='images/uploaded/')),
                 ('created_by', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='%(app_label)s_%(class)s_creator', to=settings.AUTH_USER_MODEL)),
                 ('updated_by', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='%(app_label)s_%(class)s_editor', to=settings.AUTH_USER_MODEL)),
             ],
             options={
-                'ordering': ['name'],
                 'abstract': False,
             },
         ),

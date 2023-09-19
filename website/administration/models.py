@@ -1,5 +1,5 @@
 from django.contrib.gis.db import models
-from common.models import MetaModel, BaseModel
+from common.models import MetaModel, BaseModel, ObjectLookUp
 from account.models import User
 from files.models import Image
 from phonenumber_field.modelfields import PhoneNumberField
@@ -34,16 +34,6 @@ class Subproject(BaseModel, ImageFieldsModel):
     division = models.ForeignKey(Division, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_division")
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_project")
     lead = models.ForeignKey(User, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_lead")
-
-class ObjectLookUp(MetaModel):
-
-    OBJECT_TYPE = (
-        ('Task', 'Task'),
-        ('Facility', 'Facility'),
-    )
-
-    object_type = models.CharField(choices = OBJECT_TYPE)
-    name = models.CharField(max_length=300, unique=True)
 
 class Task(MetaModel, ImageFieldsModel):   
     task_type = models.ForeignKey(ObjectLookUp, null=True, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_object_lookups")

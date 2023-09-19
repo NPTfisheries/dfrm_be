@@ -1,6 +1,6 @@
 from django.contrib.gis import admin
 from guardian.admin import GuardedModelAdmin
-from administration.models import Department, Division, Project, Subproject, ObjectLookUp, Task, Facility
+from administration.models import Department, Division, Project, Subproject, Task, Facility
 # Register your models here.
 
 @admin.register(Department)
@@ -18,10 +18,6 @@ class ProjectAdmin(GuardedModelAdmin):
 @admin.register(Subproject)
 class SubprojectAdmin(GuardedModelAdmin):
     list_display = ('id', 'name', 'slug', 'lead', 'project', 'created_at', 'updated_at', 'is_active')
-
-@admin.register(ObjectLookUp)
-class ObjectLookUpAdmin(admin.ModelAdmin):
-    list_display = ('id', 'object_type', 'name', 'created_at', 'updated_at', 'is_active')
 
 @admin.register(Task)
 class TaskAdmin(GuardedModelAdmin):
