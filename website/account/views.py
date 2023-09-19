@@ -83,7 +83,7 @@ class UpdateProfilePhotoView(generics.UpdateAPIView):
             raise serializers.ValidationError("You can only update your own profile photo.")
 
         existing_photo = self.get_object().photo
-        if existing_photo.name != 'profile_default.JPG':
+        if 'profile_default.JPG' not in existing_photo.name:
             # Delete the existing photo if not the default. Prevent clutter.
             default_storage.delete(existing_photo.name)
 
