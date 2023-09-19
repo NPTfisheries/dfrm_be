@@ -1,11 +1,11 @@
 from django.contrib.gis.db import models
-from common.models import BaseModel
+from common.models import MetaModel, BaseModel, ObjectLookUp
 from account.models import User
 from files.models import Image
 from phonenumber_field.modelfields import PhoneNumberField
 
 # abstract classes
-class BaseAdminModel(models.Model):
+class BaseAdminModel(BaseModel):
     class Meta:
         abstract = True
     manager = models.ForeignKey(User, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_manager")
@@ -20,10 +20,10 @@ class ImageFieldsModel(models.Model):
     img_card = models.ForeignKey(Image, default = 2, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_card")
 
 # model classes
-class Department(BaseModel, BaseAdminModel, ImageFieldsModel):
+class Department(BaseAdminModel, ImageFieldsModel):
     pass
     
-class Division(BaseModel, BaseAdminModel, ImageFieldsModel):
+class Division(BaseAdminModel, ImageFieldsModel):
     department = models.ForeignKey(Department, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_department")
 
 class Project(BaseModel, ImageFieldsModel):
@@ -31,23 +31,18 @@ class Project(BaseModel, ImageFieldsModel):
     project_leader = models.ManyToManyField(User, related_name="%(app_label)s_%(class)s_projct_leads")
 
 class Subproject(BaseModel, ImageFieldsModel):
+    division = models.ForeignKey(Division, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_division")
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_project")
     lead = models.ForeignKey(User, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_lead")
 
-class Task(BaseModel, ImageFieldsModel):
+class Task(MetaModel, ImageFieldsModel):   
+    task_type = models.ForeignKey(ObjectLookUp, null=True, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_object_lookups")
     subproject = models.ForeignKey(Subproject, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_subprojects")
+    description = models.TextField()
     supervisor = models.ForeignKey(User, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_supervisor")
 
-# model classes
-class Facility(BaseModel, BaseAdminModel, ImageFieldsModel):
-
-    FACILITY_TYPE = (
-        ('Office', 'Office'),
-        ('Hatchery', 'Hatchery'),
-        ('Other', 'Other'),
-     )
-
-    facility_type = models.CharField(choices= FACILITY_TYPE)
+class Facility(BaseAdminModel, ImageFieldsModel):
+    facility_type = models.ForeignKey(ObjectLookUp, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_object_lookups")
     phone_number = PhoneNumberField(blank = True)
     street_address = models.CharField("Street Address", max_length=100)
     mailing_address = models.CharField("Mailing Address", null = True, blank = True, max_length=100)

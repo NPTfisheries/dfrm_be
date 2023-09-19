@@ -24,6 +24,9 @@ def populate_groups(apps, schema_editor):
                 'task':["view","add","change","delete"],
                 'facility':["view", "add", "change","delete"],
             },
+            # 'common':{
+            #     'objectlookup':["view","add","change","delete"],
+            # },
             'files':{
                 'image':["view","add","change","delete"]
             }
@@ -121,14 +124,21 @@ def populate_groups(apps, schema_editor):
         print(f"Group is: {group}")
         for app_label, model in app.items():
             print(f"App label: {app_label}")
+            
+            print("Available Content Types:")
+            for content_type in ContentType.objects.all():
+                print(content_type.app_label, content_type.model)
+
             for model_name, permissions in model.items():
                 print(f"Model name: {model_name}")
-                #content_type = ContentType.objects.get(app_label = app_label, model=model_name) #takes app_label and model
+                print(f"Attempting to get ContentType for app_label={app_label} and model={model_name}")
+                content_type = ContentType.objects.get(app_label = app_label, model=model_name) #takes app_label and model
+                print(f"Content type: {content_type}")
                 print(f"Permissions: {permissions}")
                 for permission in permissions:
                     print(f"Permission: {permission}")
                     codename = f"{permission}_{model_name}"
                     print(f"Codename is: {codename}")
                     #permission = Permission.objects.get(codename=codename)#, content_type=content_type) #codename = 'view_user' works
-                    permission, created = Permission.objects.get_or_create(codename=codename)#, content_type = content_type)
+                    permission, created = Permission.objects.get_or_create(codename=codename, content_type = content_type)
                     group.permissions.add(permission)

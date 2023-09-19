@@ -1,22 +1,14 @@
 #common/serializers.py
 from rest_framework import serializers
+from .models import ObjectLookUp
 
-class BaseModelSerializer(serializers.ModelSerializer):
+class MetaModelSerializer(serializers.ModelSerializer):
     class Meta:
         abstract = True
         extra_kwargs = {
             'created_by': {'read_only': True},
             'updated_by': {'read_only': True},
-            'slug': {'read_only': True},
-            'url': {'lookup_field': 'slug'}
         }
-
-    def validate_name(self, value):
-        # Check if a model object with the same name already exists
-        if self.instance is None or self.instance.name != value:
-            if self.Meta.model.objects.filter(name=value).exists():
-                raise serializers.ValidationError("A model object with this name already exists.")
-        return value
 
     def create(self, validated_data):
         # get authenticated user
@@ -29,7 +21,7 @@ class BaseModelSerializer(serializers.ModelSerializer):
             **validated_data
         )
         return instance
-
+    
     def update(self, instance, validated_data):
         # get authenticated user
         user = self.context['request'].user
@@ -39,3 +31,23 @@ class BaseModelSerializer(serializers.ModelSerializer):
         instance.updated_by = user
         instance.save()
         return instance
+
+class BaseModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        abstract = True
+        extra_kwargs = {
+            'slug': {'read_only': True},
+            'url': {'lookup_field': 'slug'}
+        }
+
+    def validate_name(self, value):
+        # Check if a model object with the same name already exists
+        if self.instance is None or self.instance.name != value:
+            if self.Meta.model.objects.filter(name=value).exists():
+                raise serializers.ValidationError("A model object with this name already exists.")
+        return value
+    
+class ObjectLookUp(MetaModelSerializer):
+    class Meta:
+        model = ObjectLookUp
+        fields = ['id', 'object_type', 'name']

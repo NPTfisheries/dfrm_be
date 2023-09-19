@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'account',
     'files',
     'administration',
+    'perms',
 ]
 
 MIDDLEWARE = [

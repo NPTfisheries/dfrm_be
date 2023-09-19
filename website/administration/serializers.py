@@ -1,8 +1,8 @@
 #administration/serializers.py
-from rest_framework import serializers, permissions
+from rest_framework import serializers
 from rest_framework_gis.serializers import GeoFeatureModelSerializer
 from guardian.shortcuts import assign_perm
-from common.serializers import BaseModelSerializer
+from common.serializers import MetaModelSerializer, BaseModelSerializer
 from account.serializers import UserSerializer
 from files.serializers import ImageSerializer
 from account.models import User
@@ -13,9 +13,6 @@ from administration.models import Department, Division, Project, Subproject, Tas
 class BaseImageSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         return super().to_representation(instance)
-
-
-
 
 class BaseAdminSerializer(BaseModelSerializer):
 
@@ -96,11 +93,10 @@ class ProjectSerializer(BaseModelSerializer):
         instance.save()
         return instance
 
-    
 class SubprojectSerializer(BaseModelSerializer):
     class Meta:
         model = Subproject
-        fields = ['id', 'project', 'slug', 'name', 'description', 'lead', 'img_banner', 'img_card']
+        fields = ['id', 'division', 'project', 'slug', 'name', 'description', 'lead', 'img_banner', 'img_card']
 
     def to_representation(self, instance):
         # Override the 'user' field representation for GET requests
@@ -121,10 +117,10 @@ class SubprojectSerializer(BaseModelSerializer):
         assign_perm(perm, instance.lead, instance)
         return instance  
 
-class TaskSerializer(BaseModelSerializer):
+class TaskSerializer(MetaModelSerializer):
     class Meta:
         model = Task
-        fields = ['id', 'subproject', 'slug', 'name', 'description', 'supervisor', 'img_banner', 'img_card']
+        fields = ['id', 'subproject', 'task_type', 'name', 'description', 'supervisor', 'img_banner', 'img_card']
 
     def to_representation(self, instance):
         # Override the 'user' field representation for GET requests
@@ -149,7 +145,7 @@ class FacilitySerializer(BaseModelSerializer, GeoFeatureModelSerializer):
    
     class Meta:
         model = Facility
-        fields = ['id', 'slug', 'name', 'description', 'manager', 'deputy', 'assistant', 'staff', 'img_banner', 'img_card', 'facility_type', 'phone_number', 'street_address', 'mailing_address', 'city', 'state', 'zipcode']
+        fields = ['id', 'slug', 'facility_type', 'name', 'description', 'manager', 'deputy', 'assistant', 'staff', 'img_banner', 'img_card', 'facility_type', 'phone_number', 'street_address', 'mailing_address', 'city', 'state', 'zipcode']
         geo_field = 'coordinates'
 
     def to_representation(self, instance):

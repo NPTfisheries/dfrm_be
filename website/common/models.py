@@ -9,6 +9,7 @@ class MetaModel(models.Model):
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_creator")
     updated_at = models.DateTimeField(auto_now=True)
     updated_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_editor")
+    is_active = models.BooleanField(default=True)
 
     class Meta:
         abstract = True
@@ -17,7 +18,6 @@ class BaseModel(MetaModel):
     name = models.CharField(max_length=300, unique=True)
     description = models.TextField()
     slug = models.SlugField(null=True, unique=True)
-    is_active = models.BooleanField(default=True)
 
     def save(self, *args, **kwargs):
         if not self.pk: # if self.pk is blank
@@ -30,3 +30,13 @@ class BaseModel(MetaModel):
 
     def __str__(self):
         return self.name
+    
+class ObjectLookUp(MetaModel):
+
+    OBJECT_TYPE = (
+        ('Task', 'Task'),
+        ('Facility', 'Facility'),
+    )
+
+    object_type = models.CharField(choices = OBJECT_TYPE)
+    name = models.CharField(max_length=300, unique=True)

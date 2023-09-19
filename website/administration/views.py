@@ -82,7 +82,7 @@ class SubprojectViewSet(viewsets.ModelViewSet):
 class TaskViewSet(viewsets.ModelViewSet):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
-    lookup_field = 'slug'
+    #lookup_field = 'slug'
     permission_classes = [permissions.DjangoModelPermissionsOrAnonReadOnly]
 
     def get_queryset(self):
