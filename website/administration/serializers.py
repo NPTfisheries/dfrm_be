@@ -156,6 +156,9 @@ class FacilitySerializer(BaseModelSerializer, GeoFeatureModelSerializer):
         fields = ['id', 'slug', 'facility_type', 'name', 'description', 'manager', 'deputy', 'assistant', 'staff', 'img_banner', 'img_card', 'facility_type', 'phone_number', 'street_address', 'mailing_address', 'city', 'state', 'zipcode']
         geo_field = 'coordinates'
 
+    def get_facility_type(self, instance):
+        return ObjectLookUpSerializer(instance.facility_type).data;
+
     def to_representation(self, instance):
         if self.context['request'].method == 'GET':   
             representation = super().to_representation(instance)
@@ -165,6 +168,7 @@ class FacilitySerializer(BaseModelSerializer, GeoFeatureModelSerializer):
             representation['properties']['staff']= UserSerializer(instance.staff.all(), many=True).data
             representation['properties']['img_banner']= ImageSerializer(instance.img_banner).data
             representation['properties']['img_card']= ImageSerializer(instance.img_card).data
+            representation['properties']['facility_type']= self.get_facility_type(instance)
             return representation
         return super().to_representation(instance)
 
