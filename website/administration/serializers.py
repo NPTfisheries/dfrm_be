@@ -93,10 +93,10 @@ class ProjectSerializer(BaseModelSerializer):
         instance.save()
         return instance
 
-class SubprojectSerializer(BaseModelSerializer):
+class SubprojectSerializer(MetaModelSerializer):
     class Meta:
         model = Subproject
-        fields = ['id', 'division', 'project', 'slug', 'name', 'description', 'lead', 'img_banner', 'img_card']
+        fields = ['id', 'division', 'project', 'name', 'description', 'lead', 'img_banner', 'img_card']
 
     def get_division(self, instance):
         # Serialize the division using a function
