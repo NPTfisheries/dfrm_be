@@ -30,7 +30,9 @@ class Project(BaseModel, ImageFieldsModel):
     department = models.ForeignKey(Department, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_department")
     project_leader = models.ManyToManyField(User, related_name="%(app_label)s_%(class)s_projct_leads")
 
-class Subproject(BaseModel, ImageFieldsModel):
+class Subproject(MetaModel, ImageFieldsModel):
+    name = models.CharField(max_length=300, unique=True)
+    description = models.TextField()
     division = models.ForeignKey(Division, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_division")
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_project")
     lead = models.ForeignKey(User, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_lead")

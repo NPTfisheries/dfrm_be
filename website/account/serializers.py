@@ -5,6 +5,7 @@ from guardian.shortcuts import get_objects_for_user
 from django.contrib.auth.password_validation import validate_password
 from .models import User, Profile
 from administration.models import Project
+from perms.signals import assign_group
 
 class RegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
@@ -36,7 +37,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
         user.save()
 
         # Signal to assign group based on role
-        #assign_group(User, user, created=True)
+        assign_group(User, user, created=True)
 
         return user
     
