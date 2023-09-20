@@ -47,7 +47,7 @@ class BaseModelSerializer(MetaModelSerializer):
                 raise serializers.ValidationError("A model object with this name already exists.")
         return value
     
-class ObjectLookUp(MetaModelSerializer):
+class ObjectLookUpSerializer(MetaModelSerializer):
     class Meta:
         model = ObjectLookUp
         fields = ['id', 'object_type', 'name']
