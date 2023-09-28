@@ -38,5 +38,10 @@ class ObjectLookUp(MetaModel):
         ('Facility', 'Facility'),
     )
 
+    # In django admin, this makes it so we see the name instead of an object refernce.
+    # shouldn't affect any api calls/serializers/etc.
+    def __str__(self):
+        return self.name;
+
     object_type = models.CharField(choices = OBJECT_TYPE)
     name = models.CharField(max_length=300, unique=True)

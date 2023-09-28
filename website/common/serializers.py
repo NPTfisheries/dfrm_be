@@ -32,7 +32,7 @@ class MetaModelSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
-class BaseModelSerializer(serializers.ModelSerializer):
+class BaseModelSerializer(MetaModelSerializer):
     class Meta:
         abstract = True
         extra_kwargs = {
@@ -47,7 +47,7 @@ class BaseModelSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError("A model object with this name already exists.")
         return value
     
-class ObjectLookUp(MetaModelSerializer):
+class ObjectLookUpSerializer(MetaModelSerializer):
     class Meta:
         model = ObjectLookUp
         fields = ['id', 'object_type', 'name']

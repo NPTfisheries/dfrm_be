@@ -2,7 +2,7 @@
 from rest_framework import serializers
 from rest_framework_gis.serializers import GeoFeatureModelSerializer
 from guardian.shortcuts import assign_perm
-from common.serializers import MetaModelSerializer, BaseModelSerializer
+from common.serializers import MetaModelSerializer, BaseModelSerializer, ObjectLookUpSerializer
 from account.serializers import UserSerializer
 from files.serializers import ImageSerializer
 from account.models import User
@@ -17,7 +17,7 @@ class BaseImageSerializer(serializers.ModelSerializer):
 class BaseAdminSerializer(BaseModelSerializer):
 
     def to_representation(self, instance):
-        # Override the 'user' field representation for GET requests
+        # Override field representation for GET requests
         if self.context['request'].method == 'GET':
             return {
                 **super().to_representation(instance),
@@ -63,7 +63,7 @@ class ProjectSerializer(BaseModelSerializer):
         fields = ['id', 'department', 'slug', 'name', 'description', 'project_leader', 'img_banner', 'img_card']
 
     def to_representation(self, instance):
-        # Override the 'user' field representation for GET requests
+        # Override field representation for GET requests
         if self.context['request'].method == 'GET':
             return {
                 **super().to_representation(instance),
@@ -93,13 +93,17 @@ class ProjectSerializer(BaseModelSerializer):
         instance.save()
         return instance
 
-class SubprojectSerializer(BaseModelSerializer):
+class SubprojectSerializer(MetaModelSerializer):
     class Meta:
         model = Subproject
-        fields = ['id', 'division', 'project', 'slug', 'name', 'description', 'lead', 'img_banner', 'img_card']
+        fields = ['id', 'division', 'project', 'name', 'description', 'lead', 'img_banner', 'img_card']
+
+    def get_division(self, instance):
+        # Serialize the division using a function
+        return DivisionSerializer(instance.division).data
 
     def to_representation(self, instance):
-        # Override the 'user' field representation for GET requests
+        # Override field representation for GET requests
         if self.context['request'].method == 'GET':
             return {
                 **super().to_representation(instance),
@@ -120,16 +124,20 @@ class SubprojectSerializer(BaseModelSerializer):
 class TaskSerializer(MetaModelSerializer):
     class Meta:
         model = Task
-        fields = ['id', 'subproject', 'task_type', 'name', 'description', 'supervisor', 'img_banner', 'img_card']
+        fields = ['id', 'subproject', 'task_type', 'description', 'supervisor', 'img_banner', 'img_card']
+
+    def get_task_type(self, instance):
+        return ObjectLookUpSerializer(instance.task_type).data;
 
     def to_representation(self, instance):
-        # Override the 'user' field representation for GET requests
+        # Override field representation for GET requests
         if self.context['request'].method == 'GET':
             return {
                 **super().to_representation(instance),
                 'supervisor': UserSerializer(instance.supervisor).data,
                 'img_banner': ImageSerializer(instance.img_banner).data,
-                'img_card': ImageSerializer(instance.img_card).data
+                'img_card': ImageSerializer(instance.img_card).data,
+                'task_type': self.get_task_type(instance),
             }
         return super().to_representation(instance)
 
@@ -148,6 +156,9 @@ class FacilitySerializer(BaseModelSerializer, GeoFeatureModelSerializer):
         fields = ['id', 'slug', 'facility_type', 'name', 'description', 'manager', 'deputy', 'assistant', 'staff', 'img_banner', 'img_card', 'facility_type', 'phone_number', 'street_address', 'mailing_address', 'city', 'state', 'zipcode']
         geo_field = 'coordinates'
 
+    def get_facility_type(self, instance):
+        return ObjectLookUpSerializer(instance.facility_type).data;
+
     def to_representation(self, instance):
         if self.context['request'].method == 'GET':   
             representation = super().to_representation(instance)
@@ -157,6 +168,7 @@ class FacilitySerializer(BaseModelSerializer, GeoFeatureModelSerializer):
             representation['properties']['staff']= UserSerializer(instance.staff.all(), many=True).data
             representation['properties']['img_banner']= ImageSerializer(instance.img_banner).data
             representation['properties']['img_card']= ImageSerializer(instance.img_card).data
+            representation['properties']['facility_type']= self.get_facility_type(instance)
             return representation
         return super().to_representation(instance)
 

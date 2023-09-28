@@ -17,7 +17,7 @@ class ProjectAdmin(GuardedModelAdmin):
 
 @admin.register(Subproject)
 class SubprojectAdmin(GuardedModelAdmin):
-    list_display = ('id', 'name', 'slug', 'lead', 'project', 'created_at', 'updated_at', 'is_active')
+    list_display = ('id', 'name', 'lead', 'project', 'created_at', 'updated_at', 'is_active')
 
 @admin.register(Task)
 class TaskAdmin(GuardedModelAdmin):
