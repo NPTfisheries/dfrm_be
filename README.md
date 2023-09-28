@@ -39,7 +39,11 @@ Set-up instructions for DFRM backend django ORM services.
 NEW DIRECTIONS BASED ON TROUBLESHOOTING incompatible software versions.....make sure all software and python packages are the same as development environment
 14. Open pgAdmin4 and create a database named: "dfrm_be"
 15. migrate django ORM to database...
-	a. python manage.py migrate
+	a. python manage.py migrate - YOU WILL GET AN ERROR!!!!!!
+		1. After running initial migrate and you recieve an error run:
+			a. python manage.py migrate guardian
+			b. python manage.py migrate sessions
+			c. python manage.py migrate perms
 	b. migrations are built from dev environment so we don't need to run "makemigrations"
 16. load data previously entered from dev environment
 	a. after migrate command in step 15.
