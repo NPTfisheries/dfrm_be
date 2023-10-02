@@ -131,6 +131,13 @@ class UpdateProfilePhotoSerializer(serializers.ModelSerializer):
         model = Profile
         fields = ('photo',)
 
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        if instance.photo:
+            representation['photo'] = f'/media/{instance.photo}'
+        return representation
+
+
 class UserSerializer(serializers.ModelSerializer):
     #email = serializers.EmailField(required=True)
     profile = ProfileSerializer(required=False)
