@@ -1,3 +1,4 @@
+# account.models
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.contrib.auth.password_validation import validate_password
@@ -52,16 +53,6 @@ class User(AbstractUser):
         (5, 'Technician'),
         (6, 'Guest')
      )
-    
-    # CLASS_CHOICES = (
-    #     (9, 'Technician I'),
-    #     (11, 'Technicain II'),
-    #     (17, 'Professional I'),
-    #     (19, 'Professional II'),
-    #     (20, 'Professional III'),
-    #     (22, 'Professional V'),
-    #     (23, 'Manager I'),
-    #  )
 
     username = None
     first_name = models.CharField(max_length = 50)
