@@ -60,6 +60,9 @@ class User(AbstractUser):
     email = models.EmailField(max_length=100, unique=True)
     role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, default = 6)
     #class_description = models.PositiveSmallIntegerField(choices=CLASS_CHOICES)
+
+    class Meta:
+        ordering = ['last_name', 'first_name']
     
     objects = UserManager()
     

@@ -17,7 +17,7 @@ class MetaModel(models.Model):
 class BaseModel(MetaModel):
     name = models.CharField(max_length=300, unique=True)
     description = models.TextField()
-    slug = models.SlugField(null=True, unique=True)
+    slug = models.SlugField(null=True, unique=True, max_length=200)
 
     def save(self, *args, **kwargs):
         if not self.pk: # if self.pk is blank
