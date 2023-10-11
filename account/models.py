@@ -62,7 +62,7 @@ class User(AbstractUser):
     #class_description = models.PositiveSmallIntegerField(choices=CLASS_CHOICES)
 
     class Meta:
-        ordering = ['last_name', 'first_name']
+        ordering = ['first_name', 'last_name']
     
     objects = UserManager()
     

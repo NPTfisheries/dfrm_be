@@ -35,9 +35,7 @@ class DivisionViewSet(viewsets.ModelViewSet):
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
-        response_data = {
-            'division': serializer.data,
-        }
+        response_data = serializer.data
 
         projects_data = self.projects(request, slug=kwargs['slug']).data\
         # projects_data = []
