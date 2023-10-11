@@ -1,6 +1,7 @@
 from rest_framework import viewsets, status
 from rest_framework import generics
 from rest_framework.views import APIView
+from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import permissions
 from guardian.shortcuts import assign_perm
@@ -19,6 +20,32 @@ class DivisionViewSet(viewsets.ModelViewSet):
     serializer_class = DivisionSerializer
     lookup_field = 'slug'
     permission_classes = [permissions.DjangoModelPermissionsOrAnonReadOnly]
+
+    # @action(detail=True, methods=['get'])
+    def projects(self, request, slug=None):
+        division = self.get_object()
+        subprojects = Subproject.objects.filter(division=division).distinct()
+        project_ids = subprojects.values_list('project', flat=True)
+        projects = Project.objects.filter(id__in=project_ids)
+        print(f'Debug projects: {projects}')
+        if projects is not None:
+            serializer = ProjectSerializer(projects, many=True, context={'request': request})
+            return Response(serializer.data)
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        response_data = {
+            'division': serializer.data,
+        }
+
+        projects_data = self.projects(request, slug=kwargs['slug']).data\
+        # projects_data = []
+        print(f'Debug projects_data: {projects_data}')
+        if projects_data is not None:
+            response_data['projects'] = projects_data
+            
+        return Response(response_data)
 
 
 class CustomObjectPermissions(permissions.DjangoObjectPermissions):
