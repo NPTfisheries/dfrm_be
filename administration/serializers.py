@@ -94,6 +94,19 @@ class ProjectSerializer(BaseModelSerializer):
         return instance
 
 class SubprojectSerializer(MetaModelSerializer):
+    class Meta:
+        model = Subproject
+        fields = ['id', 'division', 'project', 'name', 'description', 'lead', 'img_banner', 'img_card']
+
+    def create(self, validated_data):
+        user = self.context['request'].user
+        instance = super().create(validated_data)
+        perm = Permission.objects.get(codename='change_subproject')
+        assign_perm(perm, user, instance)
+        assign_perm(perm, instance.lead, instance)
+        return instance  
+    
+class GETSubprojectSerializer(MetaModelSerializer):
     division = DivisionSerializer(read_only=True)
 
     class Meta:
@@ -110,14 +123,6 @@ class SubprojectSerializer(MetaModelSerializer):
                 'img_card': ImageSerializer(instance.img_card).data
             }
         return super().to_representation(instance)
-
-    def create(self, validated_data):
-        user = self.context['request'].user
-        instance = super().create(validated_data)
-        perm = Permission.objects.get(codename='change_subproject')
-        assign_perm(perm, user, instance)
-        assign_perm(perm, instance.lead, instance)
-        return instance  
 
 class TaskSerializer(MetaModelSerializer):
     class Meta:

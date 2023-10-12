@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework import permissions
 from guardian.shortcuts import assign_perm
 from administration.models import Department, Division, Project, Subproject, Task, Facility
-from administration.serializers import DepartmentSerializer, DivisionSerializer, ProjectSerializer, SubprojectSerializer, TaskSerializer, FacilitySerializer
+from administration.serializers import DepartmentSerializer, DivisionSerializer, ProjectSerializer, GETSubprojectSerializer, SubprojectSerializer, TaskSerializer, FacilitySerializer
 from django.shortcuts import get_object_or_404
 
 class DepartmentViewSet(viewsets.ModelViewSet):
@@ -91,8 +91,14 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
 class SubprojectViewSet(viewsets.ModelViewSet):
     queryset = Subproject.objects.all()    
-    serializer_class = SubprojectSerializer
+    # serializer_class = SubprojectSerializer
     permission_classes = [permissions.DjangoModelPermissionsOrAnonReadOnly]
+
+    def get_serializer_class(self):
+        # Check the HTTP request method to determine which serializer to use
+        if self.request.method == 'POST' or self.request.method == 'PUT':
+            return SubprojectSerializer
+        return GETSubprojectSerializer
 
     def get_queryset(self):
         project_id = self.request.query_params.get('project_id')
