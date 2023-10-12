@@ -94,13 +94,11 @@ class ProjectSerializer(BaseModelSerializer):
         return instance
 
 class SubprojectSerializer(MetaModelSerializer):
+    division = DivisionSerializer(read_only=True)
+
     class Meta:
         model = Subproject
         fields = ['id', 'division', 'project', 'name', 'description', 'lead', 'img_banner', 'img_card']
-
-    def get_division(self, instance):
-        # Serialize the division using a function
-        return DivisionSerializer(instance.division).data
 
     def to_representation(self, instance):
         # Override field representation for GET requests
