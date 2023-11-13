@@ -1,6 +1,7 @@
 from django.db import models
-from common.models import BaseModel
+from common.models import MetaModel, BaseModel
 from PIL import Image
+from account.models import User
 
 # Create your models here.
 
@@ -24,3 +25,24 @@ class Image(BaseModel):
     #         output_size = (300, 300)
     #         img_c.thumbnail(output_size)
     #         img_c.save(self.img_card.path)
+
+class File(MetaModel):
+
+    FILE_TYPE = (
+		("Annual Report","Annual Report"),
+		("Journal Article","Journal Article"),
+		("Technical Memo","Technical Memo"),
+		("Presentation Slides","Presentation Slides"),
+		("Other","Other")
+	)
+         
+    file = models.FileField(upload_to='documents/', editable=False)
+    title = models.CharField(max_length=100)
+    description = models.TextField(null=True)
+    primary_author = models.CharField(max_length=50)
+    employee_authors = models.ManyToManyField(User, related_name="%(app_label)s_%(class)s_employee_authors")
+    publish_date = models.DateField()
+    file_type = models.CharField(choices = FILE_TYPE, max_length=50)
+    citation = models.TextField(null=True)
+    keywords = models.CharField(max_length=100, null=True)
+

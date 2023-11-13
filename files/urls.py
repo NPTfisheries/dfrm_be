@@ -4,6 +4,8 @@ from files import views
 
 router = routers.DefaultRouter()
 router.register(r'image', views.ImageViewSet)
+router.register(r'document', views.FileViewSet)
+
 
 app_name = 'files'
 
