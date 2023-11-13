@@ -1,7 +1,7 @@
 #files/serializers.py
 from rest_framework import serializers
 from account.models import User
-from files.models import Image, File
+from files.models import Image, Document
 from common.serializers import BaseModelSerializer, MetaModelSerializer
 from account.serializers import UserSerializer
 
@@ -11,9 +11,9 @@ class ImageSerializer(BaseModelSerializer):
         model = Image
         fields = ['id', 'slug', 'name', 'description', 'photographer', 'photo_date', 'source', 'image']
 
-class FileSerializer(MetaModelSerializer):
+class DocumentSerializer(MetaModelSerializer):
     class Meta:
-        model = File
+        model = Document
         fields = ['id', 'file', 'title', 'description', 'primary_author', 'employee_authors', 'publish_date', 'file_type', 'citation', 'keywords']
 
     def to_representation(self, instance):

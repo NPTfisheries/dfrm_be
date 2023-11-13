@@ -26,9 +26,9 @@ class Image(BaseModel):
     #         img_c.thumbnail(output_size)
     #         img_c.save(self.img_card.path)
 
-class File(MetaModel):
+class Document(MetaModel):
 
-    FILE_TYPE = (
+    DOCUMENT_TYPE = (
 		("Annual Report","Annual Report"),
 		("Journal Article","Journal Article"),
 		("Technical Memo","Technical Memo"),
@@ -36,13 +36,13 @@ class File(MetaModel):
 		("Other","Other")
 	)
          
-    file = models.FileField(upload_to='documents/', editable=False)
+    document = models.FileField(upload_to='documents/', editable=False)
     title = models.CharField(max_length=100)
     description = models.TextField(null=True)
     primary_author = models.CharField(max_length=50)
     employee_authors = models.ManyToManyField(User, related_name="%(app_label)s_%(class)s_employee_authors")
     publish_date = models.DateField()
-    file_type = models.CharField(choices = FILE_TYPE, max_length=50)
+    document_type = models.CharField(choices = DOCUMENT_TYPE, max_length=50)
     citation = models.TextField(null=True)
     keywords = models.CharField(max_length=100, null=True)
 
