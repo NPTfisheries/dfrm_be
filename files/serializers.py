@@ -14,7 +14,7 @@ class ImageSerializer(BaseModelSerializer):
 class DocumentSerializer(MetaModelSerializer):
     class Meta:
         model = Document
-        fields = ['id', 'file', 'title', 'description', 'primary_author', 'employee_authors', 'publish_date', 'file_type', 'citation', 'keywords']
+        fields = ['id', 'document', 'title', 'description', 'primary_author', 'employee_authors', 'publish_date', 'file_type', 'citation', 'keywords']
 
     def to_representation(self, instance):
         # Override field representation for GET requests
