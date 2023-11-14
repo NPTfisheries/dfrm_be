@@ -74,6 +74,8 @@ class ObjectPermissionsSerializer(serializers.Serializer):
     project_objects = serializers.ListField()
     subproject_objects = serializers.ListField()
     task_objects = serializers.ListField()
+    document_objects = serializers.ListField()
+
 
     def get_permissions(self, user):
         permissions = {}
@@ -87,6 +89,9 @@ class ObjectPermissionsSerializer(serializers.Serializer):
 
         user_task = get_objects_for_user(user, 'administration.change_task', accept_global_perms=False)
         permissions['task_objects'] = [str(obj.id) for obj in user_task]
+
+        user_document = get_objects_for_user(user, 'files.change_document', accept_global_perms = False)
+        permissions['document_objects'] = [str(obj.id) for obj in user_document]
 
         return permissions
 
