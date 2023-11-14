@@ -13,6 +13,15 @@ class ImageSerializer(BaseModelSerializer):
         model = Image
         fields = ['id', 'slug', 'name', 'description', 'photographer', 'photo_date', 'source', 'image']
 
+    def create(self, validated_data):
+        user = self.context['request'].user
+        instance = super().create(validated_data)
+        perm = Permission.objects.get(codename='change_image')
+        assign_perm(perm, user, instance)
+
+        instance.save()
+        return instance
+
 class DocumentSerializer(MetaModelSerializer):
     class Meta:
         model = Document

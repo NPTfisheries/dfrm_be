@@ -65,6 +65,9 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         user_task = get_objects_for_user(self.user, 'administration.change_task', accept_global_perms = False)  # Change 'change_permission' to the specific permission you want to check
         data['task_objects'] = [str(obj.id) for obj in user_task]
 
+        user_image = get_objects_for_user(self.user, 'files.change_image', accept_global_perms = False)  # Change 'change_permission' to the specific permission you want to check
+        data['image_objects'] = [str(obj.id) for obj in user_image]
+
         user_document = get_objects_for_user(self.user, 'files.change_document', accept_global_perms = False)  # Change 'change_permission' to the specific permission you want to check
         data['document_objects'] = [str(obj.id) for obj in user_document]
 
@@ -74,6 +77,7 @@ class ObjectPermissionsSerializer(serializers.Serializer):
     project_objects = serializers.ListField()
     subproject_objects = serializers.ListField()
     task_objects = serializers.ListField()
+    image_objects = serializers.ListField()
     document_objects = serializers.ListField()
 
 
@@ -89,6 +93,9 @@ class ObjectPermissionsSerializer(serializers.Serializer):
 
         user_task = get_objects_for_user(user, 'administration.change_task', accept_global_perms=False)
         permissions['task_objects'] = [str(obj.id) for obj in user_task]
+
+        user_image = get_objects_for_user(user, 'files.change_image', accept_global_perms = False)
+        permissions['image_objects'] = [str(obj.id) for obj in user_image]
 
         user_document = get_objects_for_user(user, 'files.change_document', accept_global_perms = False)
         permissions['document_objects'] = [str(obj.id) for obj in user_document]
