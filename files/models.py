@@ -41,7 +41,7 @@ class Document(MetaModel):
     title = models.CharField(max_length=200)
     description = models.TextField(null=True)
     primary_author = models.CharField(max_length=50)
-    employee_authors = models.ManyToManyField(User, related_name="%(app_label)s_%(class)s_employee_authors")
+    employee_authors = models.ManyToManyField(User, related_name="%(app_label)s_%(class)s_employee_authors", null=True, blank=True)
     publish_date = models.DateField()
     document_type = models.CharField(choices = DOCUMENT_TYPE, max_length=50)
     citation = models.TextField(null=True)
