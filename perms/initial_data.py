@@ -28,7 +28,8 @@ def populate_groups(apps, schema_editor):
             #     'objectlookup':["view","add","change","delete"],
             # },
             'files':{
-                'image':["view","add","change","delete"]
+                'image':["view","add","change","delete"],
+                'document':["view","add","change","delete"]
             }
         },
         "Manager":{
@@ -45,7 +46,8 @@ def populate_groups(apps, schema_editor):
                 'facility':["view", "add", "change"],
             },
             'files':{
-                'image':["view","add","change"]
+                'image':["view","add","change"],
+                'document':["view","add","change"]
             }
         },
         "Project_leader":{
@@ -62,7 +64,8 @@ def populate_groups(apps, schema_editor):
                 'facility':["view"],
             },
             'files':{
-                'image':["view", "add", "change"]
+                'image':["view", "add", "change"],
+                'document':["view","add","change"]
             }
         },
         "Professional":{
@@ -79,7 +82,8 @@ def populate_groups(apps, schema_editor):
                 'facility':["view"],
             },
             'files':{
-                'image':["view"]
+                'image':["view"],
+                'document':["view","add","change"]
             }
         },
         "Technician":{
@@ -96,7 +100,8 @@ def populate_groups(apps, schema_editor):
                 'facility':["view"],
             },
             'files':{
-                'image':["view"]
+                'image':["view"],
+                'document':["view"]
             }
         },
         "Guest":{
@@ -113,7 +118,8 @@ def populate_groups(apps, schema_editor):
                 'facility':["view"],
             },
             'files':{
-                'image':["view"]
+                'image':["view"],
+                'document':["view"]
             }
         }  
     }

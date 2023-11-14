@@ -65,6 +65,9 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         user_task = get_objects_for_user(self.user, 'administration.change_task', accept_global_perms = False)  # Change 'change_permission' to the specific permission you want to check
         data['task_objects'] = [str(obj.id) for obj in user_task]
 
+        user_document = get_objects_for_user(self.user, 'files.change_document', accept_global_perms = False)  # Change 'change_permission' to the specific permission you want to check
+        data['document_objects'] = [str(obj.id) for obj in user_document]
+
         return data
 
 class ObjectPermissionsSerializer(serializers.Serializer):

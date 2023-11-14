@@ -1,6 +1,7 @@
 from django.db import models
 from common.models import MetaModel, BaseModel
 from PIL import Image
+from django.urls import reverse
 from account.models import User
 
 # Create your models here.
@@ -36,8 +37,8 @@ class Document(MetaModel):
 		("Other","Other")
 	)
          
-    document = models.FileField(upload_to='documents/', editable=False)
-    title = models.CharField(max_length=100)
+    document = models.FileField(upload_to='documents/') #, editable=False, null=False, blank=False)
+    title = models.CharField(max_length=200)
     description = models.TextField(null=True)
     primary_author = models.CharField(max_length=50)
     employee_authors = models.ManyToManyField(User, related_name="%(app_label)s_%(class)s_employee_authors")
@@ -45,4 +46,3 @@ class Document(MetaModel):
     document_type = models.CharField(choices = DOCUMENT_TYPE, max_length=50)
     citation = models.TextField(null=True)
     keywords = models.CharField(max_length=100, null=True)
-
