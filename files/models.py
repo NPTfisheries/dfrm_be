@@ -1,6 +1,8 @@
 from django.db import models
-from common.models import BaseModel
+from common.models import MetaModel, BaseModel
 from PIL import Image
+from django.urls import reverse
+from account.models import User
 
 # Create your models here.
 
@@ -24,3 +26,23 @@ class Image(BaseModel):
     #         output_size = (300, 300)
     #         img_c.thumbnail(output_size)
     #         img_c.save(self.img_card.path)
+
+class Document(MetaModel):
+
+    DOCUMENT_TYPE = (
+		("Annual Report","Annual Report"),
+		("Journal Article","Journal Article"),
+		("Technical Memo","Technical Memo"),
+		("Presentation Slides","Presentation Slides"),
+		("Other","Other")
+	)
+         
+    document = models.FileField(upload_to='documents/', blank=True)
+    title = models.CharField(max_length=200)
+    description = models.TextField(null=True)
+    primary_author = models.CharField(max_length=50)
+    employee_authors = models.ManyToManyField(User, related_name="%(app_label)s_%(class)s_employee_authors", blank=True)
+    publish_date = models.DateField()
+    document_type = models.CharField(choices = DOCUMENT_TYPE, max_length=50)
+    citation = models.TextField(null=True, blank=True)
+    keywords = models.CharField(max_length=100, null=True)
