@@ -46,8 +46,8 @@ def populate_groups(apps, schema_editor):
                 'facility':["view", "add", "change"],
             },
             'files':{
-                'image':["view","add","change"],
-                'document':["view","add","change"]
+                'image':["view","add","change","delete"],
+                'document':["view","add","change","delete"]
             }
         },
         "Project_leader":{
@@ -64,8 +64,8 @@ def populate_groups(apps, schema_editor):
                 'facility':["view"],
             },
             'files':{
-                'image':["view", "add", "change"],
-                'document':["view","add","change"]
+                'image':["view", "add", "change","delete"],
+                'document':["view","add","change","delete"]
             }
         },
         "Professional":{
@@ -83,7 +83,7 @@ def populate_groups(apps, schema_editor):
             },
             'files':{
                 'image':["view"],
-                'document':["view","add","change"]
+                'document':["view","add","change","delete"]
             }
         },
         "Technician":{
