@@ -96,7 +96,7 @@ class ProjectSerializer(BaseModelSerializer):
 class SubprojectSerializer(MetaModelSerializer):
     class Meta:
         model = Subproject
-        fields = ['id', 'division', 'project', 'name', 'description', 'lead', 'img_banner', 'img_card']
+        fields = ['id', 'division', 'project', 'name', 'description', 'lead', 'img_banner', 'img_card', 'sort_order']
 
     def create(self, validated_data):
         user = self.context['request'].user
@@ -111,7 +111,7 @@ class GETSubprojectSerializer(MetaModelSerializer):
 
     class Meta:
         model = Subproject
-        fields = ['id', 'division', 'project', 'name', 'description', 'lead', 'img_banner', 'img_card']
+        fields = ['id', 'division', 'project', 'name', 'description', 'lead', 'img_banner', 'img_card', 'sort_order']
 
     def to_representation(self, instance):
         # Override field representation for GET requests
@@ -127,7 +127,7 @@ class GETSubprojectSerializer(MetaModelSerializer):
 class TaskSerializer(MetaModelSerializer):
     class Meta:
         model = Task
-        fields = ['id', 'subproject', 'task_type', 'description', 'supervisor', 'img_banner', 'img_card']
+        fields = ['id', 'subproject', 'task_type', 'description', 'supervisor', 'img_banner', 'img_card', 'sort_order']
 
     def get_task_type(self, instance):
         return ObjectLookUpSerializer(instance.task_type).data;

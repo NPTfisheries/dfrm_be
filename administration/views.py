@@ -105,9 +105,9 @@ class SubprojectViewSet(viewsets.ModelViewSet):
 
         if project_id:
             project= get_object_or_404(Project, id=project_id)
-            return Subproject.objects.filter(project=project)
+            return Subproject.objects.filter(project=project).order_by('sort_order', 'name')
         else:
-            return Subproject.objects.all();
+            return Subproject.objects.all().order_by('sort_order', 'name')
 
 class TaskViewSet(viewsets.ModelViewSet):
     queryset = Task.objects.all()
@@ -120,9 +120,9 @@ class TaskViewSet(viewsets.ModelViewSet):
 
         if subproject_id:
             subproject= get_object_or_404(Subproject, id=subproject_id)
-            return Task.objects.filter(subproject=subproject)
+            return Task.objects.filter(subproject=subproject).order_by('sort_order', 'task_type')
         else:
-            return Task.objects.all();
+            return Task.objects.all().order_by('sort_order', 'task_type')
 
 class FacilityViewSet(viewsets.ModelViewSet):
     queryset = Facility.objects.all()
