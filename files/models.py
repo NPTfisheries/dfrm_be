@@ -37,7 +37,7 @@ class Document(MetaModel):
 		("Other","Other")
 	)
          
-    document = models.FileField(upload_to='documents/', blank=True)
+    document = models.FileField(upload_to='documents/', blank=True, max_length=200)
     title = models.CharField(max_length=200)
     description = models.TextField(null=True)
     primary_author = models.CharField(max_length=50)
