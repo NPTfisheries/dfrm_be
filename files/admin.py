@@ -4,9 +4,9 @@ from files.models import Image, Document
 # Register your models here.
 
 @admin.register(Image)
-class DepartmentClassAdmin(admin.ModelAdmin):
+class ImageClassAdmin(GuardedModelAdmin):
     list_display = ('id','created_at', 'updated_at', 'created_by', 'name')
 
 @admin.register(Document)
-class SubprojectAdmin(GuardedModelAdmin):
+class DocumentClassAdmin(GuardedModelAdmin):
     list_display = ('id', 'title', 'description', 'primary_author', 'publish_date')
