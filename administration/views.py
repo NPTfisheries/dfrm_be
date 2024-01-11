@@ -1,12 +1,9 @@
-from rest_framework import viewsets, status
-from rest_framework import generics
-from rest_framework.views import APIView
-from rest_framework.decorators import action
+from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import permissions
-from guardian.shortcuts import assign_perm
 from administration.models import Department, Division, Project, Subproject, Task, Facility
 from administration.serializers import DepartmentSerializer, DivisionSerializer, ProjectSerializer, GETSubprojectSerializer, SubprojectSerializer, TaskSerializer, FacilitySerializer
+from common.views import CustomObjectPermissions
 from django.shortcuts import get_object_or_404
 
 class DepartmentViewSet(viewsets.ModelViewSet):
@@ -44,44 +41,6 @@ class DivisionViewSet(viewsets.ModelViewSet):
             response_data['projects'] = projects_data
             
         return Response(response_data)
-
-
-class CustomObjectPermissions(permissions.DjangoObjectPermissions):
-
-    def get_permission_names(self, view):
-        # Get the model class associated with the ViewSet
-        model = view.queryset.model if hasattr(view, 'queryset') else view.model
-        app_label = model._meta.app_label
-        model_name = model.__name__.lower()
-        
-        # Define permission names based on the app_label and model_name
-        change_permission_name = f"{app_label}.change_{model_name}"
-        delete_permission_name = f"{app_label}.delete_{model_name}"
-        
-        return {
-            'change_permission_name': change_permission_name,
-            'delete_permission_name': delete_permission_name
-        }
-
-    def has_permission(self, request, view):
-        # Allow anyone to view
-        if request.method in permissions.SAFE_METHODS:
-            return True
-
-        return super().has_permission(request, view)
-
-    def has_object_permission(self, request, view, obj):
-            
-        permission_names = self.get_permission_names(view)
-        # Check for change and delete permissions
-
-        if request.method in ['PUT', 'PATCH']:
-            return request.user.has_perm(permission_names['change_permission_name'], obj)
-        
-        if request.method == 'DELETE':
-            return request.user.has_perm(permission_names['delete_permission_name'], obj)
-            
-        return super().has_object_permission(request, view, obj)
 
 class ProjectViewSet(viewsets.ModelViewSet):
     queryset = Project.objects.all()

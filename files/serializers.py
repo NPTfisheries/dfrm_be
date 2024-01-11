@@ -18,6 +18,9 @@ class ImageSerializer(BaseModelSerializer):
         instance = super().create(validated_data)
         perm = Permission.objects.get(codename='change_image')
         assign_perm(perm, user, instance)
+        
+        delete_perm = Permission.objects.get(codename='delete_document')
+        assign_perm(delete_perm, user, instance)
 
         instance.save()
         return instance
@@ -45,6 +48,9 @@ class DocumentSerializer(MetaModelSerializer):
         perm = Permission.objects.get(codename='change_document')
         assign_perm(perm, user, instance)
 
+        delete_perm = Permission.objects.get(codename='delete_document')
+        assign_perm(delete_perm, user, instance)
+
         instance.save()
         return instance
 
@@ -55,5 +61,3 @@ class DocumentSerializer(MetaModelSerializer):
             instance.employee_authors.set(ids)
         instance = super().update(instance, validated_data)
         return instance
-    
-    
