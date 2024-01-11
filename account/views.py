@@ -54,6 +54,8 @@ class UserViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.Gen
         # Filter out the specific user by their username
         # AnonymousUser.id:1 // we don't want this in user lists
         queryset = queryset.exclude(id=1)
+        # filter out inactive users
+        queryset = queryset.filter(is_active=True)
         
         return queryset
 
