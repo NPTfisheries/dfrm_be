@@ -19,7 +19,7 @@ class ImageSerializer(BaseModelSerializer):
         perm = Permission.objects.get(codename='change_image')
         assign_perm(perm, user, instance)
         
-        delete_perm = Permission.objects.get(codename='delete_document')
+        delete_perm = Permission.objects.get(codename='delete_image')
         assign_perm(delete_perm, user, instance)
 
         instance.save()
