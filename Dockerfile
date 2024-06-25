@@ -26,6 +26,6 @@ RUN pip install --upgrade pip \
 # Copy project code
 COPY . .
 
-EXPOSE 9000
+EXPOSE 8000
 
-CMD ["python", "manage.py", "runserver", "0.0.0.0:9000"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
