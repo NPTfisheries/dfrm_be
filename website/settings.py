@@ -106,19 +106,35 @@ WSGI_APPLICATION = 'website.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+# build in if statement based on debug to access local persistent storage or AWS
 
-DATABASES = {
+if env('MODE') == 'Dev':
+    DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': env('DATABASE_NAME'),
         'USER': env('DATABASE_USER'),
-        'PASSWORD': env('DATABASE_PASS'),
-        'HOST': env('DATABASE_HOST'),    
+        'PASSWORD': env('DATABASE_PASS_DEV'),
+        'HOST': env('DATABASE_HOST_DEV'),    
         'PORT': env('DATABASE_PORT'),
         #'ENGINE': 'django.db.backends.sqlite3',
         #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    },
-}
+        },
+    }
+
+if env('MODE') == 'Prod':
+    DATABASES = {
+    'default': {
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': env('DATABASE_NAME'),
+        'USER': env('DATABASE_USER'),
+        'PASSWORD': env('DATABASE_PASS_PROD'),
+        'HOST': env('DATABASE_HOST_PROD'),    
+        'PORT': env('DATABASE_PORT'),
+        #'ENGINE': 'django.db.backends.sqlite3',
+        #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        },
+    }
 
 
 # Password validation
