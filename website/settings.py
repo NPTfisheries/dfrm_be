@@ -171,7 +171,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-if env('Mode') == 'Dev':
+if env('MODE') == 'Dev':
     STATIC_URL = 'static/'
 
     STATICFILES_DIRS = [
