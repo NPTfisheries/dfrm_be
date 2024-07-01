@@ -190,16 +190,11 @@ if env('MODE') == 'Prod':
         os.path.join(BASE_DIR, 'static'),
     ]
 
-    # STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-    # MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-    
     AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
     AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
     AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
     AWS_S3_FILE_OVERWRITE = False
-    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
-    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
 
     STORAGES = {
         # media files
