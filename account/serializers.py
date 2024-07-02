@@ -135,11 +135,11 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = Profile
         fields = ('title', 'work_phone', 'mobile_phone', 'city', 'state', 'bio', 'photo')
 
-    def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        if instance.photo:
-            representation['photo'] = f'/media/{instance.photo}'
-        return representation
+    # def to_representation(self, instance):
+    #     representation = super().to_representation(instance)
+    #     if instance.photo:
+    #         representation['photo'] = f'/media/{instance.photo}'
+    #     return representation
 
 class UpdateProfilePhotoSerializer(serializers.ModelSerializer):
     class Meta:
