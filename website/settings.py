@@ -79,7 +79,9 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    "http://dfrm-fe.s3-website-us-west-2.amazonaws.com",
+    #"http://dfrm-fe.s3-website-us-west-2.amazonaws.com",
+    #"http://ec2-52-38-38-234.us-west-2.compute.amazonaws.com",
+    "http://52.38.38.234"
 ]
 
 ROOT_URLCONF = 'website.urls'
