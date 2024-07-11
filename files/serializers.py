@@ -24,6 +24,13 @@ class ImageSerializer(BaseModelSerializer):
 
         instance.save()
         return instance
+    
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        if instance.image:
+            # this removes /media/ from front of filepath
+            representation['image'] = f'{instance.image}'
+        return representation
 
 class DocumentSerializer(MetaModelSerializer):
     class Meta:

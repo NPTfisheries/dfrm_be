@@ -138,7 +138,8 @@ class ProfileSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         if instance.photo:
-            representation['photo'] = f'/media/{instance.photo}'
+            # this removes /media/ from front of filepath
+            representation['photo'] = f'{instance.photo}'
         return representation
 
 class UpdateProfilePhotoSerializer(serializers.ModelSerializer):
@@ -149,7 +150,8 @@ class UpdateProfilePhotoSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         if instance.photo:
-            representation['photo'] = f'/media/{instance.photo}'
+            # this removes /media/ from front of filepath
+            representation['photo'] = f'{instance.photo}'
         return representation
 
 
