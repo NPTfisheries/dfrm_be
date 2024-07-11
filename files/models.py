@@ -1,8 +1,12 @@
 from django.db import models
 from common.models import MetaModel, BaseModel
-from PIL import Image
+# from PIL import Image as PILimage  # Image conflict avoidance.
 from django.urls import reverse
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 from account.models import User
+from django.template.defaultfilters import slugify
+from common.utils import resize_image
 
 # Create your models here.
 
@@ -12,20 +16,17 @@ class Image(BaseModel):
     source = models.CharField(max_length=100)
     image = models.ImageField(upload_to="images/uploaded/", default='images/default.JPG') #default='images/card_default.JPG'
 
-    # def save(self, *args, **kwargs):
-    #     super().save(*args, **kwargs)
-    #     img_b = Image.open(self.img_banner.path)
-    #     img_c = Image.open(self.img_card.path)
+    def save(self, *args, **kwargs):
+        # Rename the file before saving, if not .jpg
+        if self.image.name != self.image.name[0:-4] + '.jpg':
+            # print('files/models: renaming image.', flush=True)
+            self.image.name = self.image.name[0:-4] + '.jpg'
 
-    #     if img_b.height > 800 or img_b.width > 1200:  #3:2 aspect ratio
-    #         output_size = (1200, 800)
-    #         img_b.thumbnail(output_size)
-    #         img_b.save(self.img_banner.path)
+        super(Image, self).save(*args, **kwargs)
 
-    #     if img_c.height > 267 or img_c.width > 400: #3:2 aspect ratio
-    #         output_size = (300, 300)
-    #         img_c.thumbnail(output_size)
-    #         img_c.save(self.img_card.path)
+@receiver(post_save, sender=Image)
+def resize_image_signal(sender, instance, **kwargs):
+    resize_image(instance, 'image', min_width=1546.36, min_height=500)
 
 class Document(MetaModel):
 
