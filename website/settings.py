@@ -32,15 +32,14 @@ SECRET_KEY=env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
     # Production: False
     # Development: True
-DEBUG=env('DEBUG')
 
-ALLOWED_HOSTS = [
-    #"*",
-    #"localhost",
-    "52.38.38.234",
-    "ec2-52-38-38-234.us-west-2.compute.amazonaws.com",
-]
+if env('MODE') == 'Dev':
+    DEBUG = True
+    ALLOWED_HOSTS = env('ALLOWED_HOSTS_DEV').split(',')
 
+if env('MODE') == 'Prod':
+    DEBUG = False
+    ALLOWED_HOSTS = env('ALLOWED_HOSTS_PROD').split(',')
 
 # Application definition
 
@@ -80,9 +79,14 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    "http://ec2-52-38-38-234.us-west-2.compute.amazonaws.com",
-]
+if env('MODE') == 'Dev':
+    DEBUG = True
+    CORS_ALLOWED_ORIGINS = env('CORS_ALLOWED_ORIGINS_DEV').split(',')
+
+if env('MODE') == 'Prod':
+    DEBUG = False
+    CORS_ALLOWED_ORIGINS = env('CORS_ALLOWED_ORIGINS_PROD').split(',')
+
 
 ROOT_URLCONF = 'website.urls'
 
