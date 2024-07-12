@@ -190,29 +190,42 @@ if env('MODE') == 'Dev':
 
 
 if env('MODE') == 'Prod':
-    
-    STATIC_URL = 'static/'
-    MEDIA_URL = '/media/'
-    
-    STATICFILES_DIRS = [
-        os.path.join(BASE_DIR, 'static'),
-    ]
 
     AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
     AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
-    AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
     AWS_S3_FILE_OVERWRITE = False
+    AWS_DEFAULT_ACL = None
 
+    # Static Files    
+    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
+    STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
+
+    # Media files
+    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    MEDIAFILES_LOCATION = 'media'
+    
+    # Specify the location for static and media files in S3
+    STATICFILES_LOCATION = 'static'
     STORAGES = {
-        # media files
-        "default": {
-            "BACKEND": "storages.backends.s3boto3.S3StaticStorage",
+        'default': {
+            'BACKEND': 'storages.backends.s3boto3.S3Boto3Storage',
+            'OPTIONS': {
+                'location': MEDIAFILES_LOCATION,
+            },
         },
-        # django admin pages css and js file management
-        "staticfiles": {
-            "BACKEND": "storages.backends.s3boto3.S3StaticStorage",
+        'staticfiles': {
+            'BACKEND': 'storages.backends.s3boto3.S3StaticStorage',
+            'OPTIONS': {
+                'location': STATICFILES_LOCATION,
+            },
         },
+    }
+
+    AWS_S3_OBJECT_PARAMETERS = {
+        'CacheControl': 'max-age=86400',
     }
 
 
