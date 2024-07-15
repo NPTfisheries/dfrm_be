@@ -214,6 +214,9 @@ if env('MODE') == 'Prod':
 
     # ADMIN_MEDIA_PREFIX = f'{STATIC_URL}admin/'
 
+    STATICFILES_STORAGE='storages.backends.s3boto3.S3Boto3.Storage'
+    AWS_LOCATION = 'staticfiles'
+
     STORAGES = {
         # media files
         "default": {
