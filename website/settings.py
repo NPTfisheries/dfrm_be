@@ -196,17 +196,9 @@ if env('MODE') == 'Prod':
     AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
     AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
     AWS_S3_FILE_OVERWRITE = False
-
-    # STATICFILES_DIRS = [
-    #     os.path.join(BASE_DIR, 'staticfiles'),
-    # ]
     
-
-    # STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-    # MEDIA_ROOT = os.path.join(BASE_DIR, 'media')    
-    
-    # STATIC_URL = 'https://%s.s3.amazonaws.com/staticfiles/' % AWS_STORAGE_BUCKET_NAME
-    # MEDIA_URL = 'https://%s/media/' % AWS_S3_CUSTOM_DOMAIN
+    STATIC_URL = 'https://%s.s3.amazonaws.com/staticfiles/' % AWS_STORAGE_BUCKET_NAME
+    MEDIA_URL = 'https://%s/media/' % AWS_S3_CUSTOM_DOMAIN
 
     # ADMIN_MEDIA_PREFIX = f'{STATIC_URL}admin/'
 
@@ -219,7 +211,7 @@ if env('MODE') == 'Prod':
         # django admin pages css and js file management
         "staticfiles": {
             "BACKEND": "storages.backends.s3boto3.S3StaticStorage",
-            'location': 'staticfiles',
+            "location": "staticfiles",
         },
     }
 
