@@ -207,6 +207,7 @@ if env('MODE') == 'Prod':
     ADMIN_MEDIA_PREFIX = '/static/admin/'
 
     AWS_STATIC_LOCATION = 'staticfiles'
+    STATIC_ROOT = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_STATIC_LOCATION)
     STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_STATIC_LOCATION)
 
     AWS_MEDIA_LOCATION = 'media'
