@@ -206,12 +206,16 @@ if env('MODE') == 'Prod':
         # media files
         "default": {
             "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
-            "location": "media",
+            "OPTIONS": {
+                "location": "media",
+            }
         },
         # django admin pages css and js file management
         "staticfiles": {
             "BACKEND": "storages.backends.s3boto3.S3StaticStorage",
-            "location": "staticfiles",
+            "OPTIONS": {
+                "location": "staticfiles",
+            }
         },
     }
 
