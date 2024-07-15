@@ -204,14 +204,13 @@ if env('MODE') == 'Prod':
     AWS_S3_FILE_OVERWRITE = False
     AWS_S3_ADDRESSING_STYLE = "virtual"
 
-    ADMIN_MEDIA_PREFIX = '/staticfiles/admin/'
+    # ADMIN_MEDIA_PREFIX = '/staticfiles/admin/'
 
-    AWS_STATIC_LOCATION = 'staticfiles'
-    STATIC_ROOT = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_STATIC_LOCATION)
-    STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_STATIC_LOCATION)
-
-    AWS_MEDIA_LOCATION = 'media'
-    MEDIA_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_STATIC_LOCATION)
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')    
+    
+    STATIC_URL = 'https://%s/staticfiles/' % AWS_S3_CUSTOM_DOMAIN
+    MEDIA_URL = 'https://%s/media/' % AWS_S3_CUSTOM_DOMAIN
 
     STORAGES = {
         # media files
@@ -220,7 +219,7 @@ if env('MODE') == 'Prod':
         },
         # django admin pages css and js file management
         "staticfiles": {
-            "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+            "BACKEND": "storages.backends.s3boto3.S3StaticStorage",
         },
     }
 
