@@ -217,16 +217,16 @@ if env('MODE') == 'Prod':
     STATICFILES_STORAGE='storages.backends.s3boto3.S3Boto3.Storage'
     AWS_LOCATION = 'staticfiles'
 
-    STORAGES = {
-        # media files
-        "default": {
-            "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
-        },
-        # django admin pages css and js file management
-        "staticfiles": {
-            "BACKEND": "storages.backends.s3boto3.S3StaticStorage",
-        },
-    }
+    # STORAGES = {
+    #     # media files
+    #     "default": {
+    #         "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+    #     },
+    #     # django admin pages css and js file management
+    #     "staticfiles": {
+    #         "BACKEND": "storages.backends.s3boto3.S3StaticStorage",
+    #     },
+    # }
 
 
 # Default primary key field type
