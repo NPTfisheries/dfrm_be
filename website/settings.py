@@ -191,7 +191,6 @@ if env('MODE') == 'Dev':
 
 if env('MODE') == 'Prod':
     
-    MEDIA_URL = '/media/'
     
     STATICFILES_DIRS = [
         os.path.join(BASE_DIR, 'static'),
@@ -203,7 +202,11 @@ if env('MODE') == 'Prod':
     AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
     AWS_S3_FILE_OVERWRITE = False
 
-    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/staticfiles/'
+    STATIC_LOCATION = 'staticfiles'
+    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{STATIC_LOCATION}/'
+
+    MEDIA_LOCATION = 'media'
+    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{MEDIA_LOCATION}/'
 
     STORAGES = {
         # media files
