@@ -198,6 +198,9 @@ if env('MODE') == 'Prod':
     AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
     AWS_S3_FILE_OVERWRITE = False
     # AWS_S3_ADDRESSING_STYLE = "virtual"
+    AWS_S3_ADDRESSING_STYLE = 'path'
+
+    # AWS_LOCATION='media'
 
     STATICFILES_DIRS = [
         'https://%s/staticfiles/' % AWS_S3_CUSTOM_DOMAIN,
@@ -208,7 +211,7 @@ if env('MODE') == 'Prod':
     # STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
     # MEDIA_ROOT = os.path.join(BASE_DIR, 'media')    
     
-    # STATIC_URL = 'https://%s/staticfiles/' % AWS_S3_CUSTOM_DOMAIN
+    STATIC_URL = 'https://%s.s3.amazonaws.com/staticfiles/' % AWS_STORAGE_BUCKET_NAME
     # MEDIA_URL = 'https://%s/media/' % AWS_S3_CUSTOM_DOMAIN
 
     # ADMIN_MEDIA_PREFIX = f'{STATIC_URL}admin/'
