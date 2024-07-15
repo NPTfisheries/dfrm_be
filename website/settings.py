@@ -200,12 +200,10 @@ if env('MODE') == 'Prod':
     AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
     AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
-    # AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
-    AWS_S3_ENDPOINT_URL = '%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
+    AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
     AWS_S3_FILE_OVERWRITE = False
 
-    # STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/staticfiles/'
-    STATIC_URL = f'https://{AWS_S3_ENDPOINT_URL}/staticfiles/'
+    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/staticfiles/'
 
     STORAGES = {
         # media files
