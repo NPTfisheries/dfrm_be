@@ -204,6 +204,8 @@ if env('MODE') == 'Prod':
     AWS_S3_FILE_OVERWRITE = False
     AWS_S3_ADDRESSING_STYLE = "virtual"
 
+    ADMIN_MEDIA_PREFIX = '/static/admin/'
+
     AWS_STATIC_LOCATION = 'staticfiles'
     STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_STATIC_LOCATION)
 
