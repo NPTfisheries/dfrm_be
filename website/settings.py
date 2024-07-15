@@ -191,11 +191,6 @@ if env('MODE') == 'Dev':
 
 if env('MODE') == 'Prod':
     
-    
-    STATICFILES_DIRS = [
-        os.path.join(BASE_DIR, 'staticfiles'),
-    ]
-
     AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
     AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
@@ -204,6 +199,10 @@ if env('MODE') == 'Prod':
     AWS_S3_FILE_OVERWRITE = False
     # AWS_S3_ADDRESSING_STYLE = "virtual"
 
+    STATICFILES_DIRS = [
+        'https://%s/staticfiles/' % AWS_S3_CUSTOM_DOMAIN,
+        os.path.join(BASE_DIR, 'staticfiles'),
+    ]
     
 
     # STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
