@@ -25,10 +25,10 @@ class Image(BaseModel):
         # super(Image, self).save(*args, **kwargs)
         super().save(*args, **kwargs)
 
-@receiver(post_save, sender=Image)
-def resize_image_signal(sender, instance, **kwargs):
-    resize_image(instance, 'image', min_width=1546.36, min_height=500)
+        self.resize_image()
 
+    def resize_image(self):
+        resize_image(self, 'image', min_width=1546.36, min_height=500)
 
 class Document(MetaModel):
 
