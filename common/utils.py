@@ -3,6 +3,9 @@ from PIL import Image as PILImage
 from io import BytesIO
 from django.core.files.base import ContentFile
 
+import boto3
+from django.conf import settings
+
 def resize_image(self, image_field, min_width, min_height):
         image = getattr(self, image_field)
         if image:
@@ -41,3 +44,16 @@ def resize_image(self, image_field, min_width, min_height):
                 print('common/utils/image_processing: Resized image set to model field.', flush=True)
             else:
                 print('common/utils/image_processing: Image is proper size - skipping resize.', flush=True)
+
+def delete_s3_object(file_path):
+    s3 = boto3.client(
+        's3',
+        aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+        aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+        region_name=settings.AWS_S3_REGION_NAME,
+    )
+    try:
+        s3.delete_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=file_path)
+        print(f'Successfully deleted {file_path} from S3.')
+    except Exception as e:
+        print(f'Error deleting {file_path} from S3: {e}')

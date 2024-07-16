@@ -42,6 +42,7 @@ class DocumentSerializer(MetaModelSerializer):
         if self.context['request'].method == 'GET':
             return {
                 **super().to_representation(instance),
+                # 'document': f'/media/{instance.document}',
                 'employee_authors': UserSerializer(instance.employee_authors.all(), many=True).data
             }
         return super().to_representation(instance)
