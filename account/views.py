@@ -1,7 +1,7 @@
 from rest_framework import status, generics, mixins, viewsets
 from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView
-from .serializers import RegistrationSerializer, MyTokenObtainPairSerializer, ChangePasswordSerializer, UserSerializer, ProfileSerializer, UpdateProfilePhotoSerializer, ObjectPermissionsSerializer
+from .serializers import RegistrationSerializer, MyTokenObtainPairSerializer, ChangePasswordSerializer, UserSerializer, ProfileSerializer, ObjectPermissionsSerializer
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from .models import User, Profile
@@ -76,28 +76,28 @@ class UpdateProfileView(generics.UpdateAPIView):
         profile.save()
         return Response(serializer.data)
 
-class UpdateProfilePhotoView(generics.UpdateAPIView):
-    # queryset = Profile.objects.all()
-    serializer_class = UpdateProfilePhotoSerializer
-    permission_classes = [IsAuthenticated]
+# class UpdateProfilePhotoView(generics.UpdateAPIView):
+#     # queryset = Profile.objects.all()
+#     serializer_class = UpdateProfilePhotoSerializer
+#     permission_classes = [IsAuthenticated]
 
-    def get_object(self):
-        return self.request.user.profile
+#     def get_object(self):
+#         return self.request.user.profile
 
-    def perform_update(self, serializer):
-        profile = self.get_object()
-        if self.request.user != profile.user:
-            raise serializers.ValidationError("You can only update your own profile photo.")
+#     def perform_update(self, serializer):
+#         profile = self.get_object()
+#         if self.request.user != profile.user:
+#             raise serializers.ValidationError("You can only update your own profile photo.")
 
-        # local delete functionality - removed for now 7/16/24
-        # existing_photo = self.get_object().photo
-        # if 'profile_default.JPG' not in existing_photo.name:
-        #     # Delete the existing photo if not the default. Prevent clutter.
-        #     default_storage.delete(existing_photo.name)
+#         # local delete functionality - removed for now 7/16/24
+#         # existing_photo = self.get_object().photo
+#         # if 'profile_default.JPG' not in existing_photo.name:
+#         #     # Delete the existing photo if not the default. Prevent clutter.
+#         #     default_storage.delete(existing_photo.name)
 
-        serializer.save()
-        profile.save()
-        return Response(serializer.data)
+#         serializer.save()
+#         profile.save()
+#         return Response(serializer.data)
 
 class ObjectPermissionsView(APIView):
     permission_classes = [IsAuthenticated]

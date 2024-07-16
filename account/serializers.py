@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from rest_framework_simplejwt.views import TokenObtainPairView
 from guardian.shortcuts import get_objects_for_user
 from django.contrib.auth.password_validation import validate_password
 from .models import User, Profile
@@ -142,16 +141,16 @@ class ProfileSerializer(serializers.ModelSerializer):
             representation['photo'] = f'/media/{instance.photo}'
         return representation
 
-class UpdateProfilePhotoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Profile
-        fields = ('photo',)
+# class UpdateProfilePhotoSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Profile
+#         fields = ('photo',)
 
-    def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        if instance.photo:
-            representation['photo'] = f'/media/{instance.photo}'
-        return representation
+#     def to_representation(self, instance):
+#         representation = super().to_representation(instance)
+#         if instance.photo:
+#             representation['photo'] = f'/media/{instance.photo}'
+#         return representation
 
 
 class UserSerializer(serializers.ModelSerializer):
