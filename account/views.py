@@ -74,7 +74,7 @@ class UpdateProfileView(generics.UpdateAPIView):
         serializer.save()
 
 class UpdateProfilePhotoView(generics.UpdateAPIView):
-    queryset = Profile.objects.all()
+    # queryset = Profile.objects.all()
     serializer_class = UpdateProfilePhotoSerializer
     permission_classes = [IsAuthenticated]
 
@@ -82,16 +82,19 @@ class UpdateProfilePhotoView(generics.UpdateAPIView):
         return self.request.user.profile
 
     def perform_update(self, serializer):
-        if self.request.user != self.get_object().user:
+        profile = self.get_object()
+        if self.request.user != profile.user:
             raise serializers.ValidationError("You can only update your own profile photo.")
 
+        # local delete functionality - removed for now 7/16/24
         # existing_photo = self.get_object().photo
         # if 'profile_default.JPG' not in existing_photo.name:
         #     # Delete the existing photo if not the default. Prevent clutter.
         #     default_storage.delete(existing_photo.name)
 
-
         serializer.save()
+        profile.save()
+        return Response(serializer.data)
 
 class ObjectPermissionsView(APIView):
     permission_classes = [IsAuthenticated]
