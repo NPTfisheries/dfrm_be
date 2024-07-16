@@ -22,14 +22,10 @@ class Image(BaseModel):
             base, ext = os.path.splitext(self.image.name)
             self.image.name = base + '.jpg'
 
-        self.resize_image()
+        resize_image(self)
 
         # super(Image, self).save(*args, **kwargs)
         super().save(*args, **kwargs)
-
-
-    def resize_image(self):
-        resize_image(self, 'image', min_width=1546.36, min_height=500)
 
 class Document(MetaModel):
 
