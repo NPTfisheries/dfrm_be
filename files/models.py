@@ -22,13 +22,11 @@ class Image(BaseModel):
             base, ext = os.path.splitext(self.image.name)
             self.image.name = base + '.jpg'
 
-
-            # CAN I RESIZE IT HERE ??? 
+        self.resize_image()
 
         # super(Image, self).save(*args, **kwargs)
         super().save(*args, **kwargs)
 
-        self.resize_image()
 
     def resize_image(self):
         resize_image(self, 'image', min_width=1546.36, min_height=500)

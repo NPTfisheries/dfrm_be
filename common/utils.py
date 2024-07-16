@@ -2,6 +2,7 @@
 import boto3
 from PIL import Image as PILImage
 from io import BytesIO
+from django.core.files.base import ContentFile
 import os
 
 # def resize_image(instance, image_field, min_width, min_height):
