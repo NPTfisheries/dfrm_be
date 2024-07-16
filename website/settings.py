@@ -195,7 +195,7 @@ if env('MODE') == 'Prod':
     AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
     AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
     AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
-    AWS_S3_FILE_OVERWRITE = True  # setting this to false will...
+    AWS_S3_FILE_OVERWRITE = False
 
     STORAGES = {
         # media files
