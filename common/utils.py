@@ -3,9 +3,10 @@ from PIL import Image as PILImage
 from io import BytesIO
 from django.core.files.base import ContentFile
 
-def resize_image(self, min_width, min_height):
-        if self.image:
-            img = PILImage.open(self.image)
+def resize_image(self, image_field, min_width, min_height):
+        image = getattr(self, image_field)
+        if image:
+            img = PILImage.open(image)
 
             # Check if resizing is needed
             if not (round(img.size[0]) == round(min_width) or round(img.size[1]) == round(min_height)):
@@ -32,7 +33,7 @@ def resize_image(self, min_width, min_height):
                 img_bytes.seek(0)
 
                 # Replace the original image with the resized image
-                self.image.save(self.image.name, ContentFile(img_bytes.read()), save=False)
+                image.save(image.name, ContentFile(img_bytes.read()), save=False)
                 print('common/utils/image_processing: Resized image set to model field.', flush=True)
             else:
                 print('common/utils/image_processing: Image is proper size - skipping resize.', flush=True)

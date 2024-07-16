@@ -16,7 +16,7 @@ class Image(BaseModel):
             base, ext = os.path.splitext(self.image.name)
             self.image.name = base + '.jpg'
 
-        resize_image(self, 1546.36, 500) # resize before save.
+        resize_image(self, 'image', 1546.36, 500) # resize before save.
 
         super().save(*args, **kwargs)
 

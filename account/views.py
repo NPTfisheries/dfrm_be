@@ -68,10 +68,13 @@ class UpdateProfileView(generics.UpdateAPIView):
         return self.request.user.profile
 
     def perform_update(self, serializer):
-        if self.request.user != self.get_object().user:
+        profile = self.get_object()
+        if self.request.user != profile.user:
             raise serializers.ValidationError("You can only update your own profile.")
         
         serializer.save()
+        profile.save()
+        return Response(serializer.data)
 
 class UpdateProfilePhotoView(generics.UpdateAPIView):
     # queryset = Profile.objects.all()
