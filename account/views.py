@@ -70,6 +70,7 @@ class UpdateProfileView(generics.UpdateAPIView):
     def perform_update(self, serializer):
         if self.request.user != self.get_object().user:
             raise serializers.ValidationError("You can only update your own profile.")
+        
         serializer.save()
 
 class UpdateProfilePhotoView(generics.UpdateAPIView):
@@ -84,10 +85,11 @@ class UpdateProfilePhotoView(generics.UpdateAPIView):
         if self.request.user != self.get_object().user:
             raise serializers.ValidationError("You can only update your own profile photo.")
 
-        existing_photo = self.get_object().photo
-        if 'profile_default.JPG' not in existing_photo.name:
-            # Delete the existing photo if not the default. Prevent clutter.
-            default_storage.delete(existing_photo.name)
+        # existing_photo = self.get_object().photo
+        # if 'profile_default.JPG' not in existing_photo.name:
+        #     # Delete the existing photo if not the default. Prevent clutter.
+        #     default_storage.delete(existing_photo.name)
+
 
         serializer.save()
 
