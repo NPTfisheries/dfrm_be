@@ -7,8 +7,7 @@ from django.db.models.signals import post_save
 from account.models import User
 from django.template.defaultfilters import slugify
 from common.utils import resize_image
-
-# Create your models here.
+import os
 
 class Image(BaseModel):
     photographer = models.CharField(max_length=50)
@@ -18,13 +17,14 @@ class Image(BaseModel):
 
     def save(self, *args, **kwargs):
         # Rename the file before saving, if not .jpg
-        if self.image.name != self.image.name[0:-4] + '.jpg':
+        if not self.image.name.endswith('.jpg'):
             # print('files/models: renaming image.', flush=True)
-            self.image.name = self.image.name[0:-4] + '.jpg'
+            base, ext = os.path.splitext(self.image.name)
+            self.image.name = base + '.jpg'
 
-        super(Image, self).save(*args, **kwargs)
+        # super(Image, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
-# resize after save
 @receiver(post_save, sender=Image)
 def resize_image_signal(sender, instance, **kwargs):
     resize_image(instance, 'image', min_width=1546.36, min_height=500)
