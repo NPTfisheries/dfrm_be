@@ -3,10 +3,9 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.contrib.auth.password_validation import validate_password
 from django.db.models.signals import post_save
-from django.dispatch import receiver
 from common.utils import resize_image
 from phonenumber_field.modelfields import PhoneNumberField
-from PIL import Image
+from common.utils import resize_image
 import os
 
 class UserManager(BaseUserManager):
@@ -96,15 +95,10 @@ class Profile(models.Model):
         return f'{self.user}'
 
     def save(self, *args, **kwargs):
-        # Rename the file before saving, if not .jpg
-        if self.photo.name != self.photo.name[0:-4] + '.jpg':
-            # print('account/models: renaming image.', flush=True)
-            self.photo.name = self.photo.name[0:-4] + '.jpg'
+        if not self.photo.name.endswith('.jpg'):
+            base, ext = os.path.splitext(self.photo.name)
+            self.photo.name = base + '.jpg'
 
-        super(Profile, self).save(*args, **kwargs)
+        resize_image(self, 300, 300)
 
-@receiver(post_save, sender=Profile)
-def resize_image_signal(sender, instance, **kwargs):
-    resize_image(instance, 'photo', min_width=300, min_height=300)
-
-
+        super().save(*args, **kwargs)

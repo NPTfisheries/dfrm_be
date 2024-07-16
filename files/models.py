@@ -1,11 +1,7 @@
 from django.db import models
 from common.models import MetaModel, BaseModel
-# from PIL import Image as PILimage  # Image conflict avoidance.
-from django.urls import reverse
-from django.dispatch import receiver
 from django.db.models.signals import post_save
 from account.models import User
-from django.template.defaultfilters import slugify
 from common.utils import resize_image
 import os
 
@@ -16,15 +12,12 @@ class Image(BaseModel):
     image = models.ImageField(upload_to="images/uploaded/", default='images/default.JPG') #default='images/card_default.JPG'
 
     def save(self, *args, **kwargs):
-        # Rename the file before saving, if not .jpg
         if not self.image.name.endswith('.jpg'):
-            # print('files/models: renaming image.', flush=True)
             base, ext = os.path.splitext(self.image.name)
             self.image.name = base + '.jpg'
 
-        resize_image(self)
+        resize_image(self, 1546.36, 500) # resize before save.
 
-        # super(Image, self).save(*args, **kwargs)
         super().save(*args, **kwargs)
 
 class Document(MetaModel):
