@@ -33,17 +33,17 @@ class DocumentViewSet(viewsets.ModelViewSet):
     serializer_class = DocumentSerializer
     permission_classes = [CustomObjectPermissions]
 
-    def destroy(self, request, *args, **kwargs):
-        instance = self.get_object()
+    # def destroy(self, request, *args, **kwargs):
+    #     instance = self.get_object()
 
-        # Get the file path from the instance
-        file_path = instance.document.path
+    #     # Get the file path from the instance
+    #     file_path = instance.document.path
 
-        # Delete the file from the storage
-        if os.path.exists(file_path):
-            os.remove(file_path)
+    #     # Delete the file from the storage
+    #     if os.path.exists(file_path):
+    #         os.remove(file_path)
 
-        # Delete the database record
-        self.perform_destroy(instance)
+    #     # Delete the database record
+    #     self.perform_destroy(instance)
 
-        return Response(status=status.HTTP_204_NO_CONTENT)
+    #     return Response(status=status.HTTP_204_NO_CONTENT)

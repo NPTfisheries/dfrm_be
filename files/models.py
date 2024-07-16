@@ -48,4 +48,4 @@ class Document(MetaModel):
     publish_date = models.DateField()
     document_type = models.CharField(choices = DOCUMENT_TYPE, max_length=50)
     citation = models.TextField(null=True, blank=True)
-    keywords = models.CharField(max_length=100, null=True)
+    keywords = models.CharField(max_length=100, null=True, blank=True)
