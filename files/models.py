@@ -22,6 +22,9 @@ class Image(BaseModel):
             base, ext = os.path.splitext(self.image.name)
             self.image.name = base + '.jpg'
 
+
+            # CAN I RESIZE IT HERE ??? 
+
         # super(Image, self).save(*args, **kwargs)
         super().save(*args, **kwargs)
 
