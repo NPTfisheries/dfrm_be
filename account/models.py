@@ -99,6 +99,6 @@ class Profile(models.Model):
             base, ext = os.path.splitext(self.photo.name)
             self.photo.name = base + '.jpg'
 
-        resize_image(self, 'photo', 300, 300)
+        resize_image(self, 'photo', 400, 400)
 
         super().save(*args, **kwargs)

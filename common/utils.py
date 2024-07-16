@@ -19,7 +19,11 @@ def resize_image(self, image_field, min_width, min_height):
                 # Calculate scale
                 w_ratio = img.size[0] / min_width
                 h_ratio = img.size[1] / min_height
-                scale = min(1/w_ratio, 1/h_ratio)
+
+                if w_ratio > h_ratio: 
+                    scale = min_width/img.size[0]
+                else:
+                    scale = min_height/img.size[1]
                 
                 # Calculate new dimensions
                 new_dims = (int(img.size[0] * scale), int(img.size[1] * scale))

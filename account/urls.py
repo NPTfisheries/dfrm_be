@@ -13,7 +13,6 @@ urlpatterns = [
     path('users/', UserViewSet.as_view({'get':'list'}), name="user_list"),
     path('users/<int:pk>/', UserViewSet.as_view({'get':'retrieve'}), name="user_detail"),
     path('profile/', UpdateProfileView.as_view(), name="update_profile"),
-    # path('profile-photo/', UpdateProfilePhotoView.as_view(), name="update_profile_photo"),
     path('permissions/', ObjectPermissionsView.as_view(), name='object_permissions')
 ]
 
