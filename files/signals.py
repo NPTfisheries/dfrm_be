@@ -16,7 +16,7 @@ def remove_image(sender, instance, **kwargs):
 
     if mode == 'Prod':
         if instance.image:
-            delete_s3_object(object_key=instance.image.name)
+            delete_s3_object(object_key=f'media/{instance.image.name}')
     else:
         if instance.image:
             delete_file(file_path=instance.image.path)
