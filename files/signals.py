@@ -9,9 +9,6 @@ logger = logging.getLogger(__name__)
 
 @receiver(post_delete, sender=Image)
 def remove_image(sender, instance, **kwargs):
-    logger.info(f'remove_file receiver for {sender} fired!')
-    logger.info(f'Instance: {instance}')
-
     mode = os.getenv('MODE') 
 
     if mode == 'Prod':
@@ -19,18 +16,15 @@ def remove_image(sender, instance, **kwargs):
             delete_s3_object(object_key=f'media/{instance.image.name}')
     else:
         if instance.image:
-            delete_file(file_path=instance.image.path)
+            delete_file(file_path=instance.image.path) # dev
 
 @receiver(post_delete, sender=Document)
 def remove_document(sender, instance, **kwargs):
-    logger.info(f'remove_file receiver for {sender} fired!')
-    logger.info(f'Instance: {instance}')
-
     mode = os.getenv('MODE')
 
     if mode == 'Prod':
         if instance.document:
-            delete_s3_object(object_key=instance.document.name)
+            delete_s3_object(object_key=f'media/{instance.document.name}')
     else:
         if instance.document:
-            delete_file(file_path=instance.document.path)
+            delete_file(file_path=instance.document.path) # dev
