@@ -16,7 +16,7 @@ def remove_image(sender, instance, **kwargs):
 
     if mode == 'Prod':
         if instance.image:
-            delete_s3_object(object_key=instance.image.url)
+            delete_s3_object(object_key=instance.image.name)
     else:
         if instance.image:
             delete_file(file_path=instance.image.path)
@@ -30,7 +30,7 @@ def remove_document(sender, instance, **kwargs):
 
     if mode == 'Prod':
         if instance.document:
-            delete_s3_object(object_key=instance.document.url)
+            delete_s3_object(object_key=instance.document.name)
     else:
         if instance.document:
             delete_file(file_path=instance.document.path)
