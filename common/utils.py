@@ -65,8 +65,11 @@ def delete_s3_object(object_key):
         print(f'DELETE ATTEMPT S3 for object: {object_key}', flush=True)
     except s3.exceptions.NoSuchKey:
         logger.warning(f'File {object_key} not found in S3 bucket {settings.AWS_STORAGE_BUCKET_NAME}.')
+        print(f'DELETE ATTEMPT S3 for object: {object_key} --> NoSuchKey', flush=True)
+
     except Exception as e:
         logger.error(f'Error deleting {object_key} from S3: {e}', exc_info=True)
+        print(f'DELETE ATTEMPT S3 for object: {object_key} --> Exception', flush=True)
 
 def delete_file(file_path):
     try:
