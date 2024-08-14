@@ -21,7 +21,7 @@ def remove_image(sender, instance, **kwargs):
             delete_s3_object(instance.image.path)
     else:
         if instance.image:
-            delete_file(instance.image.path)
+            delete_file(instance.image.name)
 
 @receiver(post_delete, sender=Document)
 def remove_document(sender, instance, **kwargs):
@@ -35,4 +35,4 @@ def remove_document(sender, instance, **kwargs):
             delete_s3_object(instance.document.path)
     else:
         if instance.document:
-            delete_file(instance.document.path)
+            delete_file(instance.document.name)

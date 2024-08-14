@@ -52,7 +52,7 @@ def resize_image(self, image_field, min_width, min_height):
             else:
                 print('common/utils/image_processing: Image is proper size - skipping resize.', flush=True)
 
-def delete_s3_object(file_path):
+def delete_s3_object(object_key):
     s3 = boto3.client(
         's3',
         aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
@@ -60,12 +60,12 @@ def delete_s3_object(file_path):
         region_name=settings.AWS_S3_REGION_NAME,
     )
     try:
-        s3.delete_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=file_path)
-        print(f'Successfully deleted {file_path} from S3.')
+        s3.delete_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=object_key)
+        print(f'Successfully deleted {object_key} from S3.')
     except s3.exceptions.NoSuchKey:
-        logger.warning(f'File {file_path} not found in S3 bucket {settings.AWS_STORAGE_BUCKET_NAME}.')
+        logger.warning(f'File {object_key} not found in S3 bucket {settings.AWS_STORAGE_BUCKET_NAME}.')
     except Exception as e:
-        logger.error(f'Error deleting {file_path} from S3: {e}', exc_info=True)
+        logger.error(f'Error deleting {object_key} from S3: {e}', exc_info=True)
 
 def delete_file(file_path):
     try:
