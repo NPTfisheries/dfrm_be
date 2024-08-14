@@ -6,6 +6,13 @@ from django.core.files.base import ContentFile
 import boto3
 from django.conf import settings
 
+import environ
+import os
+import logging
+
+env = environ.Env()
+logger = logging.getLogger(__name__)
+
 def resize_image(self, image_field, min_width, min_height):
         image = getattr(self, image_field)
         if image:
@@ -55,5 +62,17 @@ def delete_s3_object(file_path):
     try:
         s3.delete_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=file_path)
         print(f'Successfully deleted {file_path} from S3.')
+    except s3.exceptions.NoSuchKey:
+        logger.warning(f'File {file_path} not found in S3 bucket {settings.AWS_STORAGE_BUCKET_NAME}.')
     except Exception as e:
-        print(f'Error deleting {file_path} from S3: {e}')
+        logger.error(f'Error deleting {file_path} from S3: {e}', exc_info=True)
+
+def delete_file(file_path):
+    try:
+        if os.path.isfile(file_path):
+            os.remove(file_path)
+            logger.info(f'Successfully deleted local file: {file_path}.')
+        else:
+            logger.warning(f'File {file_path} not found locally.')
+    except Exception as e:
+        logger.error(f'Error deleting local file {file_path}: {e}', exc_info=True)

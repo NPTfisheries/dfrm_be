@@ -271,3 +271,74 @@ SIMPLE_JWT = {
 
 GDAL_LIBRARY_PATH = env('GDAL_LIBRARY_PATH')
 GEOS_LIBRARY_PATH = env('GEOS_LIBRARY_PATH')
+
+# Logging configuration
+if env('MODE') == 'Dev':
+    LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'handlers': {
+            'console': {
+                'level': 'DEBUG',
+                'class': 'logging.StreamHandler',
+            },
+        },
+        'loggers': {
+            'django': {
+                'handlers': ['console'],
+                'level': 'DEBUG',
+                'propagate': True,
+            },
+            'django.db.backends': {
+                'handlers': ['console'],
+                'level': 'DEBUG',
+            },
+            'dfrm_be': {  # Replace with your app name
+                'handlers': ['console'],
+                'level': 'DEBUG',
+            },
+        },
+    }
+else:  # Production
+    LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'formatters': {
+            'verbose': {
+                'format': '{levelname} {asctime} {module} {message}',
+                'style': '{',
+            },
+            'simple': {
+                'format': '{levelname} {message}',
+                'style': '{',
+            },
+        },
+        'handlers': {
+            'console': {
+                'level': 'INFO',
+                'class': 'logging.StreamHandler',
+                'formatter': 'simple',
+            },
+            'file': {
+                'level': 'ERROR',
+                'class': 'logging.FileHandler',
+                'filename': os.path.join(BASE_DIR, 'logs/django_errors.log'),
+                'formatter': 'verbose',
+            },
+        },
+        'loggers': {
+            'django': {
+                'handlers': ['console', 'file'],
+                'level': 'INFO',
+                'propagate': True,
+            },
+            'django.db.backends': {
+                'handlers': ['file'],
+                'level': 'ERROR',
+            },
+            'dfrm_be': {  # Replace with your app name
+                'handlers': ['console', 'file'],
+                'level': 'INFO',
+            },
+        },
+    }
