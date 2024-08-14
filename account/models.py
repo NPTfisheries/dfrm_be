@@ -86,7 +86,8 @@ class Profile(models.Model):
     city = models.CharField("City", null = True, blank = True, max_length=50)
     state = models.CharField("State", null = True, blank = True, max_length=50)
     bio = models.TextField(null = True, blank=True, verbose_name="Biography")   
-    photo = models.ImageField("Profile Picture", upload_to='images/profile/', default='images/profile_default.JPG') 
+    # photo = models.ImageField("Profile Picture", upload_to='images/profile/', default='images/profile_default.JPG') 
+    photo = models.ImageField("Profile Picture", upload_to='images/profile/', default='images/profile/profile_default.jpg') 
 
     class Meta:
         ordering = ['user__first_name', 'user__last_name']
@@ -95,10 +96,11 @@ class Profile(models.Model):
         return f'{self.user}'
 
     def save(self, *args, **kwargs):
-        if not self.photo.name.endswith('.jpg'):
-            base, ext = os.path.splitext(self.photo.name)
-            self.photo.name = base + '.jpg'
-
-        resize_image(self, 'photo', 400, 400)
+        if self.photo and self.photo.name != 'images/profile/profile_default.jpg':
+            if not self.photo.name.endswith('.jpg'):
+                base, ext = os.path.splitext(self.photo.name)
+                self.photo.name = base + '.jpg'
+                
+            resize_image(self, 'photo', 400, 400)   
 
         super().save(*args, **kwargs)
