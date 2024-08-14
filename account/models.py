@@ -86,7 +86,6 @@ class Profile(models.Model):
     city = models.CharField("City", null = True, blank = True, max_length=50)
     state = models.CharField("State", null = True, blank = True, max_length=50)
     bio = models.TextField(null = True, blank=True, verbose_name="Biography")   
-    # photo = models.ImageField("Profile Picture", upload_to='images/profile/', default='images/profile_default.JPG') 
     photo = models.ImageField("Profile Picture", upload_to='images/profile/', default='images/profile/profile_default.jpg') 
 
     class Meta:
