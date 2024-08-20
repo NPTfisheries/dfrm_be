@@ -191,7 +191,7 @@ if env('MODE') == 'Dev':
 
 if env('MODE') == 'Prod':
 
-    SECURE_SSL_REDIRECT = True
+    # SECURE_SSL_REDIRECT = True  # This breaks things.  It 
     CSRF_COOKIE_SECURE = True
     SESSION_COOKIE_SECURE = True
     
