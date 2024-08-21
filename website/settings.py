@@ -86,6 +86,7 @@ if env('MODE') == 'Dev':
 if env('MODE') == 'Prod':
     DEBUG = False
     CORS_ALLOWED_ORIGINS = env('CORS_ALLOWED_ORIGINS_PROD').split(',')
+    CSRF_TRUSTED_ORIGINS = ['https://nptfisheries.org/dfrm-admin/']
 
 
 ROOT_URLCONF = 'website.urls'
