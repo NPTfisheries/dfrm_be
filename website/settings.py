@@ -192,8 +192,8 @@ if env('MODE') == 'Dev':
 
 if env('MODE') == 'Prod':
 
-    # SECURE_SSL_REDIRECT = True  # This breaks things. 
-    # CSRF_COOKIE_SECURE = True # This active may break the Django Admin.
+    # SECURE_SSL_REDIRECT = True  # The Nginx proxy should take care of this. Redundant.
+    CSRF_COOKIE_SECURE = True # This active may break the Django Admin.
     SESSION_COOKIE_SECURE = True
     
     AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
