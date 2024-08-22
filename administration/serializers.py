@@ -53,14 +53,14 @@ class DepartmentSerializer(BaseAdminSerializer):
 class DivisionSerializer(BaseAdminSerializer):
     class Meta:
         model = Division
-        fields = ['id', 'department', 'slug', 'name', 'description', 'manager', 'deputy', 'assistant', 'staff', 'img_banner', 'img_card']
+        fields = ['id', 'department', 'slug', 'name', 'description', 'manager', 'deputy', 'assistant', 'staff', 'img_banner', 'img_card', 'is_active']
 
 
 class ProjectSerializer(BaseModelSerializer):
     project_leader = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), many=True)
     class Meta:
         model = Project
-        fields = ['id', 'department', 'slug', 'name', 'description', 'project_leader', 'img_banner', 'img_card']
+        fields = ['id', 'department', 'slug', 'name', 'description', 'project_leader', 'img_banner', 'img_card', 'is_active']
 
     def to_representation(self, instance):
         # Override field representation for GET requests
@@ -96,7 +96,7 @@ class ProjectSerializer(BaseModelSerializer):
 class SubprojectSerializer(MetaModelSerializer):
     class Meta:
         model = Subproject
-        fields = ['id', 'division', 'project', 'name', 'description', 'lead', 'img_banner', 'img_card', 'sort_order']
+        fields = ['id', 'division', 'project', 'name', 'description', 'lead', 'img_banner', 'img_card', 'sort_order', 'is_active']
 
     def create(self, validated_data):
         user = self.context['request'].user
@@ -111,7 +111,7 @@ class GETSubprojectSerializer(MetaModelSerializer):
 
     class Meta:
         model = Subproject
-        fields = ['id', 'division', 'project', 'name', 'description', 'lead', 'img_banner', 'img_card', 'sort_order']
+        fields = ['id', 'division', 'project', 'name', 'description', 'lead', 'img_banner', 'img_card', 'sort_order', 'is_active']
 
     def to_representation(self, instance):
         # Override field representation for GET requests
@@ -127,7 +127,7 @@ class GETSubprojectSerializer(MetaModelSerializer):
 class TaskSerializer(MetaModelSerializer):
     class Meta:
         model = Task
-        fields = ['id', 'subproject', 'task_type', 'description', 'supervisor', 'img_banner', 'img_card', 'sort_order']
+        fields = ['id', 'subproject', 'task_type', 'description', 'supervisor', 'img_banner', 'img_card', 'sort_order', 'is_active']
 
     def get_task_type(self, instance):
         return ObjectLookUpSerializer(instance.task_type).data;
@@ -156,7 +156,7 @@ class FacilitySerializer(BaseModelSerializer, GeoFeatureModelSerializer):
    
     class Meta:
         model = Facility
-        fields = ['id', 'slug', 'facility_type', 'name', 'description', 'manager', 'deputy', 'assistant', 'staff', 'img_banner', 'img_card', 'facility_type', 'phone_number', 'street_address', 'mailing_address', 'city', 'state', 'zipcode']
+        fields = ['id', 'slug', 'facility_type', 'name', 'description', 'manager', 'deputy', 'assistant', 'staff', 'img_banner', 'img_card', 'facility_type', 'phone_number', 'street_address', 'mailing_address', 'city', 'state', 'zipcode', 'is_active']
         geo_field = 'coordinates'
 
     def get_facility_type(self, instance):
