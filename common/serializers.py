@@ -13,11 +13,15 @@ class MetaModelSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         # get authenticated user
         user = self.context['request'].user
+        
+        # check if 'is_active' has been provided, else set to True
+        is_active = validated_data.pop('is_active', True)
+
         # create a new instance
         instance = self.Meta.model.objects.create(
             created_by=user,
             updated_by=user,
-            is_active=True,
+            is_active=is_active,
             **validated_data
         )
         return instance

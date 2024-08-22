@@ -282,26 +282,26 @@ if env('MODE') == 'Dev':
     LOGGING = {
         'version': 1,
         'disable_existing_loggers': False,
-        'handlers': {
-            'console': {
-                'level': 'DEBUG',
-                'class': 'logging.StreamHandler',
-            },
-        },
+        # 'handlers': {
+        #     'console': {
+        #         'level': 'DEBUG',
+        #         'class': 'logging.StreamHandler',
+        #     },
+        # },
         'loggers': {
-            'django': {
-                'handlers': ['console'],
-                'level': 'DEBUG',
-                'propagate': True,
-            },
-            'django.db.backends': {
-                'handlers': ['console'],
-                'level': 'DEBUG',
-            },
-            'dfrm_be': {  # Replace with your app name
-                'handlers': ['console'],
-                'level': 'DEBUG',
-            },
+            # 'django': {
+            #     'handlers': ['console'],
+            #     'level': 'DEBUG',
+            #     'propagate': True,
+            # },
+            # 'django.db.backends': {
+            #     'handlers': ['console'],
+            #     'level': 'DEBUG',
+            # },
+            # 'dfrm_be': {  # Replace with your app name
+            #     'handlers': ['console'],
+            #     'level': 'DEBUG',
+            # },
         },
     }
 else:  # Production
