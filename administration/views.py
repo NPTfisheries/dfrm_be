@@ -89,6 +89,16 @@ class FacilityViewSet(viewsets.ModelViewSet):
     lookup_field = 'slug'
     permission_classes = [permissions.DjangoModelPermissionsOrAnonReadOnly]
 
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+
+        # Access the data returned by the serializer
+        serialized_data = serializer.data
+
+        # Return the features array directly
+        return Response(serialized_data['features'])
+    
     def create(self, request, *args, **kwargs):
         # Print the request data
         print(request.data)
