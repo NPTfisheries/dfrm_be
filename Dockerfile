@@ -13,7 +13,7 @@ RUN apt-get update \
 
 # Set environment variables
 # ENV PYTHONDONTWRITEBYTECODE=1
-# ENV PTHONUNBUFFERED 1
+# ENV PTHONUNBUFFERED=1
 
 WORKDIR /backend
 
