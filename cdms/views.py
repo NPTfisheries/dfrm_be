@@ -28,7 +28,7 @@ class ActivityViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.DjangoModelPermissionsOrAnonReadOnly]
 
 class FieldViewSet(viewsets.ModelViewSet):
-    queryset = Activity.objects.all()
+    queryset = Field.objects.all()
     serializer_class = FieldSerializer
     lookup_field = 'id'
     permission_classes = [permissions.DjangoModelPermissionsOrAnonReadOnly]

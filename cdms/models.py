@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.postgres.fields import JSONField
 from common.models import MetaModel
 from account.models import User
 from administration.models import Project
@@ -45,10 +46,31 @@ class Activity(MetaModel):   # this will have "is_active"
     dataset = models.ForeignKey(Dataset)
     instrument = models.ForeignKey(Instrument)
     date = models.DateField()
-    # data
+    data = JSONField()
 
 # we need to include everything needed for ag grid, and replicate here.
-class Field(MetaModel):
+class Field(models.Model):
     class Meta:
         abstract = True
     dataset = models.ForeignKey(Dataset)
+    header_name = models.CharField(max_length=255, help_text="The display name for the column header")
+    field = models.CharField(max_length=255, help_text="The data field for the column")
+    sortable = models.BooleanField(default=True, help_text="Whether the column is sortable")
+    filterable = models.BooleanField(default=True, help_text="Whether the column can be filtered")
+    resizable = models.BooleanField(default=True, help_text="Whether the column can be resized")
+    editable = models.BooleanField(default=False, help_text="Whether the column is editable")
+    checkbox_selection = models.BooleanField(default=False, help_text="Whether to display a checkbox selection")
+    pinned = models.CharField(max_length=10, choices=[('left', 'Left'), ('right', 'Right'), ('none', 'None')], default='none', help_text="Whether the column is pinned to the left or right")
+    width = models.IntegerField(null=True, blank=True, help_text="The width of the column in pixels")
+    min_width = models.IntegerField(null=True, blank=True, help_text="The minimum width of the column in pixels")
+    max_width = models.IntegerField(null=True, blank=True, help_text="The maximum width of the column in pixels")
+    hide = models.BooleanField(default=False, help_text="Whether the column is hidden by default")
+    cell_renderer = models.CharField(max_length=255, null=True, blank=True, help_text="Custom cell renderer for the column")
+    cell_style = models.TextField(null=True, blank=True, help_text="CSS styles to be applied to the cell")
+    cell_class = models.TextField(null=True, blank=True, help_text="CSS classes to be applied to the cell")
+    value_formatter = models.CharField(max_length=255, null=True, blank=True, help_text="Custom value formatter function for the column")
+    header_tooltip = models.CharField(max_length=255, null=True, blank=True, help_text="Tooltip to be shown when the user hovers over the header")
+
+    def __str__(self):
+        return self.header_name
+    
