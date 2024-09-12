@@ -1,13 +1,13 @@
 from rest_framework import viewsets
 from rest_framework import permissions
-from cdms.models import Location, Dataset, Instrument, Activity, Field
-from cdms.serializers import LocationSerializer, DatasetSerializer, InstrumentSerializer, ActivitySerializer, FieldSerializer
+from cdms.models import Dataset, Instrument, Field
+from cdms.serializers import DatasetSerializer, InstrumentSerializer, FieldSerializer
 
-class LocationViewSet(viewsets.ModelViewSet):
-    queryset = Location.objects.all()
-    serializer_class = LocationSerializer
-    lookup_field = 'name'
-    permission_classes = [permissions.DjangoModelPermissionsOrAnonReadOnly]
+# class LocationViewSet(viewsets.ModelViewSet):
+#     queryset = Location.objects.all()
+#     serializer_class = LocationSerializer
+#     lookup_field = 'name'
+#     permission_classes = [permissions.DjangoModelPermissionsOrAnonReadOnly]
 
 class DatasetViewSet(viewsets.ModelViewSet):
     queryset = Dataset.objects.all()
@@ -21,11 +21,11 @@ class InstrumentViewSet(viewsets.ModelViewSet):
     lookup_field = 'name'
     permission_classes = [permissions.DjangoModelPermissionsOrAnonReadOnly]
 
-class ActivityViewSet(viewsets.ModelViewSet):
-    queryset = Activity.objects.all()
-    serializer_class = ActivitySerializer
-    lookup_field = 'id'
-    permission_classes = [permissions.DjangoModelPermissionsOrAnonReadOnly]
+# class ActivityViewSet(viewsets.ModelViewSet):
+#     queryset = Activity.objects.all()
+#     serializer_class = ActivitySerializer
+#     lookup_field = 'id'
+#     permission_classes = [permissions.DjangoModelPermissionsOrAnonReadOnly]
 
 class FieldViewSet(viewsets.ModelViewSet):
     queryset = Field.objects.all()

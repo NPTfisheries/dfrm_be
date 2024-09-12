@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     'files',
     'administration',
     'perms',
+    'cdms'
 ]
 
 MIDDLEWARE = [
