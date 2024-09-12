@@ -10,11 +10,6 @@ router.register(r'instruments', InstrumentViewSet)
 router.register(r'activities', ActivityViewSet)
 router.register(r'fields', FieldViewSet)
 
-
-
-# Wire up our API using automatic URL routing.
-# Additionally, we include login URLs for the browsable API.
-
 app_name = 'cdms'
 
 urlpatterns = [
