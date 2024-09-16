@@ -14,12 +14,19 @@ class Location(MetaModel):
     elevation = models.IntegerField(null=True, blank=True)
     river_kilometer = models.FloatField(null=True, blank=True)  # DECIMAL FIELD??
     projection = models.CharField(max_length=100, null=True, blank=True)
+    trt_pop_id = models.CharField(max_length=20, null=True, blank=True)
     # sde_feature_class_id
     # timezone
+
+# class Population(): TRT_POPID??
 
 class Dataset(MetaModel):
     name = models.CharField(max_length=300)
     description = models.TextField()
+    # summary_dataset = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.name
 
 class Instrument(MetaModel):
     INSTRUMENT_TYPE = (
@@ -38,9 +45,12 @@ class Instrument(MetaModel):
     serial_number = models.CharField(max_length=50, null=True, blank=True)
     manufacturer = models.CharField(max_length=100, null=True, blank=True)
 
+    # def __str__(self):
+    #     return self.name  # include serial?
+
 class Activity(MetaModel):   # this will have "is_active"
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    location = models.ForeignKey(Location, on_delete=models.CASCADE)
+    # location = models.ForeignKey(Location, on_delete=models.CASCADE)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     dataset = models.ForeignKey(Dataset, on_delete=models.CASCADE)
     instrument = models.ForeignKey(Instrument, on_delete=models.CASCADE)
@@ -49,9 +59,9 @@ class Activity(MetaModel):   # this will have "is_active"
 
 # all the options for ColDefs for AG Grid.  I added dataset and required
 class Field(models.Model):
-    dataset = models.ForeignKey(Dataset, on_delete=models.CASCADE)
+    dataset = models.ForeignKey(Dataset, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_supervisor")
     required = models.BooleanField(default=False)
-    header_name = models.CharField(max_length=255, help_text="The display name for the column header")
+    headerName = models.CharField(max_length=255, help_text="The display name for the column header")
     field = models.CharField(max_length=255, help_text="The data field for the column")
     sortable = models.BooleanField(default=True, help_text="Whether the column is sortable")
     filterable = models.BooleanField(default=True, help_text="Whether the column can be filtered")
@@ -68,6 +78,9 @@ class Field(models.Model):
     cell_class = models.TextField(null=True, blank=True, help_text="CSS classes to be applied to the cell")
     value_formatter = models.CharField(max_length=255, null=True, blank=True, help_text="Custom value formatter function for the column")
     header_tooltip = models.CharField(max_length=255, null=True, blank=True, help_text="Tooltip to be shown when the user hovers over the header")
+    # type ? https://www.ag-grid.com/angular-data-grid/column-definitions/
+    # sort_order?
+    # accepted_values?
 
     def __str__(self):
         return self.header_name
