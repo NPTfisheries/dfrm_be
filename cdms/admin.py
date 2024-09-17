@@ -21,6 +21,6 @@ class InstrumentClassAdmin(GuardedModelAdmin):
 
 @admin.register(Field)
 class FieldClassAdmin(GuardedModelAdmin):
-    list_display = ('id', 'dataset', 'header_name', 'field', 'sortable', 'filterable', 'resizable', 'editable', 'checkbox_selection', 
-            'pinned', 'width', 'min_width', 'max_width', 'hide', 'cell_renderer', 'cell_style', 'cell_class', 
-            'value_formatter', 'header_tooltip')
+    list_display = ('id', 'column_order', 'dataset', 'headerName', 'field', 'sortable', 'filter', 'resizable', 'editable', 
+                    'checkboxSelection', 'pinned', 'width', 'minWidth', 'maxWidth', 'hide', 'cellRenderer', 'cellStyle', 'cellClass', 
+                    'valueFormatter', 'headerTooltip')

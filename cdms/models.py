@@ -23,10 +23,13 @@ class Location(MetaModel):
 class Dataset(MetaModel):
     name = models.CharField(max_length=300)
     description = models.TextField()
-    # summary_dataset = models.BooleanField(default=False)
+    summary_dataset = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
+    
+    class Meta:
+        ordering = ['name']
 
 class Instrument(MetaModel):
     INSTRUMENT_TYPE = (
@@ -49,7 +52,7 @@ class Instrument(MetaModel):
     #     return self.name  # include serial?
 
 class Activity(MetaModel):   # this will have "is_active"
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    # user populates via MetaModel
     # location = models.ForeignKey(Location, on_delete=models.CASCADE)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     dataset = models.ForeignKey(Dataset, on_delete=models.CASCADE)
@@ -60,28 +63,29 @@ class Activity(MetaModel):   # this will have "is_active"
 # all the options for ColDefs for AG Grid.  I added dataset and required
 class Field(models.Model):
     dataset = models.ForeignKey(Dataset, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_supervisor")
+    column_order = models.IntegerField(default=1, null=True, blank=True, help_text="Establishes column order in AG Grid")
+    # https://www.ag-grid.com/javascript-data-grid/column-properties/  
     required = models.BooleanField(default=False)
     headerName = models.CharField(max_length=255, help_text="The display name for the column header")
     field = models.CharField(max_length=255, help_text="The data field for the column")
     sortable = models.BooleanField(default=True, help_text="Whether the column is sortable")
-    filterable = models.BooleanField(default=True, help_text="Whether the column can be filtered")
+    filter = models.BooleanField(default=True, help_text="Whether the column can be filtered")
     resizable = models.BooleanField(default=True, help_text="Whether the column can be resized")
     editable = models.BooleanField(default=False, help_text="Whether the column is editable")
-    checkbox_selection = models.BooleanField(default=False, help_text="Whether to display a checkbox selection")
+    checkboxSelection = models.BooleanField(default=False, help_text="Whether to display a checkbox selection")
     pinned = models.CharField(max_length=10, choices=[('left', 'Left'), ('right', 'Right'), ('none', 'None')], default='none', help_text="Whether the column is pinned to the left or right")
     width = models.IntegerField(null=True, blank=True, help_text="The width of the column in pixels")
-    min_width = models.IntegerField(null=True, blank=True, help_text="The minimum width of the column in pixels")
-    max_width = models.IntegerField(null=True, blank=True, help_text="The maximum width of the column in pixels")
+    minWidth = models.IntegerField(null=True, blank=True, help_text="The minimum width of the column in pixels")
+    maxWidth = models.IntegerField(null=True, blank=True, help_text="The maximum width of the column in pixels")
     hide = models.BooleanField(default=False, help_text="Whether the column is hidden by default")
-    cell_renderer = models.CharField(max_length=255, null=True, blank=True, help_text="Custom cell renderer for the column")
-    cell_style = models.TextField(null=True, blank=True, help_text="CSS styles to be applied to the cell")
-    cell_class = models.TextField(null=True, blank=True, help_text="CSS classes to be applied to the cell")
-    value_formatter = models.CharField(max_length=255, null=True, blank=True, help_text="Custom value formatter function for the column")
-    header_tooltip = models.CharField(max_length=255, null=True, blank=True, help_text="Tooltip to be shown when the user hovers over the header")
-    # type ? https://www.ag-grid.com/angular-data-grid/column-definitions/
-    # sort_order?
-    # accepted_values?
-
+    cellRenderer = models.CharField(max_length=255, null=True, blank=True, help_text="Custom cell renderer for the column")
+    cellStyle = models.TextField(null=True, blank=True, help_text="CSS styles to be applied to the cell")
+    cellClass = models.TextField(null=True, blank=True, help_text="CSS classes to be applied to the cell")
+    valueFormatter = models.CharField(max_length=255, null=True, blank=True, help_text="Custom value formatter function for the column")
+    headerTooltip = models.CharField(max_length=255, null=True, blank=True, help_text="Tooltip to be shown when the user hovers over the header")
     def __str__(self):
-        return self.header_name
+        return self.headerName
+    
+    class Meta:
+        ordering = ['column_order']
     
