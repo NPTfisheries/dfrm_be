@@ -1,5 +1,5 @@
 from common.serializers import MetaModelSerializer
-from cdms.models import Dataset, Instrument, Field
+from cdms.models import Dataset, Instrument, Field, Activity
 
 # class LocationSerializer(MetaModelSerializer):
 #     class Meta:
@@ -16,10 +16,10 @@ class InstrumentSerializer(MetaModelSerializer):
         model = Instrument
         fields = ['id', 'name', 'description', 'project', 'type', 'model', 'serial_number', 'manufacturer', 'is_active']
 
-# class ActivitySerializer(MetaModelSerializer):
-#     class Meta:
-#         model = Activity
-#         fields = ['id', 'user', 'location', 'project', 'dataset', 'instrument', 'date', 'data']
+class ActivitySerializer(MetaModelSerializer):
+    class Meta:
+        model = Activity
+        fields = ['id', 'project', 'dataset', 'date', 'data'] # location, instrument
 
 class FieldSerializer(MetaModelSerializer):
     class Meta:
@@ -27,4 +27,4 @@ class FieldSerializer(MetaModelSerializer):
         fields = [
             'id', 'column_order','dataset', 'headerName', 'field', 'sortable', 'filter', 'resizable', 'editable', 'checkboxSelection', 
             'pinned', 'width', 'minWidth', 'maxWidth', 'hide', 'cellRenderer', 'cellStyle', 'cellClass', 
-            'valueFormatter', 'headerTooltip' ]
+            'valueFormatter', 'headerTooltip', 'cellEditor', 'cellEditorParams' ]

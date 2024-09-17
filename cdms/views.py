@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 from rest_framework import permissions
-from cdms.models import Dataset, Instrument, Field
-from cdms.serializers import DatasetSerializer, InstrumentSerializer, FieldSerializer
+from cdms.models import Activity, Dataset, Instrument, Field
+from cdms.serializers import ActivitySerializer, DatasetSerializer, InstrumentSerializer, FieldSerializer
 from django.shortcuts import get_object_or_404
 
 # class LocationViewSet(viewsets.ModelViewSet):
@@ -22,11 +22,11 @@ class InstrumentViewSet(viewsets.ModelViewSet):
     lookup_field = 'name'
     permission_classes = [permissions.DjangoModelPermissionsOrAnonReadOnly]
 
-# class ActivityViewSet(viewsets.ModelViewSet):
-#     queryset = Activity.objects.all()
-#     serializer_class = ActivitySerializer
-#     lookup_field = 'id'
-#     permission_classes = [permissions.DjangoModelPermissionsOrAnonReadOnly]
+class ActivityViewSet(viewsets.ModelViewSet):
+    queryset = Activity.objects.all()
+    serializer_class = ActivitySerializer
+    lookup_field = 'id'
+    permission_classes = [permissions.DjangoModelPermissionsOrAnonReadOnly]
 
 class FieldViewSet(viewsets.ModelViewSet):
     queryset = Field.objects.all()
@@ -39,6 +39,6 @@ class FieldViewSet(viewsets.ModelViewSet):
 
         if dataset_id:
             dataset= get_object_or_404(Dataset, id=dataset_id)
-            return Field.objects.filter(dataset=dataset).order_by('field')
+            return Field.objects.filter(dataset=dataset)
         else:
-            return Field.objects.all().order_by('field')
+            return Field.objects.all()

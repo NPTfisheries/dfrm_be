@@ -56,9 +56,9 @@ class Activity(MetaModel):   # this will have "is_active"
     # location = models.ForeignKey(Location, on_delete=models.CASCADE)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     dataset = models.ForeignKey(Dataset, on_delete=models.CASCADE)
-    instrument = models.ForeignKey(Instrument, on_delete=models.CASCADE)
+    # instrument = models.ForeignKey(Instrument, on_delete=models.CASCADE, null=True, blank=True)
     date = models.DateField()
-    data = models.JSONField()  # null=True, blank=True ?? allow for a no-data header?
+    data = models.JSONField(default=list)  # null=True, blank=True ?? allow for a no-data header?
 
 # all the options for ColDefs for AG Grid.  I added dataset and required
 class Field(models.Model):
@@ -83,6 +83,9 @@ class Field(models.Model):
     cellClass = models.TextField(null=True, blank=True, help_text="CSS classes to be applied to the cell")
     valueFormatter = models.CharField(max_length=255, null=True, blank=True, help_text="Custom value formatter function for the column")
     headerTooltip = models.CharField(max_length=255, null=True, blank=True, help_text="Tooltip to be shown when the user hovers over the header")
+    cellEditor = models.TextField(null=True, blank=True)
+    cellEditorParams = models.JSONField(null=True, blank=True)
+    
     def __str__(self):
         return self.headerName
     
