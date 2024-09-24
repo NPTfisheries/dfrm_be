@@ -61,6 +61,10 @@ class Activity(MetaModel):   # this will have "is_active"
     date = models.DateField()
     data = models.JSONField(default=list)  # null=True, blank=True ?? allow for a no-data header?
 
+    class Meta:
+        verbose_name = 'Activity'
+        verbose_name_plural = 'Activities'
+
 # https://www.ag-grid.com/javascript-data-grid/column-properties/  
 class Field(models.Model):
     dataset = models.ForeignKey(Dataset, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_supervisor")
