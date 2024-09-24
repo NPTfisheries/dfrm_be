@@ -21,6 +21,6 @@ class ActivityClassAdmin(GuardedModelAdmin):
 
 @admin.register(Field)
 class FieldClassAdmin(GuardedModelAdmin):
-    list_display = ('id', 'column_order', 'dataset', 'required', 'headerName', 'field', 'sortable', 'filter', 'resizable', 'editable', 
-                    'checkboxSelection', 'pinned', 'width', 'minWidth', 'maxWidth', 'hide', 'cellRenderer', 'cellStyle', 'cellClass', 
+    list_display = ('id', 'sortingOrder', 'dataset', 'required', 'headerName', 'field', 'sortable', 'filter', 'resizable', 'editable', 
+                    'pinned', 'width', 'minWidth', 'maxWidth', 'hide', 'cellRenderer', 'cellStyle', 'cellClass', 
                     'valueFormatter', 'headerTooltip', 'cellEditor', 'cellEditorParams')

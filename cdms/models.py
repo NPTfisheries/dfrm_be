@@ -2,6 +2,7 @@ from django.db import models
 from common.models import MetaModel
 from account.models import User
 from administration.models import Project
+from django.contrib.postgres.fields import ArrayField
 
 # null = True: django will store empty values as NULL in the db.  default False
 # blank = True: field is allowed to be blank. default False
@@ -60,35 +61,38 @@ class Activity(MetaModel):   # this will have "is_active"
     date = models.DateField()
     data = models.JSONField(default=list)  # null=True, blank=True ?? allow for a no-data header?
 
-# all the options for ColDefs for AG Grid.  I added dataset and required
+# https://www.ag-grid.com/javascript-data-grid/column-properties/  
 class Field(models.Model):
     dataset = models.ForeignKey(Dataset, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_supervisor")
-    column_order = models.IntegerField(default=1, null=True, blank=True, help_text="Establishes column order in AG Grid")
-    # https://www.ag-grid.com/javascript-data-grid/column-properties/  
+    # header / detail??
+    # context = models.JSONField(null=False, blank=False, help_text="Context property that can be used to associate arbitrary application data with this column definition.")
+    sortingOrder = models.IntegerField(default=1, null=True, blank=True, help_text="Establishes column order in AG Grid")
     required = models.BooleanField(default=False)
     headerName = models.CharField(max_length=255, help_text="The display name for the column header")
+    # headerToolTip
     field = models.CharField(max_length=255, help_text="The data field for the column")
     sortable = models.BooleanField(default=True, help_text="Whether the column is sortable")
     filter = models.BooleanField(default=True, help_text="Whether the column can be filtered")
     resizable = models.BooleanField(default=True, help_text="Whether the column can be resized")
     editable = models.BooleanField(default=False, help_text="Whether the column is editable")
-    checkboxSelection = models.BooleanField(default=False, help_text="Whether to display a checkbox selection")
-    pinned = models.CharField(max_length=10, choices=[('left', 'Left'), ('right', 'Right'), ('none', 'None')], default='none', help_text="Whether the column is pinned to the left or right")
+    # checkboxSelection = models.BooleanField(default=False, help_text="Whether to display a checkbox selection")
+    pinned = models.CharField(max_length=10, choices=[('none', 'None'), ('left', 'Left'), ('right', 'Right')], default='none', help_text="Whether the column is pinned to the left or right")
     width = models.IntegerField(null=True, blank=True, help_text="The width of the column in pixels")
     minWidth = models.IntegerField(null=True, blank=True, help_text="The minimum width of the column in pixels")
     maxWidth = models.IntegerField(null=True, blank=True, help_text="The maximum width of the column in pixels")
     hide = models.BooleanField(default=False, help_text="Whether the column is hidden by default")
     cellRenderer = models.CharField(max_length=255, null=True, blank=True, help_text="Custom cell renderer for the column")
-    cellStyle = models.TextField(null=True, blank=True, help_text="CSS styles to be applied to the cell")
-    cellClass = models.TextField(null=True, blank=True, help_text="CSS classes to be applied to the cell")
+    cellStyle = models.JSONField(null=True, blank=True, help_text="An object of CSS styles to be applied to the cell. ")
+    cellClass = ArrayField(models.CharField(max_length=100), null=True, blank=True, help_text="CSS classes to be applied to the cell. Array of strings (classes).")
     valueFormatter = models.CharField(max_length=255, null=True, blank=True, help_text="Custom value formatter function for the column")
     headerTooltip = models.CharField(max_length=255, null=True, blank=True, help_text="Tooltip to be shown when the user hovers over the header")
     cellEditor = models.TextField(null=True, blank=True)
     cellEditorParams = models.JSONField(null=True, blank=True)
+    type = models.CharField(null=True, blank=True)
     
     def __str__(self):
         return self.headerName
     
     class Meta:
-        ordering = ['column_order']
+        ordering = ['sortingOrder']
     
