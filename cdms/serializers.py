@@ -39,6 +39,6 @@ class FieldSerializer(MetaModelSerializer):
     class Meta:
         model = Field
         fields = [
-            'id', 'sortingOrder','dataset', 'required', 'headerName', 'field', 'sortable', 'filter', 'resizable', 'editable', 
+            'id', 'sortingOrder','dataset', 'required', 'headerName', 'field', 'filter', 'editable', 
             'pinned', 'width', 'minWidth', 'maxWidth', 'hide', 'cellRenderer', 'cellStyle', 'cellClass', 
-            'valueFormatter', 'headerTooltip', 'cellEditor', 'cellEditorParams' ]
+            'valueFormatter', 'headerTooltip', 'cellEditor', 'cellEditorParams']
