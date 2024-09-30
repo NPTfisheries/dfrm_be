@@ -1,8 +1,8 @@
 from django.db import models
 from django.utils import timezone
 from common.models import MetaModel
-from account.models import User
 from administration.models import Project, Task
+from common.models import ObjectLookUp
 from django.contrib.postgres.fields import ArrayField
 
 # null = True: django will store empty values as NULL in the db.  default False
@@ -21,17 +21,6 @@ class Location(MetaModel):
     # timezone
 
 # class Population(): TRT_POPID??
-
-class Dataset(MetaModel):
-    name = models.CharField(max_length=300)
-    description = models.TextField()
-    summary_dataset = models.BooleanField(default=False)
-
-    def __str__(self):
-        return self.name
-    
-    class Meta:
-        ordering = ['name']
 
 class Instrument(MetaModel):
     INSTRUMENT_TYPE = (
@@ -55,22 +44,21 @@ class Instrument(MetaModel):
 
 class Activity(MetaModel):   # this will have "is_active"  WE NEED TO DECIDE IF WE WANT TO IMPLEMENT THIS MODEL OR START NEW.
     # user populates via MetaModel
-    # activity_id = models.IntegerField(editable=False, unique=True)
-    #    # location = models.ForeignKey(Location, on_delete=models.CASCADE)
-    # task = models.ForeignKey(Task, on_delete=models.CASCADE)
+    activity_id = models.IntegerField(editable=False, unique=True)
+    # location = models.ForeignKey(Location, on_delete=models.CASCADE)
+    task = models.ForeignKey(Task, on_delete=models.CASCADE)
     project = models.ForeignKey(Project, on_delete=models.CASCADE) # if the referenced project is deleted, this activity will be deleted
-    dataset = models.ForeignKey(Dataset, on_delete=models.CASCADE)
     # instrument = models.ForeignKey(Instrument, on_delete=models.CASCADE, null=True, blank=True)
     date = models.DateField()
-    # header = models.JSONField(default=list)
-    data = models.JSONField(default=list)  # null=True, blank=True ?? allow for a no-data header?
-    # effective_date = models.DateField(default=timezone.now)
+    header = models.JSONField(default=list)
+    detail = models.JSONField(default=list)  # null=True, blank=True ?? allow for a no-data header?
+    effective_date = models.DateField(default=timezone.now)
 
-    # def save(self, *args, **kwargs):
-    #     if not self.activity_id:
-    #         max_id = Activity.objects.aggregate(models.Max('activity_id'))['activity_id_max']
-    #         self.activity_id = (max_id or 0) +1
-    #     super().save(*args, **kwargs)
+    def save(self, *args, **kwargs):
+        if not self.activity_id:
+            max_id = Activity.objects.aggregate(models.Max('activity_id'))['activity_id_max']
+            self.activity_id = (max_id or 0) +1
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = 'Activity'
@@ -78,10 +66,8 @@ class Activity(MetaModel):   # this will have "is_active"  WE NEED TO DECIDE IF 
 
 # https://www.ag-grid.com/javascript-data-grid/column-properties/  
 class Field(models.Model):
-    # context = models.JSONField(null=False, blank=False, help_text="Context property that can be used to associate arbitrary application data with this column definition.")
-    dataset = models.ForeignKey(Dataset, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_supervisor")
-    # task_type = models.ForeignKey(Task, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_supervisor")
-    # data_type = models.CharField(choices=(('Header','Header'),('Detail','Detail')))
+    task_type = models.ForeignKey(ObjectLookUp, on_delete=models.CASCADE, limit_choices_to={'object_type': 'Task'})
+    field_for = models.CharField(choices=(('Header','Header'),('Detail','Detail')))
     required = models.BooleanField(default=False)
 
     field = models.CharField(max_length=255, help_text="The data field for the column")

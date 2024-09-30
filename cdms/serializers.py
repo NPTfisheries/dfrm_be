@@ -1,18 +1,11 @@
 from common.serializers import MetaModelSerializer
 from rest_framework import serializers
-from cdms.models import Dataset, Instrument, Field, Activity
-from administration.models import Project
-from administration.serializers import ProjectSerializer
+from cdms.models import Instrument, Field, Activity
 
 # class LocationSerializer(MetaModelSerializer):
 #     class Meta:
 #         model = Location
 #         fields = ['id', 'name', 'description', 'latitude', 'longitude', 'elevation', 'river_kilometer', 'projection', 'is_active']
-
-class DatasetSerializer(MetaModelSerializer):
-    class Meta:
-        model = Dataset
-        fields = ['id', 'name', 'description','is_active']
 
 class InstrumentSerializer(MetaModelSerializer):
     class Meta:
@@ -22,7 +15,7 @@ class InstrumentSerializer(MetaModelSerializer):
 class ActivitySerializer(MetaModelSerializer):
     class Meta:
         model = Activity
-        fields = ['id', 'project', 'dataset', 'date', 'data'] # location, instrument
+        fields = ['id', 'activity_id', 'project', 'task', 'date', 'header', 'detail', 'effective_date'] # location, instrument
         depth = 0
     
     def __init__(self, *args, **kwargs):
@@ -39,6 +32,6 @@ class FieldSerializer(MetaModelSerializer):
     class Meta:
         model = Field
         fields = [
-            'id', 'sortingOrder','dataset', 'required', 'headerName', 'field', 'filter', 'editable', 
+            'id', 'sortingOrder', 'task_type', 'required', 'headerName', 'field', 'filter', 'editable', 
             'pinned', 'width', 'minWidth', 'maxWidth', 'hide', 'cellRenderer', 'cellStyle', 'cellClass', 
             'valueFormatter', 'headerTooltip', 'cellEditor', 'cellEditorParams']
