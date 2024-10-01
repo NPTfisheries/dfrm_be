@@ -38,9 +38,12 @@ class Subproject(MetaModel, ImageFieldsModel):
     lead = models.ForeignKey(User, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_lead")
     sort_order = models.IntegerField(default=1)
 
-class Task(MetaModel, ImageFieldsModel):   
+class Task(MetaModel, ImageFieldsModel):  
+    name = models.CharField(max_length=300, default='TaskNamePlaceholder')
     task_type = models.ForeignKey(ObjectLookUp, null=True, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_object_lookups")
     subproject = models.ForeignKey(Subproject, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_subprojects")
+    # project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_project")
+    # division = models.ForeignKey(Division, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_division")
     description = models.TextField()
     supervisor = models.ForeignKey(User, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_supervisor")
     sort_order = models.IntegerField(default=1)

@@ -45,9 +45,9 @@ class Instrument(MetaModel):
 class Activity(MetaModel):   # this will have "is_active"  WE NEED TO DECIDE IF WE WANT TO IMPLEMENT THIS MODEL OR START NEW.
     # user populates via MetaModel
     activity_id = models.IntegerField(editable=False, unique=True)
-    # location = models.ForeignKey(Location, on_delete=models.CASCADE)
     task = models.ForeignKey(Task, on_delete=models.CASCADE)
     project = models.ForeignKey(Project, on_delete=models.CASCADE) # if the referenced project is deleted, this activity will be deleted
+    # location = models.ForeignKey(Location, on_delete=models.CASCADE)
     # instrument = models.ForeignKey(Instrument, on_delete=models.CASCADE, null=True, blank=True)
     date = models.DateField()
     header = models.JSONField(default=list)
@@ -67,7 +67,7 @@ class Activity(MetaModel):   # this will have "is_active"  WE NEED TO DECIDE IF 
 # https://www.ag-grid.com/javascript-data-grid/column-properties/  
 class Field(models.Model):
     task_type = models.ForeignKey(ObjectLookUp, on_delete=models.CASCADE, limit_choices_to={'object_type': 'Task'})
-    field_for = models.CharField(choices=(('Header','Header'),('Detail','Detail')))
+    field_for = models.CharField(choices=(('header','Header'),('detail','Detail')))
     required = models.BooleanField(default=False)
 
     field = models.CharField(max_length=255, help_text="The data field for the column")
@@ -93,8 +93,7 @@ class Field(models.Model):
     
     class Meta:
         ordering = ['sortingOrder']
-
-    
+        
 # class Protocol(models.Model):
 #     name = models.CharField(max_length=100)
 #     description = models.TextField(blank=True, null=True)

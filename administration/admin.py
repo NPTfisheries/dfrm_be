@@ -21,7 +21,7 @@ class SubprojectAdmin(GuardedModelAdmin):
 
 @admin.register(Task)
 class TaskAdmin(GuardedModelAdmin):
-    list_display = ('id', 'task_type', 'subproject', 'supervisor', 'created_at', 'updated_at', 'is_active')
+    list_display = ('id', 'name', 'task_type', 'subproject', 'supervisor', 'created_at', 'updated_at', 'is_active')
 
 @admin.register(Facility)
 class FacilityAdmin(admin.OSMGeoAdmin):

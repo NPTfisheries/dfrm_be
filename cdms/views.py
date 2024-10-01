@@ -1,6 +1,7 @@
 from rest_framework import viewsets
 from rest_framework import permissions
 from cdms.models import Activity, Instrument, Field
+from common.models import ObjectLookUp
 from cdms.serializers import ActivitySerializer, InstrumentSerializer, FieldSerializer
 from django.shortcuts import get_object_or_404
 
@@ -28,11 +29,11 @@ class FieldViewSet(viewsets.ModelViewSet):
     lookup_field = 'id'
     permission_classes = [permissions.DjangoModelPermissionsOrAnonReadOnly]
 
-    # def get_queryset(self):
-    #     dataset_id = self.request.query_params.get('dataset_id')
+    def get_queryset(self):
+        task_type = self.request.query_params.get('task_type')
 
-    #     if dataset_id:
-    #         dataset= get_object_or_404(O, id=dataset_id)
-    #         return Field.objects.filter(dataset=dataset)
-    #     else:
-    #         return Field.objects.all()
+        if task_type:
+            task_type= get_object_or_404(ObjectLookUp, id=task_type)
+            return Field.objects.filter(task_type=task_type)
+        else:
+            return Field.objects.all()

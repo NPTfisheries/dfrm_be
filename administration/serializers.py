@@ -127,7 +127,7 @@ class GETSubprojectSerializer(MetaModelSerializer):
 class TaskSerializer(MetaModelSerializer):
     class Meta:
         model = Task
-        fields = ['id', 'subproject', 'task_type', 'description', 'supervisor', 'img_banner', 'img_card', 'sort_order', 'is_active']
+        fields = ['id', 'name', 'subproject', 'task_type', 'description', 'supervisor', 'img_banner', 'img_card', 'sort_order', 'is_active']
 
     def get_task_type(self, instance):
         return ObjectLookUpSerializer(instance.task_type).data;
