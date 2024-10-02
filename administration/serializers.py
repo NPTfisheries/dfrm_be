@@ -1,4 +1,3 @@
-#administration/serializers.py
 from rest_framework import serializers
 from rest_framework_gis.serializers import GeoFeatureModelSerializer
 from guardian.shortcuts import assign_perm
@@ -7,7 +6,7 @@ from account.serializers import UserSerializer
 from files.serializers import ImageSerializer
 from account.models import User
 from django.contrib.auth.models import Permission
-from administration.models import Department, Division, Project, Subproject, Task, Facility
+from administration.models import Department, Division, Project, Task, Facility
 
 
 class BaseImageSerializer(serializers.ModelSerializer):
@@ -93,41 +92,10 @@ class ProjectSerializer(BaseModelSerializer):
         instance.save()
         return instance
 
-class SubprojectSerializer(MetaModelSerializer):
-    class Meta:
-        model = Subproject
-        fields = ['id', 'division', 'project', 'name', 'description', 'lead', 'img_banner', 'img_card', 'sort_order', 'is_active']
-
-    def create(self, validated_data):
-        user = self.context['request'].user
-        instance = super().create(validated_data)
-        perm = Permission.objects.get(codename='change_subproject')
-        assign_perm(perm, user, instance)
-        assign_perm(perm, instance.lead, instance)
-        return instance  
-    
-class GETSubprojectSerializer(MetaModelSerializer):
-    division = DivisionSerializer(read_only=True)
-
-    class Meta:
-        model = Subproject
-        fields = ['id', 'division', 'project', 'name', 'description', 'lead', 'img_banner', 'img_card', 'sort_order', 'is_active']
-
-    def to_representation(self, instance):
-        # Override field representation for GET requests
-        if self.context['request'].method == 'GET':
-            return {
-                **super().to_representation(instance),
-                'lead': UserSerializer(instance.lead).data,
-                'img_banner': ImageSerializer(instance.img_banner).data,
-                'img_card': ImageSerializer(instance.img_card).data
-            }
-        return super().to_representation(instance)
-
 class TaskSerializer(MetaModelSerializer):
     class Meta:
         model = Task
-        fields = ['id', 'name', 'subproject', 'task_type', 'description', 'supervisor', 'img_banner', 'img_card', 'sort_order', 'is_active']
+        fields = ['id', 'name', 'description', 'task_type', 'division', 'project', 'supervisor', 'img_banner', 'img_card', 'sort_order', 'is_active']
 
     def get_task_type(self, instance):
         return ObjectLookUpSerializer(instance.task_type).data;
@@ -137,6 +105,8 @@ class TaskSerializer(MetaModelSerializer):
         if self.context['request'].method == 'GET':
             return {
                 **super().to_representation(instance),
+                'division': DivisionSerializer(instance.division).data,
+                'project': ProjectSerializer(instance.project).data,
                 'supervisor': UserSerializer(instance.supervisor).data,
                 'img_banner': ImageSerializer(instance.img_banner).data,
                 'img_card': ImageSerializer(instance.img_card).data,

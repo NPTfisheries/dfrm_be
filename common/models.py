@@ -6,9 +6,9 @@ from account.models import User
 # Abstract model classes for reuse across multiple apps.
 class MetaModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
-    created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_creator")
+    created_by = models.ForeignKey(User, on_delete=models.PROTECT, related_name="%(app_label)s_%(class)s_creator")
     updated_at = models.DateTimeField(auto_now=True)
-    updated_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_editor")
+    updated_by = models.ForeignKey(User, on_delete=models.PROTECT, related_name="%(app_label)s_%(class)s_editor")
     is_active = models.BooleanField(default=True)
 
     class Meta:
@@ -38,7 +38,7 @@ class ObjectLookUp(MetaModel):
         ('Facility', 'Facility'),
     )
 
-    # In django admin, this makes it so we see the name instead of an object refernce.
+    # In django admin, this makes it so we see the name instead of an object reference.
     # shouldn't affect any api calls/serializers/etc.
     def __str__(self):
         return self.name;

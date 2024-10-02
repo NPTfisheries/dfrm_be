@@ -31,7 +31,7 @@ class Instrument(MetaModel):
         ('Data Tablet', 'Data Tablet')
     )
 
-    project = models.ForeignKey(Project, on_delete=models.CASCADE) 
+    project = models.ForeignKey(Project, on_delete=models.PROTECT) 
     name = models.CharField(max_length=300)
     description = models.TextField(null=True, blank=True)
     type = models.CharField(choices = INSTRUMENT_TYPE)
@@ -39,20 +39,17 @@ class Instrument(MetaModel):
     serial_number = models.CharField(max_length=50, null=True, blank=True)
     manufacturer = models.CharField(max_length=100, null=True, blank=True)
 
-    # def __str__(self):
-    #     return self.name  # include serial?
+    def __str__(self):
+        return self.name + " (" + self.serial_number + ")" 
 
-class Activity(MetaModel):   # this will have "is_active"  WE NEED TO DECIDE IF WE WANT TO IMPLEMENT THIS MODEL OR START NEW.
-    # user populates via MetaModel
+class Activity(MetaModel):  
     activity_id = models.IntegerField(editable=False, unique=True)
-    task = models.ForeignKey(Task, on_delete=models.CASCADE)
-    project = models.ForeignKey(Project, on_delete=models.CASCADE) # if the referenced project is deleted, this activity will be deleted
+    task = models.ForeignKey(Task, on_delete=models.PROTECT)
     # location = models.ForeignKey(Location, on_delete=models.CASCADE)
     # instrument = models.ForeignKey(Instrument, on_delete=models.CASCADE, null=True, blank=True)
     date = models.DateField()
     header = models.JSONField(default=list)
     detail = models.JSONField(default=list)  # null=True, blank=True ?? allow for a no-data header?
-    effective_date = models.DateField(default=timezone.now)
 
     def save(self, *args, **kwargs):
         if not self.activity_id:
@@ -66,7 +63,7 @@ class Activity(MetaModel):   # this will have "is_active"  WE NEED TO DECIDE IF 
 
 # https://www.ag-grid.com/javascript-data-grid/column-properties/  
 class Field(models.Model):
-    task_type = models.ForeignKey(ObjectLookUp, on_delete=models.CASCADE, limit_choices_to={'object_type': 'Task'})
+    task_type = models.ForeignKey(ObjectLookUp, on_delete=models.PROTECT, limit_choices_to={'object_type': 'Task'})
     field_for = models.CharField(choices=(('header','Header'),('detail','Detail')))
     required = models.BooleanField(default=False)
 
