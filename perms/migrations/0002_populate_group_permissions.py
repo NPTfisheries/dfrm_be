@@ -1,34 +1,26 @@
-#from django.contrib.auth.management import create_permissions
+from django.db import migrations
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
+from django.core.exceptions import ObjectDoesNotExist
 
-def populate_groups(apps, schema_editor):
+def populate_group_permissions(apps, schema_editor):
 
-    user_roles = ["Admin", "Manager", "Project_leader", "Professional", "Technician", "Guest"]
-    for role_name in user_roles:
-        group, created = Group.objects.get_or_create(name=role_name)
-
-
-    # Define role-specific permissions by app and model
     role_permissions = {
-        "Admin":{
-            'account':{
-                'user':["view", "add", "change", "delete"],
-                'profile':["view", "add", "change", "delete"]
+        "Admin": {
+            'account': {
+                'user': ["view", "add", "change", "delete"],
+                'profile': ["view", "add", "change", "delete"],
             },
-            'administration':{
-                'department':["view","add","change","delete"],
-                'division':["view","add","change","delete"],
-                'project':["view","add","change","delete"],
-                'task':["view","add","change","delete"],
-                'facility':["view", "add", "change","delete"],
+            'administration': {
+                'department': ["view", "add", "change", "delete"],
+                'division': ["view", "add", "change", "delete"],
+                'project': ["view", "add", "change", "delete"],
+                'task': ["view", "add", "change", "delete"],
+                'facility': ["view", "add", "change", "delete"],
             },
-            # 'common':{
-            #     'objectlookup':["view","add","change","delete"],
-            # },
-            'files':{
-                'image':["view","add","change","delete"],
-                'document':["view","add","change","delete"]
+            'files': {
+                'image': ["view", "add", "change", "delete"],
+                'document': ["view", "add", "change", "delete"],
             }
         },
         "Manager":{
@@ -118,27 +110,24 @@ def populate_groups(apps, schema_editor):
         }  
     }
 
-    for role_name, app in role_permissions.items():
-        print(f"Role name: {role_name}")
-        group = Group.objects.get(name = role_name)
-        print(f"Group is: {group}")
-        for app_label, model in app.items():
-            print(f"App label: {app_label}")
-            
-            print("Available Content Types:")
-            for content_type in ContentType.objects.all():
-                print(content_type.app_label, content_type.model)
+    for role_name, app_models in role_permissions.items():
+        group = Group.objects.get(name=role_name)
 
-            for model_name, permissions in model.items():
-                print(f"Model name: {model_name}")
-                print(f"Attempting to get ContentType for app_label={app_label} and model={model_name}")
-                content_type = ContentType.objects.get(app_label = app_label, model=model_name) #takes app_label and model
-                print(f"Content type: {content_type}")
-                print(f"Permissions: {permissions}")
-                for permission in permissions:
-                    print(f"Permission: {permission}")
-                    codename = f"{permission}_{model_name}"
-                    print(f"Codename is: {codename}")
-                    #permission = Permission.objects.get(codename=codename)#, content_type=content_type) #codename = 'view_user' works
-                    permission, created = Permission.objects.get_or_create(codename=codename, content_type = content_type)
+        for app_label, models in app_models.items():
+            for model_name, permissions in models.items():
+                content_type = ContentType.objects.get(app_label=app_label, model=model_name)
+
+                for permission_type in permissions:
+                    codename = f"{permission_type}_{model_name}"
+                    permission, created = Permission.objects.get_or_create(codename=codename, content_type=content_type)
                     group.permissions.add(permission)
+
+class Migration(migrations.Migration):
+    dependencies = [
+        ('perms', '0001_populate_auth_groups'),  # Must run after the group creation migration
+        ('contenttypes', '0002_remove_content_type_name')  # this dependency didn't fix. 10/2/24
+    ]
+    
+    operations = [
+        migrations.RunPython(populate_group_permissions),
+    ]

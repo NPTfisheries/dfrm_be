@@ -61,12 +61,12 @@ INSTALLED_APPS = [
     'guardian',
     'storages',
 
-    'common',
     'account',
-    'files',
     'administration',
+    'cdms',
+    'common',
+    'files',
     'perms',
-    'cdms'
 ]
 
 MIDDLEWARE = [
