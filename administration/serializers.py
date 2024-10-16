@@ -109,9 +109,13 @@ class TaskSerializer(MetaModelSerializer):
         assign_perm(perm, instance.supervisor, instance) # user who is supervisor
         for id in ids:
             assign_perm(perm, id, instance)  # editors
+        instance.editors.set(ids)
+
         return instance
     
 class TaskDetailSerializer(MetaModelSerializer):  # GET
+    editors = UserSerializer(many=True)
+
     class Meta:
         model = Task
         fields = ['id', 'name', 'description', 'task_type', 'division', 'project', 'supervisor', 'img_banner', 'img_card', 'sort_order', 'is_active', 'editors', 'allowed_access']
@@ -119,6 +123,7 @@ class TaskDetailSerializer(MetaModelSerializer):  # GET
 
     def get_task_type(self, instance):
         return ObjectLookUpSerializer(instance.task_type).data
+    
 
 
 class FacilitySerializer(BaseModelSerializer, GeoFeatureModelSerializer):
