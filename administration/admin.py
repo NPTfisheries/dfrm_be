@@ -17,7 +17,7 @@ class ProjectAdmin(GuardedModelAdmin):
 
 @admin.register(Task)
 class TaskAdmin(GuardedModelAdmin):
-    list_display = ('id', 'name', 'task_type', 'division', 'project', 'supervisor', 'created_at', 'updated_at', 'is_active')
+    list_display = ('id', 'name', 'task_type', 'division', 'project', 'supervisor', 'created_at', 'updated_at', 'is_active', 'allowed_access')
 
 @admin.register(Facility)
 class FacilityAdmin(admin.OSMGeoAdmin):

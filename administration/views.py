@@ -51,8 +51,8 @@ class ProjectViewSet(viewsets.ModelViewSet):
 class TaskViewSet(viewsets.ModelViewSet):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
-    #lookup_field = 'slug'
-    permission_classes = [permissions.DjangoModelPermissionsOrAnonReadOnly]
+    permission_classes = [permissions.DjangoModelPermissionsOrAnonReadOnly]  # is this wrong??
+    # permission_classes = [CustomObjectPermissions]  # is this wrong??
 
     def get_queryset(self):
         project_id = self.request.query_params.get('project_id')

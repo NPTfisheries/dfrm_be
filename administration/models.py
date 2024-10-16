@@ -38,6 +38,12 @@ class Task(MetaModel, ImageFieldsModel):
     project = models.ForeignKey(Project, on_delete=models.PROTECT, related_name="%(class)s_project")
     supervisor = models.ForeignKey(User, on_delete=models.PROTECT, related_name="%(class)s_supervisor")
     sort_order = models.IntegerField(default=1)
+    editors = models.ManyToManyField(User, related_name="%(class)s_editors")
+    allowed_access = models.CharField(default='Staff', choices=(('Public', 'Public'), ('Staff', 'Staff'), ('Editors', 'Editors')))
+    # show_on_website = models.BooleanField(default=True)
+    # data_associated
+
+
 
 class Facility(BaseAdminModel, ImageFieldsModel):
     facility_type = models.ForeignKey(ObjectLookUp, on_delete=models.PROTECT, limit_choices_to={'object_type': 'Task'}, related_name="%(class)s_object_lookups")

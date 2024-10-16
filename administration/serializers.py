@@ -93,26 +93,19 @@ class ProjectSerializer(BaseModelSerializer):
         return instance
 
 class TaskSerializer(MetaModelSerializer):
+    division = DivisionSerializer()
+    project = ProjectSerializer()
+    supervisor = UserSerializer()
+    img_banner = ImageSerializer()
+    img_card = ImageSerializer()
+    task_type = ObjectLookUpSerializer()
+    
     class Meta:
         model = Task
         fields = ['id', 'name', 'description', 'task_type', 'division', 'project', 'supervisor', 'img_banner', 'img_card', 'sort_order', 'is_active']
 
     def get_task_type(self, instance):
         return ObjectLookUpSerializer(instance.task_type).data;
-
-    def to_representation(self, instance):
-        # Override field representation for GET requests
-        if self.context['request'].method == 'GET':
-            return {
-                **super().to_representation(instance),
-                'division': DivisionSerializer(instance.division).data,
-                'project': ProjectSerializer(instance.project).data,
-                'supervisor': UserSerializer(instance.supervisor).data,
-                'img_banner': ImageSerializer(instance.img_banner).data,
-                'img_card': ImageSerializer(instance.img_card).data,
-                'task_type': self.get_task_type(instance),
-            }
-        return super().to_representation(instance)
 
     def create(self, validated_data):
         user = self.context['request'].user
