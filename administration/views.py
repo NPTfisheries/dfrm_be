@@ -2,7 +2,7 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import permissions
 from administration.models import Department, Division, Project, Task, Facility
-from administration.serializers import DepartmentSerializer, DivisionSerializer, ProjectSerializer, TaskSerializer, FacilitySerializer
+from administration.serializers import DepartmentSerializer, DivisionSerializer, ProjectSerializer, TaskSerializer, TaskDetailSerializer, FacilitySerializer
 from common.views import CustomObjectPermissions
 from django.shortcuts import get_object_or_404
 
@@ -50,9 +50,13 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
 class TaskViewSet(viewsets.ModelViewSet):
     queryset = Task.objects.all()
-    serializer_class = TaskSerializer
     permission_classes = [permissions.DjangoModelPermissionsOrAnonReadOnly]  # is this wrong??
-    # permission_classes = [CustomObjectPermissions]  # is this wrong??
+    # permission_classes = [CustomObjectPermissions]  # is this correct??
+
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return TaskDetailSerializer
+        return TaskSerializer
 
     def get_queryset(self):
         project_id = self.request.query_params.get('project_id')

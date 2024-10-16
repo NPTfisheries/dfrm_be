@@ -92,28 +92,34 @@ class ProjectSerializer(BaseModelSerializer):
         instance.save()
         return instance
 
-class TaskSerializer(MetaModelSerializer):
-    division = DivisionSerializer()
-    project = ProjectSerializer()
-    supervisor = UserSerializer()
-    img_banner = ImageSerializer()
-    img_card = ImageSerializer()
-    task_type = ObjectLookUpSerializer()
-    
+class TaskSerializer(MetaModelSerializer):    
     class Meta:
         model = Task
-        fields = ['id', 'name', 'description', 'task_type', 'division', 'project', 'supervisor', 'img_banner', 'img_card', 'sort_order', 'is_active']
+        fields = ['id', 'name', 'description', 'task_type', 'division', 'project', 'supervisor', 'img_banner', 'img_card', 'sort_order', 'is_active', 'editors', 'allowed_access']
 
     def get_task_type(self, instance):
         return ObjectLookUpSerializer(instance.task_type).data;
 
     def create(self, validated_data):
         user = self.context['request'].user
+        ids = validated_data.pop('editors')
         instance = super().create(validated_data)
         perm = Permission.objects.get(codename='change_task')
-        assign_perm(perm, user, instance)
-        assign_perm(perm, instance.supervisor, instance)
-        return instance   
+        assign_perm(perm, user, instance)  # user who creates
+        assign_perm(perm, instance.supervisor, instance) # user who is supervisor
+        for id in ids:
+            assign_perm(perm, id, instance)  # editors
+        return instance
+    
+class TaskDetailSerializer(MetaModelSerializer):  # GET
+    class Meta:
+        model = Task
+        fields = ['id', 'name', 'description', 'task_type', 'division', 'project', 'supervisor', 'img_banner', 'img_card', 'sort_order', 'is_active', 'editors', 'allowed_access']
+        depth = 1  
+
+    def get_task_type(self, instance):
+        return ObjectLookUpSerializer(instance.task_type).data
+
 
 class FacilitySerializer(BaseModelSerializer, GeoFeatureModelSerializer):
    
