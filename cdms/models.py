@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from common.models import MetaModel
 from administration.models import Project, Task
+from account.models import User
 from common.models import ObjectLookUp
 from django.contrib.postgres.fields import ArrayField
 
@@ -42,13 +43,19 @@ class Instrument(MetaModel):
     def __str__(self):
         return self.name + " (" + self.serial_number + ")" 
 
-class Activity(MetaModel):  
+class Activity(models.Model):
+    # set once, never change.
+    created_at = models.DateTimeField(auto_now_add=True)
+    created_by = models.ForeignKey(User, on_delete=models.PROTECT, related_name="%(app_label)s_%(class)s_created_by")
     activity_id = models.IntegerField(editable=False, unique=True)
     task = models.ForeignKey(Task, on_delete=models.PROTECT)
+    # updated each edit
+    effective_date = models.DateTimeField(auto_now=True)
+    edited_by = models.ForeignKey(User, on_delete=models.PROTECT, related_name="%(app_label)s_%(class)s_edited_by")
+
     # location = models.ForeignKey(Location, on_delete=models.CASCADE)
     # instrument = models.ForeignKey(Instrument, on_delete=models.CASCADE, null=True, blank=True)
-    date = models.DateField()
-    header = models.JSONField(default=list)
+    header = models.JSONField(default=list)  # header should include Survey Date, Calculation Date, etc.  (NO ACTIVITY DATE)
     detail = models.JSONField(default=list)  # null=True, blank=True ?? allow for a no-data header?
 
     def save(self, *args, **kwargs):

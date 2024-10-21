@@ -115,6 +115,9 @@ class TaskSerializer(MetaModelSerializer):
     
 class TaskDetailSerializer(MetaModelSerializer):  # GET
     editors = UserSerializer(many=True)
+    supervisor = UserSerializer()
+    img_card = ImageSerializer()
+    img_banner = ImageSerializer()
 
     class Meta:
         model = Task
