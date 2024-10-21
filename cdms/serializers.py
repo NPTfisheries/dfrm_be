@@ -2,11 +2,6 @@ from common.serializers import MetaModelSerializer
 from rest_framework import serializers
 from cdms.models import Instrument, Field, Activity
 
-# class LocationSerializer(MetaModelSerializer):
-#     class Meta:
-#         model = Location
-#         fields = ['id', 'name', 'description', 'latitude', 'longitude', 'elevation', 'river_kilometer', 'projection', 'is_active']
-
 class InstrumentSerializer(MetaModelSerializer):
     class Meta:
         model = Instrument

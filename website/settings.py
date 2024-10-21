@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     'cdms',
     'common',
     'files',
+    'location',
     'perms',
 ]
 

@@ -25,6 +25,7 @@ urlpatterns = [
     path('api/v1/', include('common.urls')),
     path('api/v1/', include('files.urls')),
     path('api/v1/', include('administration.urls')),
-    path('api/v1/', include('cdms.urls'))
+    path('api/v1/', include('cdms.urls')),
+    path('api/v1/', include('location.urls'))
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

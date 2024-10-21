@@ -1,15 +1,8 @@
-from rest_framework import viewsets
-from rest_framework import permissions
+from rest_framework import viewsets, permissions
 from cdms.models import Activity, Instrument, Field
 from common.models import ObjectLookUp
 from cdms.serializers import ActivitySerializer, InstrumentSerializer, FieldSerializer
 from django.shortcuts import get_object_or_404
-
-# class LocationViewSet(viewsets.ModelViewSet):
-#     queryset = Location.objects.all()
-#     serializer_class = LocationSerializer
-#     lookup_field = 'name'
-#     permission_classes = [permissions.DjangoModelPermissionsOrAnonReadOnly]
 
 class InstrumentViewSet(viewsets.ModelViewSet):
     queryset = Instrument.objects.all()

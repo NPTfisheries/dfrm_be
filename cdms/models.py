@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from common.models import MetaModel
+from location.models import Location
 from administration.models import Project, Task
 from account.models import User
 from common.models import ObjectLookUp
@@ -8,20 +9,6 @@ from django.contrib.postgres.fields import ArrayField
 
 # null = True: django will store empty values as NULL in the db.  default False
 # blank = True: field is allowed to be blank. default False
-
-class Location(MetaModel):
-    name = models.CharField(max_length=300)
-    description = models.TextField(null=True, blank=True)
-    latitude = models.FloatField()
-    longitude = models.FloatField()
-    elevation = models.IntegerField(null=True, blank=True)
-    river_kilometer = models.FloatField(null=True, blank=True)  # DECIMAL FIELD??
-    projection = models.CharField(max_length=100, null=True, blank=True)
-    trt_pop_id = models.CharField(max_length=20, null=True, blank=True)
-    # sde_feature_class_id
-    # timezone
-
-# class Population(): TRT_POPID??
 
 class Instrument(MetaModel):
     INSTRUMENT_TYPE = (

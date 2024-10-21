@@ -32,16 +32,16 @@ class BaseModel(MetaModel):
         return self.name
     
 class ObjectLookUp(MetaModel):
-
     OBJECT_TYPE = (
         ('Task', 'Task'),
         ('Facility', 'Facility'),
     )
 
-    # In django admin, this makes it so we see the name instead of an object reference.
-    # shouldn't affect any api calls/serializers/etc.
-    def __str__(self):
-        return self.name;
-
     object_type = models.CharField(choices = OBJECT_TYPE)
     name = models.CharField(max_length=300, unique=True)
+
+    class Meta:
+        ordering = ['name']
+
+    def __str__(self):
+        return self.name;
