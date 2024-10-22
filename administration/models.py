@@ -46,7 +46,7 @@ class Task(MetaModel, ImageFieldsModel):
 
 
 class Facility(BaseAdminModel, ImageFieldsModel):
-    facility_type = models.ForeignKey(ObjectLookUp, on_delete=models.PROTECT, limit_choices_to={'object_type': 'Task'}, related_name="%(class)s_object_lookups")
+    facility_type = models.ForeignKey(ObjectLookUp, on_delete=models.PROTECT, limit_choices_to={'object_type': 'Facility'}, related_name="%(class)s_object_lookups")
     phone_number = PhoneNumberField(blank = True)
     street_address = models.CharField("Street Address", max_length=100)
     mailing_address = models.CharField("Mailing Address", null = True, blank = True, max_length=100)

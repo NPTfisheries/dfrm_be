@@ -1,7 +1,9 @@
 from common.serializers import MetaModelSerializer
+from rest_framework_gis.serializers import GeoFeatureModelSerializer
 from location.models import Location
 
-class LocationSerializer(MetaModelSerializer):
+class LocationSerializer(MetaModelSerializer, GeoFeatureModelSerializer):
     class Meta:
         model = Location
-        fields = '__all__'
+        fields = ['name', 'description', 'geometry']
+        geo_field = 'geometry'
