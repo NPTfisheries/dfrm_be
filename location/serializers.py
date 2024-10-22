@@ -5,5 +5,5 @@ from location.models import Location
 class LocationSerializer(MetaModelSerializer, GeoFeatureModelSerializer):
     class Meta:
         model = Location
-        fields = ['name', 'description', 'geometry']
+        fields = ['id', 'name', 'description', 'geometry']
         geo_field = 'geometry'
