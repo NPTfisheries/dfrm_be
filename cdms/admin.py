@@ -2,18 +2,13 @@ from django.contrib import admin
 from guardian.admin import GuardedModelAdmin
 from cdms.models import Activity, Instrument, Field
 
-# # Register your models here.
-# @admin.register(Location)
-# class LocationClassAdmin(admin.OSMGeoAdmin):
-#     list_display = ('id', 'name', 'description', 'latitude', 'longitude', 'elevation', 'river_kilometer', 'projection')
-
 @admin.register(Instrument)
 class InstrumentClassAdmin(GuardedModelAdmin):
-    list_display = ('id', 'project', 'name', 'description', 'type', 'model', 'serial_number', 'manufacturer')
+    list_display = ('id', 'name', 'description', 'type', 'model', 'serial_number', 'manufacturer')
 
 @admin.register(Activity)
 class ActivityClassAdmin(GuardedModelAdmin):
-    list_display = ('id', 'activity_id', 'effective_date', 'task', 'header', 'detail') # location, instrument
+    list_display = ('id', 'activity_id', 'location', 'instrument', 'effective_date', 'task', 'header', 'detail') 
 
 @admin.register(Field)
 class FieldClassAdmin(GuardedModelAdmin):

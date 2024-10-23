@@ -5,12 +5,12 @@ from cdms.models import Instrument, Field, Activity
 class InstrumentSerializer(MetaModelSerializer):
     class Meta:
         model = Instrument
-        fields = ['id', 'name', 'description', 'project', 'type', 'model', 'serial_number', 'manufacturer', 'is_active']
+        fields = ['id', 'name', 'description', 'type', 'model', 'serial_number', 'manufacturer', 'is_active']
 
 class ActivitySerializer(MetaModelSerializer):
     class Meta:
         model = Activity
-        fields = ['id', 'activity_id', 'project', 'task', 'date', 'header', 'detail', 'effective_date'] # location, instrument
+        fields = ['id', 'activity_id', 'location', 'instrument', 'task', 'date', 'header', 'detail', 'effective_date']
         depth = 0
     
     def __init__(self, *args, **kwargs):

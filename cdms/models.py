@@ -17,9 +17,8 @@ class Instrument(MetaModel):
         ('Field Thermometer','Field Thermometer'),
         ('Automated Water Sampler', 'Automated Water Sampler'),
         ('Data Tablet', 'Data Tablet')
-    )
+    ) # this should probably be an object lookup?
 
-    project = models.ForeignKey(Project, on_delete=models.PROTECT) 
     name = models.CharField(max_length=300)
     description = models.TextField(null=True, blank=True)
     type = models.CharField(choices = INSTRUMENT_TYPE)
@@ -39,9 +38,9 @@ class Activity(models.Model):
     # updated each edit
     effective_date = models.DateTimeField(auto_now=True)
     edited_by = models.ForeignKey(User, on_delete=models.PROTECT, related_name="%(app_label)s_%(class)s_edited_by")
-
-    # location = models.ForeignKey(Location, on_delete=models.CASCADE)
-    # instrument = models.ForeignKey(Instrument, on_delete=models.CASCADE, null=True, blank=True)
+    
+    location = models.ForeignKey(Location, on_delete=models.CASCADE)
+    instrument = models.ForeignKey(Instrument, on_delete=models.CASCADE, null=True, blank=True)
     header = models.JSONField(default=list)  # header should include Survey Date, Calculation Date, etc.  (NO ACTIVITY DATE)
     detail = models.JSONField(default=list)  # null=True, blank=True ?? allow for a no-data header?
 
