@@ -5,7 +5,7 @@ from cdms.models import Instrument, Field, Activity
 class InstrumentSerializer(MetaModelSerializer):
     class Meta:
         model = Instrument
-        fields = ['id', 'name', 'description', 'type', 'model', 'serial_number', 'manufacturer', 'is_active']
+        fields = ['id', 'name', 'description', 'instrument_type', 'model', 'serial_number', 'manufacturer', 'display_name', 'is_active']
 
 class ActivitySerializer(MetaModelSerializer):
     class Meta:

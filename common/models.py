@@ -33,8 +33,10 @@ class BaseModel(MetaModel):
     
 class ObjectLookUp(MetaModel):
     OBJECT_TYPE = (
-        ('Task', 'Task'),
+        ('Document', 'Document'),
         ('Facility', 'Facility'),
+        ('Instrument', 'Instrument'),
+        ('Task', 'Task')
     )
 
     object_type = models.CharField(choices = OBJECT_TYPE)

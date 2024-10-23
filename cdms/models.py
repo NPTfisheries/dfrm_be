@@ -11,20 +11,18 @@ from django.contrib.postgres.fields import ArrayField
 # blank = True: field is allowed to be blank. default False
 
 class Instrument(MetaModel):
-    INSTRUMENT_TYPE = (
-        ('Temperature Logger','Temperature Logger'),
-        ('Multiparameter Probe','Multiparameter Probe'),
-        ('Field Thermometer','Field Thermometer'),
-        ('Automated Water Sampler', 'Automated Water Sampler'),
-        ('Data Tablet', 'Data Tablet')
-    ) # this should probably be an object lookup?
-
+    # Task????
     name = models.CharField(max_length=300)
     description = models.TextField(null=True, blank=True)
-    type = models.CharField(choices = INSTRUMENT_TYPE)
+    instrument_type = models.ForeignKey(ObjectLookUp, on_delete=models.PROTECT, limit_choices_to={'object_type': 'Instrument'}, related_name="%(class)s_object_lookups")
     model = models.CharField(max_length=100, null=True, blank=True)
     serial_number = models.CharField(max_length=50, null=True, blank=True)
     manufacturer = models.CharField(max_length=100, null=True, blank=True)
+
+    @property
+    def display_name(self):
+        return f"{self.name} ({self.serial_number})"
+    
 
     def __str__(self):
         return self.name + " (" + self.serial_number + ")" 

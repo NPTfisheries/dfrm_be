@@ -4,7 +4,7 @@ from cdms.models import Activity, Instrument, Field
 
 @admin.register(Instrument)
 class InstrumentClassAdmin(GuardedModelAdmin):
-    list_display = ('id', 'name', 'description', 'type', 'model', 'serial_number', 'manufacturer')
+    list_display = ('id', 'name', 'description', 'instrument_type', 'model', 'serial_number', 'manufacturer')
 
 @admin.register(Activity)
 class ActivityClassAdmin(GuardedModelAdmin):
