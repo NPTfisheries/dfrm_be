@@ -53,7 +53,7 @@ class Facility(BaseAdminModel, ImageFieldsModel):
     city = models.CharField("City", max_length=50)
     state = models.CharField("State", max_length=50)
     zipcode = models.CharField("Zip Code", max_length=5)
-    coordinates = models.PointField()
+    geometry = models.PointField()
     class Meta:
         verbose_name = 'Facility'
         verbose_name_plural = 'Facilities'

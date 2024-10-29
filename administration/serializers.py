@@ -134,7 +134,7 @@ class FacilitySerializer(BaseModelSerializer, GeoFeatureModelSerializer):
     class Meta:
         model = Facility
         fields = ['id', 'slug', 'facility_type', 'name', 'description', 'manager', 'deputy', 'assistant', 'staff', 'img_banner', 'img_card', 'facility_type', 'phone_number', 'street_address', 'mailing_address', 'city', 'state', 'zipcode', 'is_active']
-        geo_field = 'coordinates'
+        geo_field = 'geometry'
 
     def get_facility_type(self, instance):
         return ObjectLookUpSerializer(instance.facility_type).data;

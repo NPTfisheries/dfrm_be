@@ -25,5 +25,5 @@ class FacilityAdmin(admin.GISModelAdmin):
                 { 'default_lon':-116.087802, 'default_lat': 45.25, 'default_zoom': 5,
                 }
                 }   
-    list_display = ('id', 'facility_type', 'name', 'coordinates', 'created_at', 'updated_at', 'is_active')
+    list_display = ('id', 'facility_type', 'name', 'geometry', 'created_at', 'updated_at', 'is_active')
     
