@@ -10,7 +10,7 @@ class InstrumentSerializer(MetaModelSerializer):
 class ActivitySerializer(MetaModelSerializer):
     class Meta:
         model = Activity
-        fields = ['id', 'activity_id', 'location', 'instrument', 'task', 'date', 'header', 'detail', 'effective_date']
+        fields = ['id', 'activity_id', 'location', 'instrument', 'task', 'header', 'detail', 'updated_at']
         depth = 0
     
     def __init__(self, *args, **kwargs):

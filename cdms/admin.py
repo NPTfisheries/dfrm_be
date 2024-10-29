@@ -8,7 +8,7 @@ class InstrumentClassAdmin(GuardedModelAdmin):
 
 @admin.register(Activity)
 class ActivityClassAdmin(GuardedModelAdmin):
-    list_display = ('id', 'activity_id', 'location', 'instrument', 'effective_date', 'task', 'header', 'detail') 
+    list_display = ('id', 'activity_id', 'location', 'instrument', 'task', 'header', 'detail') 
 
 @admin.register(Field)
 class FieldClassAdmin(GuardedModelAdmin):
