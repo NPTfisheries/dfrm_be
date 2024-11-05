@@ -43,6 +43,9 @@ class Task(MetaModel, ImageFieldsModel):
     # show_on_website = models.BooleanField(default=True)
     # data_associated
 
+    def __str__(self):
+        return self.name;
+
 
 
 class Facility(BaseAdminModel, ImageFieldsModel):

@@ -112,6 +112,13 @@ class TaskSerializer(MetaModelSerializer):
         instance.editors.set(ids)
 
         return instance
+
+    def update(self, instance, validated_data):
+        ids = validated_data.pop('editors', [])
+        instance = super().update(instance, validated_data)
+        instance.editors.set(ids)
+        instance.save()
+        return instance
     
 class TaskDetailSerializer(MetaModelSerializer):  # GET
     editors = UserSerializer(many=True)
