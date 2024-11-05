@@ -10,6 +10,7 @@ class MetaModel(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     updated_by = models.ForeignKey(User, on_delete=models.PROTECT, related_name="%(app_label)s_%(class)s_editor")
     is_active = models.BooleanField(default=True)
+    display = models.BooleanField(default=True)
 
     class Meta:
         abstract = True
@@ -30,7 +31,7 @@ class BaseModel(MetaModel):
 
     def __str__(self):
         return self.name
-    
+
 class ObjectLookUp(MetaModel):
     OBJECT_TYPE = (
         ('Document', 'Document'),
@@ -40,9 +41,12 @@ class ObjectLookUp(MetaModel):
     )
 
     object_type = models.CharField(choices = OBJECT_TYPE)
-    name = models.CharField(max_length=300, unique=True)
+    name = models.CharField(max_length=300)
 
     class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['object_type', 'name'], name='unique_object_type_name')
+        ]
         ordering = ['name']
 
     def __str__(self):

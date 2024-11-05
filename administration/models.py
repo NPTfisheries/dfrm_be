@@ -40,13 +40,9 @@ class Task(MetaModel, ImageFieldsModel):
     sort_order = models.IntegerField(default=1)
     editors = models.ManyToManyField(User, blank=True, related_name="%(class)s_editors")
     allowed_access = models.CharField(default='Staff', choices=(('Public', 'Public'), ('Staff', 'Staff'), ('Editors', 'Editors')))
-    # show_on_website = models.BooleanField(default=True)
-    # data_associated
 
     def __str__(self):
         return self.name;
-
-
 
 class Facility(BaseAdminModel, ImageFieldsModel):
     facility_type = models.ForeignKey(ObjectLookUp, on_delete=models.PROTECT, limit_choices_to={'object_type': 'Facility'}, related_name="%(class)s_object_lookups")
@@ -57,6 +53,7 @@ class Facility(BaseAdminModel, ImageFieldsModel):
     state = models.CharField("State", max_length=50)
     zipcode = models.CharField("Zip Code", max_length=5)
     geometry = models.PointField()
+    
     class Meta:
         verbose_name = 'Facility'
         verbose_name_plural = 'Facilities'
