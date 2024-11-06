@@ -31,7 +31,7 @@ class Project(BaseModel, ImageFieldsModel):
     project_leader = models.ManyToManyField(User, related_name="%(class)s_projct_leads")
 
 class Task(MetaModel, ImageFieldsModel):  
-    name = models.CharField(max_length=300, default='TaskNamePlaceholder')
+    name = models.CharField(max_length=300)
     description = models.TextField()
     task_type = models.ForeignKey(ObjectLookUp, null=True, on_delete=models.PROTECT, limit_choices_to={'object_type': 'Task'}, related_name="%(class)s_object_lookups")
     division = models.ForeignKey(Division, on_delete=models.PROTECT, related_name="%(class)s_division")
