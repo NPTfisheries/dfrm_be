@@ -9,4 +9,4 @@ class ImageClassAdmin(GuardedModelAdmin):
 
 @admin.register(Document)
 class DocumentClassAdmin(GuardedModelAdmin):
-    list_display = ('id', 'title', 'description', 'primary_author', 'publish_date')
+    list_display = ('id', 'title', 'document_type', 'description', 'primary_author', 'publish_date')
