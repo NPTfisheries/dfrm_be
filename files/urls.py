@@ -3,8 +3,8 @@ from rest_framework import routers
 from files import views
 
 router = routers.DefaultRouter()
-router.register(r'image', views.ImageViewSet)
-router.register(r'document', views.DocumentViewSet)
+router.register(r'images', views.ImageViewSet)
+router.register(r'documents', views.DocumentViewSet)
 
 
 app_name = 'files'

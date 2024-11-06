@@ -6,10 +6,11 @@ from account.models import User
 # Abstract model classes for reuse across multiple apps.
 class MetaModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
-    created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_creator")
+    created_by = models.ForeignKey(User, on_delete=models.PROTECT, related_name="%(app_label)s_%(class)s_creator")
     updated_at = models.DateTimeField(auto_now=True)
-    updated_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_editor")
+    updated_by = models.ForeignKey(User, on_delete=models.PROTECT, related_name="%(app_label)s_%(class)s_editor")
     is_active = models.BooleanField(default=True)
+    display = models.BooleanField(default=True)
 
     class Meta:
         abstract = True
@@ -30,18 +31,23 @@ class BaseModel(MetaModel):
 
     def __str__(self):
         return self.name
-    
-class ObjectLookUp(MetaModel):
 
+class ObjectLookUp(MetaModel):
     OBJECT_TYPE = (
-        ('Task', 'Task'),
+        ('Document', 'Document'),
         ('Facility', 'Facility'),
+        ('Instrument', 'Instrument'),
+        ('Task', 'Task')
     )
 
-    # In django admin, this makes it so we see the name instead of an object refernce.
-    # shouldn't affect any api calls/serializers/etc.
+    object_type = models.CharField(choices = OBJECT_TYPE)
+    name = models.CharField(max_length=300)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['object_type', 'name'], name='unique_object_type_name')
+        ]
+        ordering = ['name']
+
     def __str__(self):
         return self.name;
-
-    object_type = models.CharField(choices = OBJECT_TYPE)
-    name = models.CharField(max_length=300, unique=True)

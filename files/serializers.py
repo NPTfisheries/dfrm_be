@@ -4,7 +4,7 @@ from account.models import User
 from guardian.shortcuts import assign_perm
 from django.contrib.auth.models import Permission
 from files.models import Image, Document
-from common.serializers import BaseModelSerializer, MetaModelSerializer
+from common.serializers import BaseModelSerializer, MetaModelSerializer, ObjectLookUpSerializer
 from account.serializers import UserSerializer
 
 
@@ -36,13 +36,14 @@ class DocumentSerializer(MetaModelSerializer):
     class Meta:
         model = Document
         fields = ['id', 'document', 'title', 'description', 'primary_author', 'employee_authors', 'publish_date', 'document_type', 'citation', 'keywords']
-    
+
     def to_representation(self, instance):
         # Override field representation for GET requests
         if self.context['request'].method == 'GET':
             return {
                 **super().to_representation(instance),
                 # 'document': f'/media/{instance.document}',
+                'document_type': ObjectLookUpSerializer(instance.document_type).data,
                 'employee_authors': UserSerializer(instance.employee_authors.all(), many=True).data
             }
         return super().to_representation(instance)

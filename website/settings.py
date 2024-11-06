@@ -61,10 +61,12 @@ INSTALLED_APPS = [
     'guardian',
     'storages',
 
-    'common',
     'account',
-    'files',
     'administration',
+    'cdms',
+    'common',
+    'files',
+    'location',
     'perms',
 ]
 
@@ -125,7 +127,7 @@ if env('MODE') == 'Dev':
         'PORT': env('DATABASE_PORT'),
         #'ENGINE': 'django.db.backends.sqlite3',
         #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        },
+        }
     }
 
 if env('MODE') == 'Prod':
