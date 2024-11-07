@@ -50,8 +50,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
 class TaskViewSet(viewsets.ModelViewSet):
     queryset = Task.objects.all()
-    permission_classes = [permissions.DjangoModelPermissionsOrAnonReadOnly]  # is this wrong??
-    # permission_classes = [CustomObjectPermissions]  # is this correct??
+    permission_classes = [CustomObjectPermissions]
 
     def get_serializer_class(self):
         if self.request.method == 'GET':

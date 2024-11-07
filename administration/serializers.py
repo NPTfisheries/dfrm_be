@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_framework_gis.serializers import GeoFeatureModelSerializer
-from guardian.shortcuts import assign_perm
+from guardian.shortcuts import assign_perm, remove_perm
 from common.serializers import MetaModelSerializer, BaseModelSerializer, ObjectLookUpSerializer
 from account.serializers import UserSerializer
 from files.serializers import ImageSerializer
@@ -114,9 +114,20 @@ class TaskSerializer(MetaModelSerializer):
         return instance
 
     def update(self, instance, validated_data):
-        ids = validated_data.pop('editors', [])
+        new_editors = validated_data.pop('editors', [])
+        perm = Permission.objects.get(codename='change_task')
+        # remove existing perms, but not if they're creator
+        old_editors = instance.editors.all()
+        for editor in old_editors:
+            if editor != instance.created_by:
+                remove_perm(perm, editor, instance)
+        
+        assign_perm(perm, instance.supervisor, instance) # user who is supervisor
+        for new_editor in new_editors:
+            assign_perm(perm, new_editor, instance)
+
         instance = super().update(instance, validated_data)
-        instance.editors.set(ids)
+        instance.editors.set(new_editors)
         instance.save()
         return instance
     
