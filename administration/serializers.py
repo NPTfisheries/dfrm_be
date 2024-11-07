@@ -78,9 +78,7 @@ class ProjectSerializer(BaseModelSerializer):
         instance = super().create(validated_data)
         perm = Permission.objects.get(codename='change_project')
         assign_perm(perm, user, instance)
-        print(f'Permission: {perm}')
         for id in ids:
-            print(f'DEBUG: Id: {id}')
             assign_perm(perm, id, instance)
         instance.project_leader.set(ids)
         return instance
