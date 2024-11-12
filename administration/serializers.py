@@ -78,17 +78,25 @@ class ProjectSerializer(BaseModelSerializer):
         instance = super().create(validated_data)
         perm = Permission.objects.get(codename='change_project')
         assign_perm(perm, user, instance)
-        print(f'Permission: {perm}')
         for id in ids:
-            print(f'DEBUG: Id: {id}')
             assign_perm(perm, id, instance)
         instance.project_leader.set(ids)
         return instance
 
     def update(self, instance, validated_data):
-        ids = validated_data.pop('project_leader')
+        new_pls = validated_data.pop('project_leader', [])
+        perm = Permission.objects.get(codename='change_project')
+
+        old_pls = instance.project_leader.all()
+        for pl in old_pls:
+            if pl != instance.created_by:
+                remove_perm(perm, pl, instance)
+
+        for new_pl in new_pls:
+            assign_perm(perm, new_pl, instance)  # editors
+
         instance = super().update(instance, validated_data)
-        instance.project_leader.set(ids)
+        instance.project_leader.set(new_pls)
         instance.save()
         return instance
 
