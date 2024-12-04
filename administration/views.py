@@ -36,7 +36,7 @@ class DivisionViewSet(viewsets.ModelViewSet):
 
         projects_data = self.projects(request, slug=kwargs['slug']).data\
         # projects_data = []
-        print(f'Debug projects_data: {projects_data}')
+        # print(f'Debug projects_data: {projects_data}')
         if projects_data is not None:
             response_data['projects'] = projects_data
             
