@@ -51,7 +51,7 @@ class Activity(MetaModel):
 # https://www.ag-grid.com/javascript-data-grid/column-properties/  
 class Field(models.Model):
     task_type = models.ForeignKey(ObjectLookUp, on_delete=models.PROTECT, limit_choices_to={'object_type': 'Task'})
-    field_for = models.CharField(choices=(('header','Header'),('detail','Detail')))
+    field_for = models.CharField(choices=(('header','Header'),('detail','Detail'),('activity','Activity')))
     required = models.BooleanField(default=False)
 
     field = models.CharField(max_length=255, help_text="The data field for the column")
