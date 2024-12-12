@@ -1,7 +1,7 @@
 from rest_framework import viewsets, permissions
-from cdms.models import Activity, Instrument, Field
+from data.models import Activity, Instrument, Field
 from common.models import ObjectLookUp
-from cdms.serializers import ActivitySerializer, InstrumentSerializer, FieldSerializer
+from data.serializers import ActivitySerializer, InstrumentSerializer, FieldSerializer
 from django.shortcuts import get_object_or_404
 
 class InstrumentViewSet(viewsets.ModelViewSet):

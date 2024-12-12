@@ -63,7 +63,7 @@ INSTALLED_APPS = [
 
     'account',
     'administration',
-    'cdms',
+    'data',
     'common',
     'files',
     'location',

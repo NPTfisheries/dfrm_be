@@ -1,6 +1,6 @@
 from common.serializers import MetaModelSerializer
 from rest_framework import serializers
-from cdms.models import Instrument, Field, Activity
+from data.models import Instrument, Field, Activity
 
 class InstrumentSerializer(MetaModelSerializer):
     class Meta:

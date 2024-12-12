@@ -8,7 +8,7 @@ router.register(r'instruments', InstrumentViewSet)
 router.register(r'activities', ActivityViewSet)
 router.register(r'fields', FieldViewSet)
 
-app_name = 'cdms'
+app_name = 'data'
 
 urlpatterns = [
     path('', include(router.urls)),
