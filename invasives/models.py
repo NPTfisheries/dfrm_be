@@ -19,3 +19,7 @@ class InvasiveSpecies(models.Model):
 
     def __str__(self):
         return self.name;
+
+    class Meta:
+        verbose_name = 'Invasive Species'
+        verbose_name_plural = 'Invasive Species'
