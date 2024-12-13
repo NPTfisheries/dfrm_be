@@ -37,6 +37,7 @@ class ObjectLookUp(MetaModel):
         ('Document', 'Document'),
         ('Facility', 'Facility'),
         ('Instrument', 'Instrument'),
+        ('Invasive', 'Invasive'),
         ('Task', 'Task')
     )
 
