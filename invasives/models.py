@@ -6,7 +6,7 @@ from common.models import ObjectLookUp
 class InvasiveSpecies(models.Model):  
     common_name = models.CharField(max_length=300)
     species_name = models.CharField(max_length=300)
-    species_image = models.ImageField(null=True) # for testing
+    species_image = models.ImageField(null=True, upload_to='images/invasives/') # for testing
     image_attribution = models.TextField(null=True) # for testing
     description = models.TextField()
     size = models.TextField()
@@ -18,7 +18,7 @@ class InvasiveSpecies(models.Model):
     sort_order = models.IntegerField(default=1)
 
     def __str__(self):
-        return self.name;
+        return self.common_name;
 
     class Meta:
         verbose_name = 'Invasive Species'
