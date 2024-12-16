@@ -6,8 +6,8 @@ from common.models import ObjectLookUp
 class InvasiveSpecies(models.Model):  
     common_name = models.CharField(max_length=300)
     species_name = models.CharField(max_length=300)
-    species_image = models.ImageField()
-    image_attribution = models.TextField()
+    species_image = models.ImageField(null=True) # for testing
+    image_attribution = models.TextField(null=True) # for testing
     description = models.TextField()
     size = models.TextField()
     color = models.TextField()

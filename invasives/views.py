@@ -1,4 +1,4 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, permissions
 from .models import InvasiveSpecies
 from .serializers import InvasiveSpeciesSerializer
 
@@ -8,3 +8,4 @@ class InvasiveSpeciesViewSet(viewsets.ModelViewSet):
     queryset = InvasiveSpecies.objects.all()
     serializer_class = InvasiveSpeciesSerializer
     lookup_field = 'name'
+    permission_classes = [permissions.DjangoModelPermissionsOrAnonReadOnly]
