@@ -12,4 +12,6 @@ class InvasiveSpeciesSerializer(serializers.ModelSerializer):
         # this makes sure the filepath is returned similar to any other to_representation request (project, user, dept, etc.)
         if instance.species_image:
             representation['species_image'] = f'/media/{instance.species_image}'
+        if instance.map_image:
+            representation['map_image'] = f'/media/{instance.map_image}'
         return representation
