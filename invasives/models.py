@@ -22,7 +22,6 @@ class InvasiveSpecies(models.Model):
     invasive_type = models.ForeignKey(ObjectLookUp, null=True, on_delete=models.PROTECT, limit_choices_to={'object_type': 'Invasive'}, related_name="%(class)s_object_lookups")
     sort_order = models.IntegerField(default=1)
     
-
     def __str__(self):
         return self.common_name;
 

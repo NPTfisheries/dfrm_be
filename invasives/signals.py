@@ -12,7 +12,7 @@ def delete_old_images(sender, instance, **kwargs):
             instance._delete_image(old_instance.species_image)
         if old_instance.image1 and old_instance.image1 != instance.image1:
             instance._delete_image(old_instance.image1)
-        if old_instance.image2 and old_instance.image2 != instance.image1:
+        if old_instance.image2 and old_instance.image2 != instance.image2:
             instance._delete_image(old_instance.image2)
 
 @receiver(post_delete, sender=InvasiveSpecies)
