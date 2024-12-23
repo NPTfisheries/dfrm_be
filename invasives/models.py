@@ -9,15 +9,19 @@ class InvasiveSpecies(models.Model):
     species_name = models.CharField(max_length=300)
     species_image = models.ImageField(upload_to='images/invasives/')
     image_attribution = models.TextField(null=True, blank=True)
-    map_image =  models.ImageField(upload_to='images/invasives/', help_text="Map image must be a screenshot from https://nas.er.usgs.gov/viewer/omap.aspx") # testing
+    image1 =  models.ImageField(upload_to='images/invasives/') 
+    image1_attribution = models.TextField(null=True, blank=True)
+    image2 =  models.ImageField(upload_to='images/invasives/') 
+    image2_attribution = models.TextField(null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     size = models.TextField(null=True, blank=True)
     color = models.TextField(null=True, blank=True)
     shape = models.TextField(null=True, blank=True)
     habitat = models.TextField(null=True, blank=True)
     native_to = models.TextField(null=True, blank=True)
-    invasive_type = models.ForeignKey(ObjectLookUp, on_delete=models.PROTECT, limit_choices_to={'object_type': 'Invasive'}, related_name="%(class)s_object_lookups")
+    invasive_type = models.ForeignKey(ObjectLookUp, null=True, on_delete=models.PROTECT, limit_choices_to={'object_type': 'Invasive'}, related_name="%(class)s_object_lookups")
     sort_order = models.IntegerField(default=1)
+    
 
     def __str__(self):
         return self.common_name;

@@ -10,12 +10,16 @@ def delete_old_images(sender, instance, **kwargs):
         old_instance = sender.objects.get(pk=instance.pk)
         if old_instance.species_image and old_instance.species_image != instance.species_image:
             instance._delete_image(old_instance.species_image)
-        if old_instance.map_image and old_instance.map_image != instance.map_image:
-            instance._delete_image(old_instance.map_image)
+        if old_instance.image1 and old_instance.image1 != instance.image1:
+            instance._delete_image(old_instance.image1)
+        if old_instance.image2 and old_instance.image2 != instance.image1:
+            instance._delete_image(old_instance.image2)
 
 @receiver(post_delete, sender=InvasiveSpecies)
 def remove_images_on_delete(sender, instance, **kwargs):
     if instance.species_image:
         instance._delete_image(instance.species_image)
-    if instance.map_image:
-        instance._delete_image(instance.map_image)
+    if instance.image1:
+        instance._delete_image(instance.image1)
+    if instance.image2:
+        instance._delete_image(instance.image2)
