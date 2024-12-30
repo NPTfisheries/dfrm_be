@@ -1,5 +1,4 @@
 from rest_framework import serializers
-from rest_framework_gis.serializers import GeoFeatureModelSerializer
 from guardian.shortcuts import assign_perm, remove_perm
 from common.serializers import MetaModelSerializer, BaseModelSerializer, ObjectLookUpSerializer
 from account.serializers import UserSerializer
@@ -155,12 +154,11 @@ class TaskDetailSerializer(MetaModelSerializer):  # GET
     
 
 
-class FacilitySerializer(BaseModelSerializer, GeoFeatureModelSerializer):
+class FacilitySerializer(BaseModelSerializer):
    
     class Meta:
         model = Facility
-        fields = ['id', 'slug', 'facility_type', 'name', 'description', 'manager', 'deputy', 'assistant', 'staff', 'img_banner', 'img_card', 'facility_type', 'phone_number', 'street_address', 'mailing_address', 'city', 'state', 'zipcode', 'is_active', 'display']
-        geo_field = 'geometry'
+        fields = ['id', 'slug', 'facility_type', 'name', 'description', 'manager', 'deputy', 'assistant', 'staff', 'img_banner', 'location', 'img_card', 'facility_type', 'phone_number', 'street_address', 'mailing_address', 'city', 'state', 'zipcode', 'is_active', 'display']
 
     def get_facility_type(self, instance):
         return ObjectLookUpSerializer(instance.facility_type).data;
