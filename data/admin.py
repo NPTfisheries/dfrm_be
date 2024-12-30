@@ -14,4 +14,4 @@ from data.models import Activity, Instrument, Field
 # class FieldClassAdmin(GuardedModelAdmin):
 #     list_display = ('id', 'sortingOrder', 'task_type', 'required', 'headerName', 'field', 'filter', 'editable', 
 #                     'pinned', 'width', 'minWidth', 'maxWidth', 'hide', 'cellRenderer', 'cellStyle', 'cellClass', 
-#                     'valueFormatter', 'headerTooltip', 'cellEditor', 'cellEditorParams')
+#                     'valueFormatter', 'valueGetter', 'headerTooltip', 'cellEditor', 'cellEditorParams')

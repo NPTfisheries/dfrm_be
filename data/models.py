@@ -67,6 +67,7 @@ class Field(models.Model):
     cellStyle = models.JSONField(null=True, blank=True, help_text="An object of CSS styles to be applied to the cell. ")
     cellClass = ArrayField(models.CharField(max_length=100), null=True, blank=True, help_text="CSS classes to be applied to the cell. Array of strings (classes).")
     valueFormatter = models.CharField(max_length=255, null=True, blank=True, help_text="Custom value formatter function for the column")
+    valueGetter = models.TextField(null=True, blank=True)
     cellEditor = models.TextField(null=True, blank=True)
     cellEditorParams = models.JSONField(null=True, blank=True)
 
