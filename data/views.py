@@ -28,7 +28,6 @@ class FieldViewSet(viewsets.ModelViewSet):
         # always include activity fields
         activity_field_task_types = ObjectLookUp.objects.filter(name="Activity Field").values_list('id', flat=True)
 
-
         if task_type:
             combined_task_types = list(activity_field_task_types) + [task_type]
             return Field.objects.filter(task_type__id__in=combined_task_types)
