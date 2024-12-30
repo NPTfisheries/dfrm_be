@@ -1,9 +1,7 @@
 from django.db import models
-from django.utils import timezone
 from common.models import MetaModel
 from location.models import Location
-from administration.models import Project, Task
-from account.models import User
+from administration.models import Task
 from common.models import ObjectLookUp
 from django.contrib.postgres.fields import ArrayField
 

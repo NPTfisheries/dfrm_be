@@ -13,7 +13,7 @@ class InstrumentViewSet(viewsets.ModelViewSet):
 class ActivityViewSet(viewsets.ModelViewSet):
     queryset = Activity.objects.all()
     serializer_class = ActivitySerializer
-    lookup_field = 'id'
+    lookup_field = 'activity_id'   # important!
     permission_classes = [permissions.DjangoModelPermissionsOrAnonReadOnly]
 
 class FieldViewSet(viewsets.ModelViewSet):

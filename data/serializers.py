@@ -9,10 +9,11 @@ class InstrumentSerializer(MetaModelSerializer):
 
 class ActivitySerializer(MetaModelSerializer):
     task_type_name = serializers.SerializerMethodField()
+    project_name = serializers.SerializerMethodField()
 
     class Meta:
         model = Activity
-        fields = ['id', 'activity_id', 'location', 'instrument', 'task', 'task_type_name', 'header', 'detail', 'updated_at']
+        fields = ['id', 'activity_id', 'location', 'instrument', 'task', 'task_type_name', 'project_name', 'header', 'detail', 'updated_at']
         depth = 0
     
     def __init__(self, *args, **kwargs):
@@ -27,6 +28,11 @@ class ActivitySerializer(MetaModelSerializer):
     def get_task_type_name(self, obj):
         if obj.task and obj.task.task_type:
             return obj.task.task_type.name
+        return None
+    
+    def get_project_name(self, obj):
+        if obj.task and obj.task.project:
+            return obj.task.project.name
         return None
 
 
