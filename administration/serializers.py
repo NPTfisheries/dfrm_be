@@ -15,28 +15,29 @@ class BaseImageSerializer(serializers.ModelSerializer):
 class BaseAdminSerializer(BaseModelSerializer):
 
     def to_representation(self, instance):
-        # Override field representation for GET requests
-        if self.context['request'].method == 'GET':
-            return {
-                **super().to_representation(instance),
-                'manager': UserSerializer(instance.manager).data,
-                'deputy': UserSerializer(instance.deputy).data,
-                'assistant': UserSerializer(instance.assistant).data,
-                'staff': UserSerializer(instance.staff.all(), many=True).data,
-                'img_banner': ImageSerializer(instance.img_banner).data,
-                'img_card': ImageSerializer(instance.img_card).data
-            }
+        if self.context['request'].method == 'GET':   
+            representation = super().to_representation(instance)
+            # Check for None before serializing related fields
+            representation['manager'] = UserSerializer(instance.manager).data if instance.manager else None
+            representation['deputy'] = UserSerializer(instance.deputy).data if instance.deputy else None
+            representation['assistant'] = UserSerializer(instance.assistant).data if instance.assistant else None
+            representation['staff'] = UserSerializer(instance.staff.all(), many=True).data if instance.staff else []
+
+            representation['img_banner'] = ImageSerializer(instance.img_banner).data if instance.img_banner else None
+            representation['img_card'] = ImageSerializer(instance.img_card).data if instance.img_card else None
+
+            return representation
         return super().to_representation(instance)
 
     def create(self, validated_data):
-        ids = validated_data.pop('staff')
+        ids = validated_data.pop('staff', [])
         instance = super().create(validated_data)
         instance.staff.set(ids)
         instance.save()
         return instance
 
     def update(self, instance, validated_data):
-        ids = validated_data.pop('staff')
+        ids = validated_data.pop('staff', [])
         instance = super().update(instance, validated_data)
         instance.staff.set(ids)
         instance.save()
@@ -146,7 +147,8 @@ class TaskDetailSerializer(MetaModelSerializer):  # GET
 
     class Meta:
         model = Task
-        fields = ['id', 'name', 'description', 'task_type', 'division', 'project', 'supervisor', 'img_banner', 'img_card', 'sort_order', 'is_active', 'editors', 'allowed_access', 'display']
+        fields = ['id', 'name', 'description', 'task_type', 'division', 'project', 'supervisor', 'img_banner', 'img_card', 
+                  'sort_order', 'is_active', 'editors', 'allowed_access', 'display']
         depth = 1  
 
     def get_task_type(self, instance):
@@ -154,45 +156,22 @@ class TaskDetailSerializer(MetaModelSerializer):  # GET
     
 
 
-class FacilitySerializer(BaseModelSerializer):
+class FacilitySerializer(BaseAdminSerializer):
    
     class Meta:
         model = Facility
-        fields = ['id', 'slug', 'facility_type', 'name', 'description', 'manager', 'deputy', 'assistant', 'staff', 'img_banner', 'location', 'img_card', 'facility_type', 'phone_number', 'street_address', 'mailing_address', 'city', 'state', 'zipcode', 'is_active', 'display']
-
+        fields = ['id', 'slug', 'facility_type', 'name', 'description', 'location', 'manager', 'deputy', 'assistant', 'staff', 
+                  'img_banner', 'img_card', 'phone_number', 'street_address', 'mailing_address', 'city', 'state', 
+                  'zipcode', 'is_active', 'display']
+        
     def get_facility_type(self, instance):
-        return ObjectLookUpSerializer(instance.facility_type).data;
-
-    def to_representation(self, instance):
-        if self.context['request'].method == 'GET':   
-            representation = super().to_representation(instance)
-            representation['properties']['manager']= UserSerializer(instance.manager).data
-            representation['properties']['deputy']= UserSerializer(instance.deputy).data
-            representation['properties']['assistant']= UserSerializer(instance.assistant).data
-            representation['properties']['staff']= UserSerializer(instance.staff.all(), many=True).data
-            representation['properties']['img_banner']= ImageSerializer(instance.img_banner).data
-            representation['properties']['img_card']= ImageSerializer(instance.img_card).data
-            representation['properties']['facility_type']= self.get_facility_type(instance)
-            return representation
-        return super().to_representation(instance)
-
-    def create(self, validated_data):
-        staff_ids = validated_data.pop('staff')
-        instance = super().create(validated_data)
-        print(f'DEBUG: Facility name: {instance.name}')
-        print(f'DEBUG update staff_ids: {staff_ids}')
-        print(f'DEBUG: {instance}')
-        instance.staff.set(staff_ids)
-        #if staff_ids:
-        #    instance.staff.set(staff_ids)
-        instance.save()
-        return instance
-
-    def update(self, instance, validated_data):
-        staff_ids = validated_data.pop('staff', [])
-        instance = super().update(instance, validated_data)
-        instance.staff.set(staff_ids)
-        # if staff_ids:
-        #     instance.staff.set(staff_ids)
-        instance.save()
-        return instance
+        return ObjectLookUpSerializer(instance.facility_type).data
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Check if 'request' exists in context and is a GET request
+        request = self.context.get('request', None)
+        if request and request.method == 'GET':
+            self.Meta.depth = 1  # Set depth to 2 for GET requests
+        else:
+            self.Meta.depth = 0  # Set depth to 1 for all others

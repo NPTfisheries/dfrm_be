@@ -34,9 +34,7 @@ class DivisionViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(instance)
         response_data = serializer.data
 
-        projects_data = self.projects(request, slug=kwargs['slug']).data\
-        # projects_data = []
-        # print(f'Debug projects_data: {projects_data}')
+        projects_data = self.projects(request, slug=kwargs['slug']).data
         if projects_data is not None:
             response_data['projects'] = projects_data
             
@@ -71,20 +69,3 @@ class FacilityViewSet(viewsets.ModelViewSet):
     serializer_class = FacilitySerializer
     lookup_field = 'slug'
     permission_classes = [permissions.DjangoModelPermissionsOrAnonReadOnly]
-
-    def list(self, request, *args, **kwargs):
-        queryset = self.get_queryset()
-        serializer = self.get_serializer(queryset, many=True)
-
-        # Access the data returned by the serializer
-        serialized_data = serializer.data
-
-        # Return the features array directly
-        return Response(serialized_data['features'])
-    
-    def create(self, request, *args, **kwargs):
-        # Print the request data
-        print(request.data)
-
-        # Continue with the regular create method
-        return super().create(request, *args, **kwargs)
