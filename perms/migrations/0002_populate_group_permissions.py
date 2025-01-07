@@ -21,6 +21,9 @@ def populate_group_permissions(apps, schema_editor):
             'files': {
                 'image': ["view", "add", "change", "delete"],
                 'document': ["view", "add", "change", "delete"],
+            },
+            'location': {
+                'location': ["view", "add", "change", "delete"]
             }
         },
         "Manager":{
@@ -38,6 +41,9 @@ def populate_group_permissions(apps, schema_editor):
             'files':{
                 'image':["view","add","change","delete"],
                 'document':["view","add","change","delete"]
+            },
+            'location': {
+                'location': ["view", "add", "change"]
             }
         },
         "Project_leader":{
@@ -55,6 +61,9 @@ def populate_group_permissions(apps, schema_editor):
             'files':{
                 'image':["view", "add", "change","delete"],
                 'document':["view","add","change","delete"]
+            },
+            'location': {
+                'location': ["view", "add", "change"]
             }
         },
         "Professional":{
@@ -72,6 +81,9 @@ def populate_group_permissions(apps, schema_editor):
             'files':{
                 'image':["view"],
                 'document':["view","add","change","delete"]
+            },
+            'location': {
+                'location': ["view"]
             }
         },
         "Technician":{
@@ -89,6 +101,9 @@ def populate_group_permissions(apps, schema_editor):
             'files':{
                 'image':["view"],
                 'document':["view"]
+            },
+            'location': {
+                'location': ["view"]
             }
         },
         "Guest":{
@@ -106,6 +121,9 @@ def populate_group_permissions(apps, schema_editor):
             'files':{
                 'image':["view"],
                 'document':["view"]
+            },
+            'location': {
+                'location': ["view"]
             }
         }  
     }

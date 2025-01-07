@@ -2,6 +2,7 @@ from django.contrib.gis.db import models
 from common.models import MetaModel, BaseModel, ObjectLookUp
 from account.models import User
 from files.models import Image
+from location.models import Location
 from phonenumber_field.modelfields import PhoneNumberField
 
 # abstract classes
@@ -52,7 +53,8 @@ class Facility(BaseAdminModel, ImageFieldsModel):
     city = models.CharField("City", max_length=50)
     state = models.CharField("State", max_length=50)
     zipcode = models.CharField("Zip Code", max_length=5)
-    geometry = models.PointField()
+    location = models.ForeignKey(Location, on_delete=models.PROTECT)
+
     
     class Meta:
         verbose_name = 'Facility'

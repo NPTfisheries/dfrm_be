@@ -8,5 +8,5 @@ class LocationAdmin(admin.GISModelAdmin):
                     { 'default_lon':-116.087802, 'default_lat': 45.25, 'default_zoom': 5,
                     }
                     }        
-    list_display = ('name', 'description', 'geometry')
+    list_display = ('id', 'name', 'description', 'geometry')
 
