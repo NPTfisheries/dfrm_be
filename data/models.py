@@ -26,14 +26,12 @@ class Instrument(MetaModel):
         return self.name + " (" + self.serial_number + ")" 
 
 class Activity(MetaModel):
-    # set once, never change.
-    activity_id = models.IntegerField(editable=False, unique=True)
-    # updated each edit
-    # effective_date = models.DateTimeField(auto_now=True)  # getting updated_at from MetaModel
+    activity_id = models.IntegerField(editable=False, unique=True) # unique, but not the same as 'id'
+    # effective_date = 'updated_at' from MetaModel, updated each edit.
     task = models.ForeignKey(Task, on_delete=models.PROTECT)
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
     instrument = models.ForeignKey(Instrument, on_delete=models.CASCADE, null=True, blank=True)
-    header = models.JSONField(default=list)  # header should include Survey Date, Calculation Date, etc.  (NO ACTIVITY DATE)
+    header = models.JSONField(default=list)  # header should include whatever date needed: calculation date, survey date, etc.
     detail = models.JSONField(default=list)  # null=True, blank=True ?? allow for a no-data header?
 
     def save(self, *args, **kwargs):
