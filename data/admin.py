@@ -6,12 +6,12 @@ from data.models import Activity, Instrument, Field
 class InstrumentClassAdmin(GuardedModelAdmin):
     list_display = ('id', 'name', 'description', 'instrument_type', 'model', 'serial_number', 'manufacturer')
 
-# @admin.register(Activity)
-# class ActivityClassAdmin(GuardedModelAdmin):
-#     list_display = ('id', 'activity_id', 'location', 'instrument', 'task', 'header', 'detail') 
+@admin.register(Activity)
+class ActivityClassAdmin(GuardedModelAdmin):
+    list_display = ('id', 'activity_id', 'location', 'instrument', 'task', 'header', 'detail') 
 
-# @admin.register(Field)
-# class FieldClassAdmin(GuardedModelAdmin):
-#     list_display = ('id', 'sortingOrder', 'task_type', 'required', 'headerName', 'field', 'filter', 'editable', 
-#                     'pinned', 'width', 'minWidth', 'maxWidth', 'hide', 'cellRenderer', 'cellStyle', 'cellClass', 
-#                     'valueFormatter', 'valueGetter', 'headerTooltip', 'cellEditor', 'cellEditorParams')
+@admin.register(Field)
+class FieldClassAdmin(GuardedModelAdmin):
+    list_display = ('id', 'sortingOrder', 'task_type', 'required', 'headerName', 'field', 'filter', 'editable', 
+                    'pinned', 'width', 'minWidth', 'maxWidth', 'hide', 'cellRenderer', 'cellStyle', 'cellClass', 
+                    'valueFormatter', 'valueGetter', 'headerTooltip', 'cellEditor', 'cellEditorParams')
