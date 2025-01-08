@@ -33,10 +33,12 @@ class BaseModel(MetaModel):
         return self.name
 
 class ObjectLookUp(MetaModel):
+    # Adding a new object type to this list shouldn't require a new migration.
     OBJECT_TYPE = (
         ('Document', 'Document'),
         ('Facility', 'Facility'),
         ('Instrument', 'Instrument'),
+        ('Invasive', 'Invasive'),
         ('Task', 'Task')
     )
 

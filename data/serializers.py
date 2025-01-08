@@ -1,11 +1,11 @@
-from common.serializers import MetaModelSerializer
-from rest_framework import serializers
-from data.models import Instrument, Field, Activity
+# from common.serializers import MetaModelSerializer
+# from rest_framework import serializers
+# from data.models import Instrument, Field, Activity
 
-class InstrumentSerializer(MetaModelSerializer):
-    class Meta:
-        model = Instrument
-        fields = ['id', 'name', 'description', 'instrument_type', 'model', 'serial_number', 'manufacturer', 'display_name', 'is_active']
+# class InstrumentSerializer(MetaModelSerializer):
+#     class Meta:
+#         model = Instrument
+#         fields = ['id', 'name', 'description', 'instrument_type', 'model', 'serial_number', 'manufacturer', 'display_name', 'is_active']
 
 class ActivitySerializer(MetaModelSerializer):
     task_type_name = serializers.SerializerMethodField()

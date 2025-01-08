@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     'data',
     'common',
     'files',
+    'invasives',
     'location',
     'perms',
 ]

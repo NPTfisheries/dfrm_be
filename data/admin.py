@@ -1,6 +1,6 @@
-from django.contrib import admin
-from guardian.admin import GuardedModelAdmin
-from data.models import Activity, Instrument, Field
+# from django.contrib import admin
+# from guardian.admin import GuardedModelAdmin
+# from data.models import Activity, Instrument, Field
 
 @admin.register(Instrument)
 class InstrumentClassAdmin(GuardedModelAdmin):

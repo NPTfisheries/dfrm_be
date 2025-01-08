@@ -4,7 +4,6 @@ from django.conf import settings
 from django.db import migrations, models
 import django.db.models.deletion
 
-
 class Migration(migrations.Migration):
 
     initial = True
@@ -22,7 +21,7 @@ class Migration(migrations.Migration):
                 ('updated_at', models.DateTimeField(auto_now=True)),
                 ('is_active', models.BooleanField(default=True)),
                 ('display', models.BooleanField(default=True)),
-                ('object_type', models.CharField(choices=[('Document', 'Document'), ('Facility', 'Facility'), ('Instrument', 'Instrument'), ('Task', 'Task')])),
+                ('object_type', models.CharField(choices=[('Document', 'Document'), ('Facility', 'Facility'), ('Instrument', 'Instrument'), ('Invasive', 'Invasive'), ('Task', 'Task')])),
                 ('name', models.CharField(max_length=300)),
                 ('created_by', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='%(app_label)s_%(class)s_creator', to=settings.AUTH_USER_MODEL)),
                 ('updated_by', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='%(app_label)s_%(class)s_editor', to=settings.AUTH_USER_MODEL)),
