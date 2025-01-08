@@ -1,31 +1,30 @@
-# from django.db import models
-# from django.utils import timezone
-# from common.models import MetaModel
-# from location.models import Location
-# from administration.models import Project, Task
-# from account.models import User
-# from common.models import ObjectLookUp
-# from django.contrib.postgres.fields import ArrayField
+from django.db import models
+from django.utils import timezone
+from common.models import MetaModel
+from location.models import Location
+from administration.models import Project, Task
+from account.models import User
+from common.models import ObjectLookUp
+from django.contrib.postgres.fields import ArrayField
 
 # null = True: django will store empty values as NULL in the db.  default False
 # blank = True: field is allowed to be blank. default False
 
-# class Instrument(MetaModel):
-#     # Task????
-#     name = models.CharField(max_length=300)
-#     description = models.TextField(null=True, blank=True)
-#     instrument_type = models.ForeignKey(ObjectLookUp, on_delete=models.PROTECT, limit_choices_to={'object_type': 'Instrument'}, related_name="%(class)s_object_lookups")
-#     model = models.CharField(max_length=100, null=True, blank=True)
-#     serial_number = models.CharField(max_length=50, null=True, blank=True)
-#     manufacturer = models.CharField(max_length=100, null=True, blank=True)
+class Instrument(MetaModel):
+    # Task????
+    name = models.CharField(max_length=300)
+    description = models.TextField(null=True, blank=True)
+    instrument_type = models.ForeignKey(ObjectLookUp, on_delete=models.PROTECT, limit_choices_to={'object_type': 'Instrument'}, related_name="%(class)s_object_lookups")
+    model = models.CharField(max_length=100, null=True, blank=True)
+    serial_number = models.CharField(max_length=50, null=True, blank=True)
+    manufacturer = models.CharField(max_length=100, null=True, blank=True)
 
-#     @property
-#     def display_name(self):
-#         return f"{self.name} ({self.serial_number})"
+    @property
+    def display_name(self):
+        return f"{self.name} ({self.serial_number})"
     
-
-#     def __str__(self):
-#         return self.name + " (" + self.serial_number + ")" 
+    def __str__(self):
+        return self.name + " (" + self.serial_number + ")" 
 
 class Activity(MetaModel):
     activity_id = models.IntegerField(editable=False, unique=True) # unique, but not the same as 'id'
@@ -36,15 +35,15 @@ class Activity(MetaModel):
     header = models.JSONField(default=list)  # header should include whatever date needed: calculation date, survey date, etc.
     detail = models.JSONField(default=list)  # null=True, blank=True ?? allow for a no-data header?
 
-#     def save(self, *args, **kwargs):
-#         if not self.activity_id:
-#             max_id = Activity.objects.aggregate(max_id=models.Max('activity_id')).get('max_id') or 0
-#             self.activity_id = (max_id or 0) +1
-#         super().save(*args, **kwargs)
+    def save(self, *args, **kwargs):
+        if not self.activity_id:
+            max_id = Activity.objects.aggregate(max_id=models.Max('activity_id')).get('max_id') or 0
+            self.activity_id = (max_id or 0) +1
+        super().save(*args, **kwargs)
 
-#     class Meta:
-#         verbose_name = 'Activity'
-#         verbose_name_plural = 'Activities'
+    class Meta:
+        verbose_name = 'Activity'
+        verbose_name_plural = 'Activities'
 
 # https://www.ag-grid.com/javascript-data-grid/column-properties/  
 class Field(models.Model):
@@ -71,11 +70,11 @@ class Field(models.Model):
     cellEditor = models.TextField(null=True, blank=True)
     cellEditorParams = models.JSONField(null=True, blank=True)
 
-#     def __str__(self):
-#         return self.headerName
+    def __str__(self):
+        return self.headerName
     
-#     class Meta:
-#         ordering = ['sortingOrder']
+    class Meta:
+        ordering = ['sortingOrder']
         
 # class Protocol(models.Model):
 #     name = models.CharField(max_length=100)
