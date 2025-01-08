@@ -1,27 +1,31 @@
-from django.db import models
-from common.models import MetaModel
-from location.models import Location
-from administration.models import Task
-from common.models import ObjectLookUp
-from django.contrib.postgres.fields import ArrayField
+# from django.db import models
+# from django.utils import timezone
+# from common.models import MetaModel
+# from location.models import Location
+# from administration.models import Project, Task
+# from account.models import User
+# from common.models import ObjectLookUp
+# from django.contrib.postgres.fields import ArrayField
 
 # null = True: django will store empty values as NULL in the db.  default False
 # blank = True: field is allowed to be blank. default False
 
-class Instrument(MetaModel):
-    name = models.CharField(max_length=300)
-    description = models.TextField(null=True, blank=True)
-    instrument_type = models.ForeignKey(ObjectLookUp, on_delete=models.PROTECT, limit_choices_to={'object_type': 'Instrument'}, related_name="%(class)s_object_lookups")
-    model = models.CharField(max_length=100, null=True, blank=True)
-    serial_number = models.CharField(max_length=50, null=True, blank=True)
-    manufacturer = models.CharField(max_length=100, null=True, blank=True)
+# class Instrument(MetaModel):
+#     # Task????
+#     name = models.CharField(max_length=300)
+#     description = models.TextField(null=True, blank=True)
+#     instrument_type = models.ForeignKey(ObjectLookUp, on_delete=models.PROTECT, limit_choices_to={'object_type': 'Instrument'}, related_name="%(class)s_object_lookups")
+#     model = models.CharField(max_length=100, null=True, blank=True)
+#     serial_number = models.CharField(max_length=50, null=True, blank=True)
+#     manufacturer = models.CharField(max_length=100, null=True, blank=True)
 
-    @property
-    def display_name(self):
-        return f"{self.name} ({self.serial_number})"    
+#     @property
+#     def display_name(self):
+#         return f"{self.name} ({self.serial_number})"
+    
 
-    def __str__(self):
-        return self.name + " (" + self.serial_number + ")" 
+#     def __str__(self):
+#         return self.name + " (" + self.serial_number + ")" 
 
 # class Activity(MetaModel):
 #     # set once, never change.
@@ -44,7 +48,7 @@ class Instrument(MetaModel):
 #         verbose_name = 'Activity'
 #         verbose_name_plural = 'Activities'
 
-# https://www.ag-grid.com/javascript-data-grid/column-properties/  
+# # https://www.ag-grid.com/javascript-data-grid/column-properties/  
 # class Field(models.Model):
 #     task_type = models.ForeignKey(ObjectLookUp, on_delete=models.PROTECT, limit_choices_to={'object_type': 'Task'})
 #     field_for = models.CharField(choices=(('header','Header'),('detail','Detail')))
@@ -74,3 +78,15 @@ class Instrument(MetaModel):
 #     class Meta:
 #         ordering = ['sortingOrder']
         
+# class Protocol(models.Model):
+#     name = models.CharField(max_length=100)
+#     description = models.TextField(blank=True, null=True)
+#     date_started = models.DateField()
+#     date_ended = models.DateField(blank=True, null=True)
+#     url = models.URLField(max_length=255, blank=True, null=True)
+
+# class Contract(models.Model):
+#     name = models.CharField(max_length=100)
+#     description = models.TextField(blank=True, null=True)
+#     date_started = models.DateField()
+#     date_ended = models.DateField(blank=True, null=True)

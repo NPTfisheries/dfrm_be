@@ -1,14 +1,14 @@
-from rest_framework import viewsets, permissions
-from data.models import Instrument #, Activity, Field
-from common.models import ObjectLookUp
-from data.serializers import InstrumentSerializer #, ActivitySerializer, FieldSerializer
-from django.shortcuts import get_object_or_404
+# from rest_framework import viewsets, permissions
+# from data.models import Activity, Instrument, Field
+# from common.models import ObjectLookUp
+# from data.serializers import ActivitySerializer, InstrumentSerializer, FieldSerializer
+# from django.shortcuts import get_object_or_404
 
-class InstrumentViewSet(viewsets.ModelViewSet):
-    queryset = Instrument.objects.all()
-    serializer_class = InstrumentSerializer
-    lookup_field = 'name'
-    permission_classes = [permissions.DjangoModelPermissionsOrAnonReadOnly]
+# class InstrumentViewSet(viewsets.ModelViewSet):
+#     queryset = Instrument.objects.all()
+#     serializer_class = InstrumentSerializer
+#     lookup_field = 'name'
+#     permission_classes = [permissions.DjangoModelPermissionsOrAnonReadOnly]
 
 # class ActivityViewSet(viewsets.ModelViewSet):
 #     queryset = Activity.objects.all()
