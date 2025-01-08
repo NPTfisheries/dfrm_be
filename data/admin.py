@@ -1,10 +1,10 @@
 from django.contrib import admin
 from guardian.admin import GuardedModelAdmin
-from data.models import Activity, Instrument, Field
+from data.models import Instrument #, Activity, Field
 
-# @admin.register(Instrument)
-# class InstrumentClassAdmin(GuardedModelAdmin):
-#     list_display = ('id', 'name', 'description', 'instrument_type', 'model', 'serial_number', 'manufacturer')
+@admin.register(Instrument)
+class InstrumentClassAdmin(GuardedModelAdmin):
+    list_display = ('id', 'name', 'description', 'instrument_type', 'model', 'serial_number', 'manufacturer')
 
 # @admin.register(Activity)
 # class ActivityClassAdmin(GuardedModelAdmin):

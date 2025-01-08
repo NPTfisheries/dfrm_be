@@ -1,7 +1,7 @@
 from rest_framework import viewsets, permissions
-from data.models import Activity, Instrument, Field
+from data.models import Instrument #, Activity, Field
 from common.models import ObjectLookUp
-from data.serializers import ActivitySerializer, InstrumentSerializer, FieldSerializer
+from data.serializers import InstrumentSerializer #, ActivitySerializer, FieldSerializer
 from django.shortcuts import get_object_or_404
 
 class InstrumentViewSet(viewsets.ModelViewSet):
@@ -10,23 +10,23 @@ class InstrumentViewSet(viewsets.ModelViewSet):
     lookup_field = 'name'
     permission_classes = [permissions.DjangoModelPermissionsOrAnonReadOnly]
 
-class ActivityViewSet(viewsets.ModelViewSet):
-    queryset = Activity.objects.all()
-    serializer_class = ActivitySerializer
-    lookup_field = 'id'
-    permission_classes = [permissions.DjangoModelPermissionsOrAnonReadOnly]
+# class ActivityViewSet(viewsets.ModelViewSet):
+#     queryset = Activity.objects.all()
+#     serializer_class = ActivitySerializer
+#     lookup_field = 'id'
+#     permission_classes = [permissions.DjangoModelPermissionsOrAnonReadOnly]
 
-class FieldViewSet(viewsets.ModelViewSet):
-    queryset = Field.objects.all()
-    serializer_class = FieldSerializer
-    lookup_field = 'id'
-    permission_classes = [permissions.DjangoModelPermissionsOrAnonReadOnly]
+# class FieldViewSet(viewsets.ModelViewSet):
+#     queryset = Field.objects.all()
+#     serializer_class = FieldSerializer
+#     lookup_field = 'id'
+#     permission_classes = [permissions.DjangoModelPermissionsOrAnonReadOnly]
 
-    def get_queryset(self):
-        task_type = self.request.query_params.get('task_type')
+#     def get_queryset(self):
+#         task_type = self.request.query_params.get('task_type')
 
-        if task_type:
-            task_type= get_object_or_404(ObjectLookUp, id=task_type)
-            return Field.objects.filter(task_type=task_type)
-        else:
-            return Field.objects.all()
+#         if task_type:
+#             task_type= get_object_or_404(ObjectLookUp, id=task_type)
+#             return Field.objects.filter(task_type=task_type)
+#         else:
+#             return Field.objects.all()
